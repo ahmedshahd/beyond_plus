@@ -1,0 +1,10 @@
+scalar DateTime
+
+type Test {
+    id: Int!
+}
+
+
+type Query {
+    testApi(id:Int!):Test!
+}
