@@ -40,4 +40,4 @@ lerna-debug.log*
 
 run.sh
 
-src/graphql.ts
+graphql.ts
