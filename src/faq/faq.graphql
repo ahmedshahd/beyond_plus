@@ -1,0 +1,32 @@
+type Faq {
+  id: Int!
+  question: String!
+  answers: [String!]!
+  language: LanguageEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+enum LanguageEnum {
+  ARABIC
+  ENGLISH
+}
+input CreateFaqInput {
+  question: String!
+  answers: [String!]!
+}
+
+input UpdateFaqInput {
+  id: Int!
+  question: String
+  answers: [String!]
+}
+
+type Query {
+  faq(language: LanguageEnum!): [Faq]!
+}
+
+type Mutation {
+  createFaq(createFaqInput: CreateFaqInput!, language: LanguageEnum): Faq!
+  updateFaq(updateFaqInput: UpdateFaqInput!, language: LanguageEnum): Faq!
+  removeFaq(id: Int!): Faq
+}

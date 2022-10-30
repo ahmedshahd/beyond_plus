@@ -7,6 +7,12 @@ import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PrismaService } from './prisma.service';
 import { ConfigModule } from '@nestjs/config';
+import { ContactUsModule } from './contact-us/contact-us.module';
+import { LearnIconModule } from './learn-icon/learn-icon.module';
+import { PrivacyPolicyModule } from './privacy-policy/privacy-policy.module';
+import { FaqModule } from './faq/faq.module';
+import { LabelModule } from './label/label.module';
+import { TermsAndConditionsModule } from './terms-and-conditions/terms-and-conditions.module';
 
 @Module({
   imports: [
@@ -33,6 +39,12 @@ import { ConfigModule } from '@nestjs/config';
         ],
       }),
     }),
+    ContactUsModule,
+    LearnIconModule,
+    PrivacyPolicyModule,
+    FaqModule,
+    LabelModule,
+    TermsAndConditionsModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

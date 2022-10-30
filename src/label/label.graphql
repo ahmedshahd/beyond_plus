@@ -1,0 +1,35 @@
+type Label {
+  id: Int!
+  name: String!
+  content: String!
+  language: LanguageEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+input CreateLabelInput {
+  name: String!
+  content: String!
+}
+
+input UpdateLabelInput {
+  id: Int!
+  name: String
+  content: String
+}
+
+type Query {
+  label(language: LanguageEnum!): [Label]!
+}
+
+type Mutation {
+  createLabel(
+    createLabelInput: CreateLabelInput!
+    language: LanguageEnum!
+  ): Label!
+  updateLabel(
+    updateLabelInput: UpdateLabelInput!
+    language: LanguageEnum!
+  ): Label!
+  removeLabel(id: Int!): Label
+}
