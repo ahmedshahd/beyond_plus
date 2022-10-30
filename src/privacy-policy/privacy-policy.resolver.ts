@@ -1,3 +1,4 @@
+import { LanguageEnum } from '@prisma/client';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { PrivacyPolicyService } from './privacy-policy.service';
 import { CreatePrivacyPolicyInput } from './dto/create-privacy-policy.input';
@@ -13,18 +14,15 @@ export class PrivacyPolicyResolver {
   }
 
   @Query('privacyPolicy')
-  findAll() {
-    return this.privacyPolicyService.findAll();
+  findAll(@Args('language') language:LanguageEnum) {
+    return this.privacyPolicyService.findAll(language);
   }
 
-  @Query('privacyPolicy')
-  findOne(@Args('id') id: number) {
-    return this.privacyPolicyService.findOne(id);
-  }
+  
 
   @Mutation('updatePrivacyPolicy')
   update(@Args('updatePrivacyPolicyInput') updatePrivacyPolicyInput: UpdatePrivacyPolicyInput) {
-    return this.privacyPolicyService.update(updatePrivacyPolicyInput.id, updatePrivacyPolicyInput);
+    return this.privacyPolicyService.update(updatePrivacyPolicyInput);
   }
 
   @Mutation('removePrivacyPolicy')
