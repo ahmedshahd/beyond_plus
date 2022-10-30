@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTermsAndConditionInput } from './dto/create-terms-and-condition.input';
-import { UpdateTermsAndConditionInput } from './dto/update-terms-and-condition.input';
-
+import { CreateTermsAndConditionsInput } from './dto/create-terms-and-conditions.input';
+import { UpdateTermsAndConditionsInput } from './dto/update-terms-and-conditions.input';
 @Injectable()
 export class TermsAndConditionsService {
-  create(createTermsAndConditionInput: CreateTermsAndConditionInput) {
+  create(createTermsAndConditionsInput: CreateTermsAndConditionsInput) {
     return 'This action adds a new termsAndCondition';
   }
 
@@ -16,7 +15,7 @@ export class TermsAndConditionsService {
     return `This action returns a #${id} termsAndCondition`;
   }
 
-  update(id: number, updateTermsAndConditionInput: UpdateTermsAndConditionInput) {
+  update(id: number, updateTermsAndConditionsInput: UpdateTermsAndConditionsInput) {
     return `This action updates a #${id} termsAndCondition`;
   }
 

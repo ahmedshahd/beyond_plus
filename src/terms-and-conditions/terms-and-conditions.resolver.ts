@@ -1,14 +1,14 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { CreateTermsAndConditionsInput } from './dto/create-terms-and-conditions.input';
+import { UpdateTermsAndConditionsInput } from './dto/update-terms-and-conditions.input';
 import { TermsAndConditionsService } from './terms-and-conditions.service';
-import { CreateTermsAndConditionInput } from './dto/create-terms-and-condition.input';
-import { UpdateTermsAndConditionInput } from './dto/update-terms-and-condition.input';
 
-@Resolver('TermsAndCondition')
+@Resolver('TermsAndConditions')
 export class TermsAndConditionsResolver {
   constructor(private readonly termsAndConditionsService: TermsAndConditionsService) {}
 
-  @Mutation('createTermsAndCondition')
-  create(@Args('createTermsAndConditionInput') createTermsAndConditionInput: CreateTermsAndConditionInput) {
+  @Mutation('createTermsAndConditions')
+  create(@Args('createTermsAndConditionsInput') createTermsAndConditionInput: CreateTermsAndConditionsInput) {
     return this.termsAndConditionsService.create(createTermsAndConditionInput);
   }
 
@@ -17,17 +17,17 @@ export class TermsAndConditionsResolver {
     return this.termsAndConditionsService.findAll();
   }
 
-  @Query('termsAndCondition')
+  @Query('termsAndConditions')
   findOne(@Args('id') id: number) {
     return this.termsAndConditionsService.findOne(id);
   }
 
-  @Mutation('updateTermsAndCondition')
-  update(@Args('updateTermsAndConditionInput') updateTermsAndConditionInput: UpdateTermsAndConditionInput) {
-    return this.termsAndConditionsService.update(updateTermsAndConditionInput.id, updateTermsAndConditionInput);
+  @Mutation('updateTermsAndConditions')
+  update(@Args('updateTermsAndConditionsInput') updateTermsAndConditionsInput: UpdateTermsAndConditionsInput) {
+    return this.termsAndConditionsService.update(updateTermsAndConditionsInput.id, updateTermsAndConditionsInput);
   }
 
-  @Mutation('removeTermsAndCondition')
+  @Mutation('removeTermsAndConditions')
   remove(@Args('id') id: number) {
     return this.termsAndConditionsService.remove(id);
   }
