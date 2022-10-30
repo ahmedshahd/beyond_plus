@@ -17,8 +17,8 @@ export class PrivacyPolicyService {
   }
 
 
-  findAll(language: LanguageEnum) {
-    return this.prisma.privacyPolicy.findMany({
+  async findAll(language: LanguageEnum) {
+    return await this.prisma.privacyPolicy.findMany({
       where:{
         language
       }
@@ -27,8 +27,8 @@ export class PrivacyPolicyService {
 
  
 
-  update(updatePrivacyPolicyInput: UpdatePrivacyPolicyInput) {
-    return this.prisma.privacyPolicy.update({
+  async update(updatePrivacyPolicyInput: UpdatePrivacyPolicyInput) {
+    return await this.prisma.privacyPolicy.update({
       where: {
         id : updatePrivacyPolicyInput.id
       },
@@ -38,8 +38,8 @@ export class PrivacyPolicyService {
       }
     })}
 
-  remove(id: number) {
-    return   this.prisma.privacyPolicy.delete({
+  async remove(id: number) {
+    return   await this.prisma.privacyPolicy.delete({
       where: {
         id
       }

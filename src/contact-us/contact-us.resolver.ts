@@ -1,4 +1,5 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { LanguageEnum } from '@prisma/client';
 import { ContactUsService } from './contact-us.service';
 import { CreateContactUsInput } from './dto/create-contact-us.input';
 import { UpdateContactUsInput } from './dto/update-contact-us.input';
@@ -17,14 +18,11 @@ export class ContactUsResolver {
     return this.contactUsService.findAll();
   }
 
-  @Query('contactUs')
-  findOne(@Args('id') id: number) {
-    return this.contactUsService.findOne(id);
-  }
+
 
   @Mutation('updateContactUs')
   update(@Args('updateContactUsInput') updateContactUsInput: UpdateContactUsInput) {
-    return this.contactUsService.update(updateContactUsInput.id, updateContactUsInput);
+    return this.contactUsService.update(updateContactUsInput);
   }
 
   @Mutation('removeContactUs')

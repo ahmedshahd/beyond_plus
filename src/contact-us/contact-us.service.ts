@@ -1,26 +1,41 @@
+import { LanguageEnum, Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { CreateContactUsInput } from './dto/create-contact-us.input';
 import { UpdateContactUsInput } from './dto/update-contact-us.input';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class ContactUsService {
-  create(createContactUsInput: CreateContactUsInput) {
-    return 'This action adds a new contactUs';
+  constructor(private prisma: PrismaService) {}
+
+  async create(createContactUsInput: CreateContactUsInput) {
+    return await this.prisma.contactUs.create({
+      data:{
+        ...createContactUsInput
+      }
+    })
   }
 
-  findAll() {
-    return `This action returns all contactUs`;
+  async findAll() {
+    return await this.prisma.contactUs.findMany({
+      
+    })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} contactUs`;
-  }
-
-  update(id: number, updateContactUsInput: UpdateContactUsInput) {
-    return `This action updates a #${id} contactUs`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} contactUs`;
+  async update(updateContactUsInput: UpdateContactUsInput) {
+    return  await this.prisma.contactUs.update({
+      where: {
+                 id:updateContactUsInput.id      },
+      data: {
+        ...updateContactUsInput
+      }
+    })}
+  
+  async remove(id: number) {
+    return await this.prisma.contactUs.delete({
+      where:{
+        id
+      }
+    })
   }
 }
