@@ -1,0 +1,33 @@
+type Notification {
+  id:        Int!   
+  title:     String!
+  content:   String!
+  imageUrl:  String
+  createdAt: DateTime 
+  updatedAt: DateTime
+}
+
+input CreateNotificationInput {
+  title:     String!
+  content:   String!
+  imageUrl:  String
+}
+
+input UpdateNotificationInput {
+  id: Int!
+  title:     String
+  content:   String
+  imageUrl:  String
+  createdAt: DateTime 
+  updatedAt: DateTime
+}
+
+type Query {
+  notification: [Notification]!
+  getAllNotificationByUserId(userId: Int!): Notification
+}
+
+type Mutation {
+  createNotification(createNotificationInput: CreateNotificationInput!): Notification!
+  removeNotification(id: Int!): Notification
+}

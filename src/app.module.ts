@@ -15,6 +15,7 @@ import { LabelModule } from './label/label.module';
 import { TermsAndConditionsModule } from './terms-and-conditions/terms-and-conditions.module';
 import { UserModule } from './user/user.module';
 import { AddressModule } from './address/address.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { AddressModule } from './address/address.module';
     TermsAndConditionsModule,
     UserModule,
     AddressModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
