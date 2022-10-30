@@ -16,15 +16,18 @@ enum LanguageEnum {
 }
 
 model ContactUs {
-  id        Int       @id @default(autoincrement())
-  name      String
-  wbsiteUrl DateTime
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  id          Int       @id @default(autoincrement())
+  phoneNumber String
+  email       String    @unique
+  name        String
+  wbsiteUrl   DateTime
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
 }
 
 model LearnIcon {
   id        Int          @id @default(autoincrement())
+  name      String
   content   String
   language  LanguageEnum @default(ARABIC)
   createdAt DateTime     @default(now())
