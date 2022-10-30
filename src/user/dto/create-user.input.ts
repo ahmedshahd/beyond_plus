@@ -22,6 +22,11 @@ export class CreateUserInput {
   @Field()
   @IsNotEmpty()
   @IsString()
+  companyWork: string;
+
+  @Field()
+  @IsNotEmpty()
+  @IsString()
   password: string;
 
   @Field()
