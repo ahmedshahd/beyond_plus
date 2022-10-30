@@ -1,1 +1,3 @@
-export class CreateTermsAndConditionsInput {}
+export class CreateTermsAndConditionsInput {
+    text:string
+}
