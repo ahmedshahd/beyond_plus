@@ -13,6 +13,8 @@ import { PrivacyPolicyModule } from './privacy-policy/privacy-policy.module';
 import { FaqModule } from './faq/faq.module';
 import { LabelModule } from './label/label.module';
 import { TermsAndConditionsModule } from './terms-and-conditions/terms-and-conditions.module';
+import { UserModule } from './user/user.module';
+import { AddressModule } from './address/address.module';
 
 @Module({
   imports: [
@@ -45,6 +47,8 @@ import { TermsAndConditionsModule } from './terms-and-conditions/terms-and-condi
     FaqModule,
     LabelModule,
     TermsAndConditionsModule,
+    UserModule,
+    AddressModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
