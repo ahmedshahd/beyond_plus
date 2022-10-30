@@ -1,25 +1,42 @@
+import { LanguageEnum } from '.prisma/client';
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma.service';
 import { CreateTermsAndConditionsInput } from './dto/create-terms-and-conditions.input';
 import { UpdateTermsAndConditionsInput } from './dto/update-terms-and-conditions.input';
 @Injectable()
 export class TermsAndConditionsService {
-  create(createTermsAndConditionsInput: CreateTermsAndConditionsInput) {
-    return 'This action adds a new termsAndCondition';
+  constructor(private prisma: PrismaService) {}
+
+  async  create(createTermsAndConditionsInput: CreateTermsAndConditionsInput) {
+    return await this.prisma.termsAndConditions.create({
+      data:{
+        ...createTermsAndConditionsInput
+      }
+    })
   }
 
-  findAll() {
-    return `This action returns all termsAndConditions`;
+  async findAll(language:LanguageEnum) {
+    return await this.prisma.termsAndConditions.findMany({
+      where:{
+        language
+      },
+    })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} termsAndCondition`;
-  }
+  async update( updateTermsAndConditionsInput: UpdateTermsAndConditionsInput) {
+    return await this.prisma.termsAndConditions.update({
+      where: {
+                 id:updateTermsAndConditionsInput.id      },
+      data: {
+        ...updateTermsAndConditionsInput
+      }
+    })}
 
-  update(id: number, updateTermsAndConditionsInput: UpdateTermsAndConditionsInput) {
-    return `This action updates a #${id} termsAndCondition`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} termsAndCondition`;
-  }
+    async remove(id: number) {
+      return await this.prisma.termsAndConditions.delete({
+        where:{
+          id
+        }
+      })
+    }
 }

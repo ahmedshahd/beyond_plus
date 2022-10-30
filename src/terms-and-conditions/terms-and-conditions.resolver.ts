@@ -1,4 +1,5 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { LanguageEnum } from '@prisma/client';
 import { CreateTermsAndConditionsInput } from './dto/create-terms-and-conditions.input';
 import { UpdateTermsAndConditionsInput } from './dto/update-terms-and-conditions.input';
 import { TermsAndConditionsService } from './terms-and-conditions.service';
@@ -13,18 +14,13 @@ export class TermsAndConditionsResolver {
   }
 
   @Query('termsAndConditions')
-  findAll() {
-    return this.termsAndConditionsService.findAll();
-  }
-
-  @Query('termsAndConditions')
-  findOne(@Args('id') id: number) {
-    return this.termsAndConditionsService.findOne(id);
+  findAll(language:LanguageEnum) {
+    return this.termsAndConditionsService.findAll(language);
   }
 
   @Mutation('updateTermsAndConditions')
   update(@Args('updateTermsAndConditionsInput') updateTermsAndConditionsInput: UpdateTermsAndConditionsInput) {
-    return this.termsAndConditionsService.update(updateTermsAndConditionsInput.id, updateTermsAndConditionsInput);
+    return this.termsAndConditionsService.update(updateTermsAndConditionsInput);
   }
 
   @Mutation('removeTermsAndConditions')
