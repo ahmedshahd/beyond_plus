@@ -6,6 +6,11 @@ export class CreateAddressInput {
   @Field()
   @IsNotEmpty()
   @Transform(({ value }) => Number(value))
+  userId: number;
+
+  @Field()
+  @IsNotEmpty()
+  @Transform(({ value }) => Number(value))
   longitude: number;
 
   @Field()

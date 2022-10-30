@@ -1,26 +1,44 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma.service';
 import { CreateAddressInput } from './dto/create-address.input';
 import { UpdateAddressInput } from './dto/update-address.input';
 
 @Injectable()
 export class AddressService {
+  constructor(private prisma: PrismaService) {}
+
   create(createAddressInput: CreateAddressInput) {
-    return 'This action adds a new address';
+    return this.prisma.address.create({
+      data: {
+        ...createAddressInput,
+      },
+    });
   }
 
   findAll() {
-    return `This action returns all address`;
+    return this.prisma.address.findMany();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} address`;
+    return this.prisma.address.findUnique({ where: { id } });
   }
 
   update(id: number, updateAddressInput: UpdateAddressInput) {
-    return `This action updates a #${id} address`;
+    return this.prisma.address.update({
+      where: {
+        id: updateAddressInput.id,
+      },
+      data: {
+        ...updateAddressInput,
+      },
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} address`;
+    return this.prisma.address.delete({
+      where: {
+        id,
+      },
+    });
   }
 }
