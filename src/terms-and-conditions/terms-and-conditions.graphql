@@ -1,0 +1,32 @@
+type TermsAndConditions {
+  id: Int!
+  text: String!
+  language: LanguageEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+input CreateTermsAndConditionsInput {
+  text: String!
+}
+
+input UpdateTermsAndConditionsInput {
+  id: Int!
+  text: String
+}
+
+type Query {
+  termsAndConditions(language: LanguageEnum!): [TermsAndConditions]!
+}
+
+type Mutation {
+  createTermsAndConditions(
+    createTermsAndConditionsInput: CreateTermsAndConditionsInput!
+    language: LanguageEnum!
+  ): TermsAndConditions!
+  updateTermsAndConditions(
+    updateTermsAndConditionsInput: UpdateTermsAndConditionsInput!
+    language: LanguageEnum!
+  ): TermsAndConditions!
+  removeTermsAndConditions(id: Int!): TermsAndConditions
+}

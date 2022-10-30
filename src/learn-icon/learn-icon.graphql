@@ -1,0 +1,35 @@
+type LearnIcon {
+  id: Int!
+  name: String!
+  content: String!
+  language: LanguageEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+input CreateLearnIconInput {
+  name: String!
+  content: String!
+}
+
+input UpdateLearnIconInput {
+  id: Int!
+  name: String
+  content: String
+}
+
+type Query {
+  learnIcon(language: LanguageEnum!): [LearnIcon]!
+}
+
+type Mutation {
+  createLearnIcon(
+    createLearnIconInput: CreateLearnIconInput!
+    language: LanguageEnum!
+  ): LearnIcon!
+  updateLearnIcon(
+    updateLearnIconInput: UpdateLearnIconInput!
+    language: LanguageEnum!
+  ): LearnIcon!
+  removeLearnIcon(id: Int!): LearnIcon
+}
