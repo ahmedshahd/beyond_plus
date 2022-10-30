@@ -1,1 +1,3 @@
-export class CreatePrivacyPolicyInput {}
+export class CreatePrivacyPolicyInput {
+    text: string
+}
