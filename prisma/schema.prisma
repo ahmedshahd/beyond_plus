@@ -64,3 +64,40 @@ model TermsAndConditions {
   createdAt DateTime     @default(now())
   updatedAt DateTime?    @updatedAt
 }
+
+model User {
+  id                   Int            @id @default(autoincrement())
+  email                String         @unique
+  name                 String
+  insuranceCompanyName String
+  password             String
+  mobile               String
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime?      @updatedAt
+  address              Address[]
+  notification         Notification[]
+}
+
+model Address {
+  id             Int    @id @default(autoincrement())
+  userId         Int
+  user           User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  longitude      Float
+  latitude       Float
+  streetName     String
+  buildingNumber Int
+  floorNumber    Int
+  details        String
+  area           String
+}
+
+model Notification {
+  id        Int       @id @default(autoincrement())
+  title     String
+  content   String
+  imageUrl  String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  User      User?     @relation(fields: [userId], references: [id])
+  userId    Int?
+}
