@@ -1,1 +1,4 @@
-export class CreateFaqInput {}
+export class CreateFaqInput {
+    question:string
+    answers:string[]
+}

@@ -1,26 +1,46 @@
+import { PrismaService } from 'src/prisma.service';
 import { Injectable } from '@nestjs/common';
+import { LanguageEnum } from '@prisma/client';
 import { CreateFaqInput } from './dto/create-faq.input';
 import { UpdateFaqInput } from './dto/update-faq.input';
 
 @Injectable()
 export class FaqService {
-  create(createFaqInput: CreateFaqInput) {
-    return 'This action adds a new faq';
+  constructor(private prisma:PrismaService){}
+  async create(createFaqInput: CreateFaqInput) {
+    return await this.prisma.fAQ.create({
+      data:{
+        ...createFaqInput
+      }
+    })
   }
 
-  findAll() {
-    return `This action returns all faq`;
+  async findAll(language:LanguageEnum) {
+    return await this.prisma.fAQ.findMany({
+      where:{
+        language
+      }
+    })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} faq`;
+  
+
+  async update(updateFaqInput: UpdateFaqInput) {
+    return await this.prisma.fAQ.update({
+      where: {
+        id:updateFaqInput.id
+      },
+      data:{
+          ...updateFaqInput
+      }
+    })
   }
 
-  update(id: number, updateFaqInput: UpdateFaqInput) {
-    return `This action updates a #${id} faq`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} faq`;
+  async remove(id: number) {
+    return await this.prisma.fAQ.delete({
+     where:{
+      id
+     }
+    })
   }
 }
