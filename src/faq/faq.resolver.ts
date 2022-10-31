@@ -2,6 +2,7 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { FaqService } from './faq.service';
 import { CreateFaqInput } from './dto/create-faq.input';
 import { UpdateFaqInput } from './dto/update-faq.input';
+import { LanguageEnum } from '@prisma/client';
 
 @Resolver('Faq')
 export class FaqResolver {
@@ -13,18 +14,14 @@ export class FaqResolver {
   }
 
   @Query('faq')
-  findAll() {
-    return this.faqService.findAll();
+  findAll(@Args('language') language: LanguageEnum) {
+    return this.faqService.findAll(language);
   }
 
-  @Query('faq')
-  findOne(@Args('id') id: number) {
-    return this.faqService.findOne(id);
-  }
-
+  
   @Mutation('updateFaq')
   update(@Args('updateFaqInput') updateFaqInput: UpdateFaqInput) {
-    return this.faqService.update(updateFaqInput.id, updateFaqInput);
+    return this.faqService.update( updateFaqInput);
   }
 
   @Mutation('removeFaq')
