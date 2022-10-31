@@ -11,7 +11,7 @@ export class PrivacyPolicyService {
   async create(createPrivacyPolicyInput: CreatePrivacyPolicyInput) {
     return await this.prisma.privacyPolicy.create({
       data: {
-        text:createPrivacyPolicyInput.text
+        ...createPrivacyPolicyInput
       }
     })
   }
@@ -33,7 +33,7 @@ export class PrivacyPolicyService {
         id : updatePrivacyPolicyInput.id
       },
       data: {
-        text:updatePrivacyPolicyInput.text
+        ...updatePrivacyPolicyInput
 
       }
     })}

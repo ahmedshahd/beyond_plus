@@ -2,6 +2,7 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { LearnIconService } from './learn-icon.service';
 import { CreateLearnIconInput } from './dto/create-learn-icon.input';
 import { UpdateLearnIconInput } from './dto/update-learn-icon.input';
+import { LanguageEnum } from '@prisma/client';
 
 @Resolver('LearnIcon')
 export class LearnIconResolver {
@@ -13,18 +14,13 @@ export class LearnIconResolver {
   }
 
   @Query('learnIcon')
-  findAll() {
-    return this.learnIconService.findAll();
-  }
-
-  @Query('learnIcon')
-  findOne(@Args('id') id: number) {
-    return this.learnIconService.findOne(id);
+  findAll(@Args('language') language: LanguageEnum) {
+    return this.learnIconService.findAll(language);
   }
 
   @Mutation('updateLearnIcon')
   update(@Args('updateLearnIconInput') updateLearnIconInput: UpdateLearnIconInput) {
-    return this.learnIconService.update(updateLearnIconInput.id, updateLearnIconInput);
+    return this.learnIconService.update( updateLearnIconInput);
   }
 
   @Mutation('removeLearnIcon')

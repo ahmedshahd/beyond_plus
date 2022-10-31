@@ -1,26 +1,45 @@
 import { Injectable } from '@nestjs/common';
+import { LanguageEnum } from '@prisma/client';
+import { PrismaService } from 'src/prisma.service';
 import { CreateLearnIconInput } from './dto/create-learn-icon.input';
 import { UpdateLearnIconInput } from './dto/update-learn-icon.input';
 
 @Injectable()
 export class LearnIconService {
-  create(createLearnIconInput: CreateLearnIconInput) {
-    return 'This action adds a new learnIcon';
+  constructor(private prisma: PrismaService) {}
+
+  async create(createLearnIconInput: CreateLearnIconInput) {
+    return await this.prisma.learnIcon.create({
+      data:{
+        ...createLearnIconInput
+      }
+    })
   }
 
-  findAll() {
-    return `This action returns all learnIcon`;
+  async findAll(language:LanguageEnum) {
+    return await this.prisma.learnIcon.findMany({
+      where:{
+        language
+      }
+    })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} learnIcon`;
+  async update(updateLearnIconInput: UpdateLearnIconInput) {
+    return await this.prisma.learnIcon.update({
+      where:{
+        id: updateLearnIconInput.id
+      },
+      data:{
+        ...updateLearnIconInput
+      }
+    })
   }
 
-  update(id: number, updateLearnIconInput: UpdateLearnIconInput) {
-    return `This action updates a #${id} learnIcon`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} learnIcon`;
+  async remove(id: number) {
+    return await this.prisma.learnIcon.delete({
+      where:{
+        id
+      }
+    })
   }
 }
