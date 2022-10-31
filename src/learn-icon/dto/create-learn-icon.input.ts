@@ -1,1 +1,4 @@
-export class CreateLearnIconInput {}
+export class CreateLearnIconInput {
+    name: string
+    content:string
+}
