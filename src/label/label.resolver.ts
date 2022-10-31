@@ -1,3 +1,4 @@
+import { LanguageEnum } from '.prisma/client';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { LabelService } from './label.service';
 import { CreateLabelInput } from './dto/create-label.input';
@@ -13,18 +14,14 @@ export class LabelResolver {
   }
 
   @Query('label')
-  findAll() {
-    return this.labelService.findAll();
+  findAll(language:LanguageEnum) {
+    return this.labelService.findAll(language);
   }
 
-  @Query('label')
-  findOne(@Args('id') id: number) {
-    return this.labelService.findOne(id);
-  }
 
   @Mutation('updateLabel')
   update(@Args('updateLabelInput') updateLabelInput: UpdateLabelInput) {
-    return this.labelService.update(updateLabelInput.id, updateLabelInput);
+    return this.labelService.update(updateLabelInput);
   }
 
   @Mutation('removeLabel')

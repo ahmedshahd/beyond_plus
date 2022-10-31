@@ -1,26 +1,44 @@
+import { LanguageEnum } from '@prisma/client';
+import { PrismaService } from 'src/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { CreateLabelInput } from './dto/create-label.input';
 import { UpdateLabelInput } from './dto/update-label.input';
 
 @Injectable()
 export class LabelService {
-  create(createLabelInput: CreateLabelInput) {
-    return 'This action adds a new label';
+  constructor(private prisma: PrismaService){}
+  async create(createLabelInput: CreateLabelInput) {
+    return await this.prisma.label.create({
+      data:{
+        ...createLabelInput
+      }
+    })
   }
 
-  findAll() {
-    return `This action returns all label`;
+  async findAll(language:LanguageEnum) {
+    return await this.prisma.label.findMany({
+      where:{
+        language
+      }
+    })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} label`;
+  async update(updateLabelInput: UpdateLabelInput) {
+    return await this.prisma.label.update({
+      where:{
+        id: updateLabelInput.id
+      },
+      data:{
+        ...updateLabelInput
+      }
+    })
   }
 
-  update(id: number, updateLabelInput: UpdateLabelInput) {
-    return `This action updates a #${id} label`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} label`;
+  async remove(id: number) {
+    return  await this.prisma.label.delete({
+      where:{
+        id
+      }
+    })
   }
 }
