@@ -24,7 +24,6 @@ import {
   ResourceGuard,
   RoleGuard,
 } from 'nest-keycloak-connect';
-import { ProductModule } from './product/product.module';
 import { KeycloakConfigService } from './keycloak/config/keycloak.config.service';
 
 @Module({
@@ -65,7 +64,6 @@ import { KeycloakConfigService } from './keycloak/config/keycloak.config.service
     UserModule,
     AddressModule,
     NotificationModule,
-    ProductModule,
   ],
   controllers: [AppController],
   providers: [

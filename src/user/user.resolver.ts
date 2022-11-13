@@ -2,7 +2,16 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import {
+  Public,
+  Resource,
+  RoleMatchingMode,
+  Roles,
+  Scopes,
+  Unprotected,
+} from 'nest-keycloak-connect';
 
+@Resource('beyond-plus-resource')
 @Resolver('User')
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
@@ -12,7 +21,9 @@ export class UserResolver {
     return this.userService.create(createUserInput);
   }
 
-  @Query('user')
+  @Roles({ roles: ['admin_role'], mode: RoleMatchingMode.ANY })
+  @Scopes('view')
+  @Query('users')
   findAll() {
     return this.userService.findAll();
   }
