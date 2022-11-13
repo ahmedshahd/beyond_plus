@@ -10,6 +10,9 @@ import {
   Scopes,
   Unprotected,
 } from 'nest-keycloak-connect';
+import { UseGuards } from '@nestjs/common';
+import { CurrentUser } from '../helpers/user.decorator';
+import { graphQlKeycloakAuthGuard } from '../keycloak/guard/graphql-auth-guard';
 
 @Resource('beyond-plus-resource')
 @Resolver('User')
@@ -23,8 +26,10 @@ export class UserResolver {
 
   @Roles({ roles: ['admin_role'], mode: RoleMatchingMode.ANY })
   @Scopes('view')
+  @UseGuards(graphQlKeycloakAuthGuard)
   @Query('users')
-  findAll() {
+  findAll(@CurrentUser() user: any) {
+    console.log('user=', user);
     return this.userService.findAll();
   }
 

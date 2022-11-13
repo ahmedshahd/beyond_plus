@@ -44,6 +44,7 @@ import { KeycloakConfigService } from './keycloak/config/keycloak.config.service
           path: join(process.cwd(), 'src/graphql.ts'),
           outputAs: 'class',
         },
+        context: ({ req }) => ({ req }),
         playground: process.env.NODE_ENV === 'production' ? true : false,
         introspection: true,
         csrfPrevention: true,

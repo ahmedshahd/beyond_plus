@@ -41,7 +41,7 @@ export class KeycloakAuthService {
         );
       }
 
-      return new KeycloakAuthUser(response.data);
+      return response.data; //new KeycloakAuthUser(response.data);
     } catch (error) {
       throw new HttpException(
         error?.response?.data?.errorMessage || error.message,
