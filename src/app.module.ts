@@ -17,12 +17,25 @@ import { UserModule } from './user/user.module';
 import { AddressModule } from './address/address.module';
 import { NotificationModule } from './notification/notification.module';
 import { KeycloakModule } from './keycloak/keycloak.module';
+import { APP_GUARD } from '@nestjs/core';
+import {
+  AuthGuard,
+  KeycloakConnectModule,
+  ResourceGuard,
+  RoleGuard,
+} from 'nest-keycloak-connect';
+import { ProductModule } from './product/product.module';
+import { KeycloakConfigService } from './keycloak/config/keycloak.config.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+    }),
+    KeycloakConnectModule.registerAsync({
+      useExisting: KeycloakConfigService,
+      imports: [KeycloakModule],
     }),
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -43,7 +56,6 @@ import { KeycloakModule } from './keycloak/keycloak.module';
         ],
       }),
     }),
-    KeycloakModule,
     ContactUsModule,
     LearnIconModule,
     PrivacyPolicyModule,
@@ -53,8 +65,24 @@ import { KeycloakModule } from './keycloak/keycloak.module';
     UserModule,
     AddressModule,
     NotificationModule,
+    ProductModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [
+    AppService,
+    PrismaService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ResourceGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RoleGuard,
+    },
+  ],
 })
 export class AppModule {}
