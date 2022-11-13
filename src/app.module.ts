@@ -16,6 +16,7 @@ import { TermsAndConditionsModule } from './terms-and-conditions/terms-and-condi
 import { UserModule } from './user/user.module';
 import { AddressModule } from './address/address.module';
 import { NotificationModule } from './notification/notification.module';
+import { KeycloakModule } from './keycloak/keycloak.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { NotificationModule } from './notification/notification.module';
         ],
       }),
     }),
+    KeycloakModule,
     ContactUsModule,
     LearnIconModule,
     PrivacyPolicyModule,
