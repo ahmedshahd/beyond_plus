@@ -35,9 +35,16 @@ export class KeycloakAuthService {
         }),
       );
 
-      if (!response.data?.active) {
+      if (!response?.data) {
         throw new HttpException(
-          'sorry, invalid access token or user is disabled',
+          'Sorry, Invalid access token',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+
+      if (!response?.data?.active) {
+        throw new HttpException(
+          'Sorry, User is disabled',
           HttpStatus.UNAUTHORIZED,
         );
       }
