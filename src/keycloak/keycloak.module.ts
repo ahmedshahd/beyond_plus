@@ -14,7 +14,7 @@ import { KeycloakConfigService } from './config/keycloak.config.service';
     KeycloakConfigService,
     KeycloakAuthService,
     PrismaService,
-    KeyCloakStrategy,
+    // KeyCloakStrategy, not used till now
   ],
   exports: [KeycloakConfigService, KeycloakAuthService],
 })
