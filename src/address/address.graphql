@@ -7,6 +7,7 @@ type Address {
   buildingNumber: Int!
   floorNumber: Int!
   details: String!
+  region: String!
   area: String!
   createdAt: DateTime
   updatedAt: DateTime
@@ -19,6 +20,7 @@ input CreateAddressInput {
   buildingNumber: Int
   floorNumber: Int
   details: String
+  region: String
   area: String
 }
 
@@ -30,6 +32,7 @@ input UpdateAddressInput {
   buildingNumber: Int
   floorNumber: Int
   details: String
+  region: String
   area: String
   createdAt: DateTime
   updatedAt: DateTime

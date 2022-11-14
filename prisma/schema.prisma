@@ -67,6 +67,16 @@ model TermsAndConditions {
   updatedAt DateTime?    @updatedAt
 }
 
+model WelcomeScreen {
+  id        Int          @id @default(autoincrement())
+  imageUrl  String
+  title     String
+  text      String
+  language  LanguageEnum @default(ARABIC)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime?    @updatedAt
+}
+
 model User {
   id                   Int            @id @default(autoincrement())
   email                String         @unique
@@ -91,6 +101,7 @@ model Address {
   buildingNumber Int
   floorNumber    Int
   details        String
+  region         String
   area           String
   createdAt      DateTime  @default(now())
   updatedAt      DateTime? @updatedAt
