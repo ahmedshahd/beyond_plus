@@ -52,7 +52,9 @@ export class KeycloakAuthService {
       return response.data; //new KeycloakAuthUser(response.data);
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.error_description || error.message,
+        error?.response?.data?.error_description ||
+          error?.response?.data ||
+          error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -128,7 +130,9 @@ export class KeycloakAuthService {
       return response?.data[0];
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.error_description || error.message,
+        error?.response?.data?.error_description ||
+          error?.response?.data ||
+          error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -191,7 +195,9 @@ export class KeycloakAuthService {
       );
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.error_description || error.message,
+        error?.response?.data?.error_description ||
+          error?.response?.data ||
+          error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -217,7 +223,9 @@ export class KeycloakAuthService {
       );
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.error_description || error.message,
+        error?.response?.data?.error_description ||
+          error?.response?.data ||
+          error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -244,7 +252,9 @@ export class KeycloakAuthService {
       );
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.error_description || error.message,
+        error?.response?.data?.error_description ||
+          error?.response?.data ||
+          error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -283,7 +293,9 @@ export class KeycloakAuthService {
       return response.data.access_token;
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.error_description || error.message,
+        error?.response?.data?.error_description ||
+          error?.response?.data ||
+          error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -337,7 +349,9 @@ export class KeycloakAuthService {
       };
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.error_description || error.message,
+        error?.response?.data?.error_description ||
+          error?.response?.data ||
+          error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -387,7 +401,9 @@ export class KeycloakAuthService {
       };
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.error_description || error.message,
+        error?.response?.data?.error_description ||
+          error?.response?.data ||
+          error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
