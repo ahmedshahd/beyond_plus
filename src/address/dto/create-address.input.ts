@@ -41,5 +41,10 @@ export class CreateAddressInput {
   @Field()
   @IsNotEmpty()
   @IsString()
+  region: string;
+
+  @Field()
+  @IsNotEmpty()
+  @IsString()
   area: string;
 }

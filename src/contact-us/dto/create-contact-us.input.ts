@@ -1,5 +1,5 @@
 export class CreateContactUsInput {
-    phoneNumber: string
-    email: string
-    wbsiteUrl: string
+  phoneNumber: string;
+  email: string;
+  websiteUrl: string;
 }
