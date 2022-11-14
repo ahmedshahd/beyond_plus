@@ -14,10 +14,10 @@ export class graphQlKeycloakAuthGuard implements CanActivate {
   constructor(private keycloakAuthService: KeycloakAuthService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const gqlCtx = GqlExecutionContext.create(context);
-    const request = gqlCtx.getContext().req;
+    const gqlCtx = GqlExecutionContext?.create(context);
+    const request = gqlCtx?.getContext()?.req;
 
-    const header = request.header('Authorization');
+    const header = request?.header('Authorization');
     if (!header) {
       throw new HttpException(
         'Authorization: Bearer <token> header missing',
@@ -25,8 +25,8 @@ export class graphQlKeycloakAuthGuard implements CanActivate {
       );
     }
 
-    const parts = header.split(' ');
-    if (parts.length !== 2 || parts[0] !== 'Bearer') {
+    const parts = header?.split(' ');
+    if (parts?.length !== 2 || parts[0] !== 'Bearer') {
       throw new HttpException(
         'Authorization: Bearer <token> header invalid',
         HttpStatus.UNAUTHORIZED,
