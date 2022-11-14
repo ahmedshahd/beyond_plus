@@ -44,7 +44,8 @@ export class GraphQlKeycloakAuthGuard implements CanActivate {
 
     try {
       const response = await this.keycloakAuthService.authorize(token);
-      request['user'] = response;
+      request.user = response;
+      request.accessTokenJWT = token;
       return true;
     } catch (error) {
       throw new UnauthorizedException(error.message);

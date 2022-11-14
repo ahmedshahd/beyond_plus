@@ -27,6 +27,7 @@ import {
 import { KeycloakConfigService } from './keycloak/config/keycloak.config.service';
 import { WelcomeScreenModule } from './welcome-screen/welcome-screen.module';
 import { LineOfBusinessModule } from './line-of-business/line-of-business.module';
+import { GraphQlKeycloakAuthGuard } from './keycloak/guard/graphql-auth-guard';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { LineOfBusinessModule } from './line-of-business/line-of-business.module
         ],
       }),
     }),
+    KeycloakModule,
     ContactUsModule,
     LearnIconModule,
     PrivacyPolicyModule,
@@ -76,7 +78,7 @@ import { LineOfBusinessModule } from './line-of-business/line-of-business.module
     PrismaService,
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useClass: GraphQlKeycloakAuthGuard, // instead of using AuthGuard
     },
     {
       provide: APP_GUARD,

@@ -27,7 +27,6 @@ export class UserResolver {
 
   @Roles({ roles: ['admin_role'], mode: RoleMatchingMode.ANY })
   @Scopes('view')
-  //@UseGuards(GraphQlKeycloakAuthGuard)
   @Query('users')
   findAll(@CurrentUser() user: any) {
     console.log('user=', user);
