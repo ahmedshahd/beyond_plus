@@ -46,6 +46,8 @@ export class UserService {
       countryCode: newUser.countryCode,
     };
 
+    newUser['groups'] = ['beyond-plus-users-group'];
+
     delete newUser.countryCode;
     delete newUser.password;
     delete newUser.mobile;
