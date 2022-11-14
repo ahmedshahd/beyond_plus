@@ -4,6 +4,7 @@ import { PrismaService } from '../prisma.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { LoginUserInput } from './dto/login.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { nanoid } from 'nanoid';
 
 @Injectable()
 export class UserService {
@@ -26,6 +27,30 @@ export class UserService {
 
   findOne(id: number) {
     return this.prisma.user.findUnique({ where: { id } });
+  }
+
+  register(createUserInput: CreateUserInput) {
+    const newUser = createUserInput;
+    newUser['enabled'] = true;
+    newUser['username'] = nanoid();
+    newUser['credentials'] = [
+      {
+        type: 'password',
+        temporary: false,
+        value: newUser.password,
+      },
+    ];
+
+    newUser['attributes'] = {
+      mobile: newUser.mobile,
+      countryCode: newUser.countryCode,
+    };
+
+    delete newUser.countryCode;
+    delete newUser.password;
+    delete newUser.mobile;
+
+    return this.keycloakAuthService.registerUser(newUser);
   }
 
   login(loginUserInput: LoginUserInput) {

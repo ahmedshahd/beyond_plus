@@ -34,6 +34,12 @@ export class UserResolver {
     return this.userService.findAll();
   }
 
+  @Public()
+  @Mutation('register')
+  register(@Args('createUserInput') createUserInput: CreateUserInput) {
+    return this.userService.register(createUserInput);
+  }
+
   @Query('user')
   findOne(@Args('id') id: number) {
     return this.userService.findOne(id);

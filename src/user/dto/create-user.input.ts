@@ -7,30 +7,35 @@ export class CreateUserInput {
   @Field()
   @IsNotEmpty()
   @IsString()
-  email: string;
-
-  @Field()
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-
-  @Field()
-  @IsNotEmpty()
-  @IsString()
-  insuranceCompanyName: string;
-
-  @Field()
-  @IsNotEmpty()
-  @IsString()
-  companyWork: string;
-
-  @Field()
-  @IsNotEmpty()
-  @IsString()
-  password: string;
+  countryCode: string;
 
   @Field()
   @IsNotEmpty()
   @IsString()
   mobile: string;
+
+  @Field()
+  @IsNotEmpty()
+  @IsString()
+  password: any;
+
+  @Field()
+  @IsOptional()
+  @IsString()
+  email: string;
+
+  @Field()
+  @IsOptional()
+  @IsString()
+  name: string;
+
+  @Field()
+  @IsOptional()
+  @IsString()
+  insuranceCompanyName: string;
+
+  @Field()
+  @IsOptional()
+  @IsString()
+  companyWork: string;
 }

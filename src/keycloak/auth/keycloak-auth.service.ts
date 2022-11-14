@@ -58,7 +58,7 @@ export class KeycloakAuthService {
     }
   }
 
-  async registerUser(newUser: IKeycloakUser): Promise<IKeycloakUser> {
+  async registerUser(newUser: IKeycloakUser): Promise<any> {
     try {
       const adminAccessToken = await this.getAdminAccessToken();
 
@@ -76,7 +76,7 @@ export class KeycloakAuthService {
           },
           data: newUser,
         }),
-      ); // not retreive user data
+      ); // this api is not retreive user data
 
       const response = await lastValueFrom(
         this.httpService.request({
@@ -90,14 +90,16 @@ export class KeycloakAuthService {
             'Content-type': 'application/json',
             Authorization: `Bearer ${adminAccessToken}`,
           },
-          params: { email: newUser['email'] },
+          params: { username: newUser['username'] },
         }),
       );
 
-      return response?.data[0];
+      //return response?.data[0];
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.error_description || error.message,
+        error?.response?.data?.error_description ||
+          error?.response?.data ||
+          error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -376,7 +378,7 @@ export class KeycloakAuthService {
           HttpStatus.UNAUTHORIZED,
         );
       }
-      console.log(response.data)
+
       return {
         accessToken: response.data.access_token,
         expiresIn: response.data.expires_in,
