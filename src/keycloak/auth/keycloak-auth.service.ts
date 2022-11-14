@@ -94,7 +94,7 @@ export class KeycloakAuthService {
         }),
       );
 
-      //return response?.data[0];
+      return response?.data[0];
     } catch (error) {
       throw new HttpException(
         error?.response?.data?.error_description ||
