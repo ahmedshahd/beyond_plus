@@ -25,6 +25,7 @@ import {
   RoleGuard,
 } from 'nest-keycloak-connect';
 import { KeycloakConfigService } from './keycloak/config/keycloak.config.service';
+import { WelcomeScreenModule } from './welcome-screen/welcome-screen.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { KeycloakConfigService } from './keycloak/config/keycloak.config.service
     UserModule,
     AddressModule,
     NotificationModule,
+    WelcomeScreenModule,
   ],
   controllers: [AppController],
   providers: [
