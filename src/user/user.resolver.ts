@@ -45,6 +45,12 @@ export class UserResolver {
     return this.userService.login(loginUserInput);
   }
 
+  @Public()
+  @Query('accessTokenFromRefreshToken')
+  userAccessTokenFromRefreshToken(@Args('refreshToken') refreshToken: string) {
+    return this.userService.userAccessTokenFromRefreshToken(refreshToken);
+  }
+
   @Mutation('updateUser')
   update(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.userService.update(updateUserInput.id, updateUserInput);

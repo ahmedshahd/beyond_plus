@@ -52,7 +52,7 @@ export class KeycloakAuthService {
       return response.data; //new KeycloakAuthUser(response.data);
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.errorMessage || error.message,
+        error?.response?.data?.error_description || error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -97,7 +97,7 @@ export class KeycloakAuthService {
       return response?.data[0];
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.errorMessage || error.message,
+        error?.response?.data?.error_description || error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -126,7 +126,7 @@ export class KeycloakAuthService {
       return response?.data[0];
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.errorMessage || error.message,
+        error?.response?.data?.error_description || error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -189,7 +189,7 @@ export class KeycloakAuthService {
       );
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.errorMessage || error.message,
+        error?.response?.data?.error_description || error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -215,7 +215,7 @@ export class KeycloakAuthService {
       );
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.errorMessage || error.message,
+        error?.response?.data?.error_description || error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -242,7 +242,7 @@ export class KeycloakAuthService {
       );
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.errorMessage || error.message,
+        error?.response?.data?.error_description || error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -281,7 +281,7 @@ export class KeycloakAuthService {
       return response.data.access_token;
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.errorMessage || error.message,
+        error?.response?.data?.error_description || error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -290,7 +290,12 @@ export class KeycloakAuthService {
   async userLogin(
     username: string,
     password: string,
-  ): Promise<{ accessToken: string }> {
+  ): Promise<{
+    accessToken: string;
+    expiresIn: number;
+    refreshToken: string;
+    refreshExpiresIn: number;
+  }> {
     try {
       const response = await lastValueFrom(
         this.httpService.request({
@@ -322,18 +327,26 @@ export class KeycloakAuthService {
         );
       }
 
-      return { accessToken: response.data.access_token };
+      return {
+        accessToken: response.data.access_token,
+        expiresIn: response.data.expires_in,
+        refreshToken: response.data.refresh_token,
+        refreshExpiresIn: response.data.refresh_expires_in,
+      };
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.errorMessage || error.message,
+        error?.response?.data?.error_description || error.message,
         HttpStatus.BAD_REQUEST,
       );
     }
   }
 
-  async getClientAccessTokenFromRefreshToken(
-    refresh_token: string,
-  ): Promise<string> {
+  async userAccessTokenFromRefreshToken(refresh_token: string): Promise<{
+    accessToken: string;
+    expiresIn: number;
+    refreshToken: string;
+    refreshExpiresIn: number;
+  }> {
     try {
       const response = await lastValueFrom(
         this.httpService.request({
@@ -363,11 +376,16 @@ export class KeycloakAuthService {
           HttpStatus.UNAUTHORIZED,
         );
       }
-
-      return response.data.access_token;
+      console.log(response.data)
+      return {
+        accessToken: response.data.access_token,
+        expiresIn: response.data.expires_in,
+        refreshToken: response.data.refresh_token,
+        refreshExpiresIn: response.data.refresh_expires_in,
+      };
     } catch (error) {
       throw new HttpException(
-        error?.response?.data?.errorMessage || error.message,
+        error?.response?.data?.error_description || error.message,
         HttpStatus.BAD_REQUEST,
       );
     }

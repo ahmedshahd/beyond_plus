@@ -38,13 +38,16 @@ input LoginUserInput {
 
 type LoginUserOutput {
   accessToken: String!
+  expiresIn: Int!
+  refreshToken: String!
+  refreshExpiresIn: Int!
 }
 
 type Query {
   users: [User]!
   user(id: Int!): User! 
   login(loginUserInput: LoginUserInput!): LoginUserOutput!
-  accessTokenFromRefreshToken(refreshToken:String): String
+  accessTokenFromRefreshToken(refreshToken:String): LoginUserOutput!
 }
 
 type Mutation {

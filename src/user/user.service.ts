@@ -35,6 +35,12 @@ export class UserService {
     );
   }
 
+  userAccessTokenFromRefreshToken(refreshToken: string) {
+    return this.keycloakAuthService.userAccessTokenFromRefreshToken(
+      refreshToken,
+    );
+  }
+
   update(id: number, updateUserInput: UpdateUserInput) {
     return this.prisma.user.update({
       data: {
