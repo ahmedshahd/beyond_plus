@@ -8,9 +8,10 @@ import {
 } from '@nestjs/common';
 import { KeycloakAuthService } from '../auth/keycloak-auth.service';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import * as jsonwebtoken from 'jsonwebtoken';
 
 @Injectable()
-export class graphQlKeycloakAuthGuard implements CanActivate {
+export class GraphQlKeycloakAuthGuard implements CanActivate {
   constructor(private keycloakAuthService: KeycloakAuthService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -35,12 +36,18 @@ export class graphQlKeycloakAuthGuard implements CanActivate {
 
     const token = parts[1];
 
+    const jwtPayload = jsonwebtoken?.decode(token);
+
+    if (jwtPayload && jwtPayload?.exp < Date.now() / 1000) {
+      throw new UnauthorizedException('Sorry, Expired Token');
+    }
+
     try {
       const response = await this.keycloakAuthService.authorize(token);
       request['user'] = response;
       return true;
-    } catch (e) {
-      throw new UnauthorizedException(e.message);
+    } catch (error) {
+      throw new UnauthorizedException(error.message);
     }
   }
 }
