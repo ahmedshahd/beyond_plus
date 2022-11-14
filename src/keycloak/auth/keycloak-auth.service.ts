@@ -286,4 +286,90 @@ export class KeycloakAuthService {
       );
     }
   }
+
+  async userLogin(
+    username: string,
+    password: string,
+  ): Promise<{ accessToken: string }> {
+    try {
+      const response = await lastValueFrom(
+        this.httpService.request({
+          method: 'post',
+          url: `${this.configService.get<string>(
+            'KEYCLOAK_BASE_URL',
+          )}/realms/${this.configService.get<string>(
+            'KEYCLOAK_REALM_NAME',
+          )}/protocol/openid-connect/token`,
+          headers: {
+            'Content-type': 'application/x-www-form-urlencoded',
+          },
+          data: new URLSearchParams({
+            client_id: this.configService.get<string>('KEYCLOAK_CLIENT_ID'),
+            client_secret: this.configService.get<string>(
+              'KEYCLOAK_CLIENT_SECRET',
+            ),
+            grant_type: 'password',
+            username,
+            password,
+          }),
+        }),
+      );
+
+      if (!response?.data?.access_token) {
+        throw new HttpException(
+          'sorry, wrong user credentials',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+
+      return { accessToken: response.data.access_token };
+    } catch (error) {
+      throw new HttpException(
+        error?.response?.data?.errorMessage || error.message,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async getClientAccessTokenFromRefreshToken(
+    refresh_token: string,
+  ): Promise<string> {
+    try {
+      const response = await lastValueFrom(
+        this.httpService.request({
+          method: 'post',
+          url: `${this.configService.get<string>(
+            'KEYCLOAK_BASE_URL',
+          )}/realms/${this.configService.get<string>(
+            'KEYCLOAK_REALM_NAME',
+          )}/protocol/openid-connect/token`,
+          headers: {
+            'Content-type': 'application/x-www-form-urlencoded',
+          },
+          data: new URLSearchParams({
+            client_id: this.configService.get<string>('KEYCLOAK_CLIENT_ID'),
+            client_secret: this.configService.get<string>(
+              'KEYCLOAK_CLIENT_SECRET',
+            ),
+            grant_type: 'refresh_token',
+            refresh_token: refresh_token,
+          }),
+        }),
+      );
+
+      if (!response?.data?.access_token) {
+        throw new HttpException(
+          'sorry, wrong user credentials',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+
+      return response.data.access_token;
+    } catch (error) {
+      throw new HttpException(
+        error?.response?.data?.errorMessage || error.message,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
 }

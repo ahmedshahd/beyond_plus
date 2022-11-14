@@ -31,9 +31,20 @@ input UpdateUserInput {
   updatedAt: DateTime
 }
 
+input LoginUserInput {
+  username: String!
+  password: String!
+}
+
+type LoginUserOutput {
+  accessToken: String!
+}
+
 type Query {
   users: [User]!
   user(id: Int!): User! 
+  login(loginUserInput: LoginUserInput!): LoginUserOutput!
+  accessTokenFromRefreshToken(refreshToken:String): String
 }
 
 type Mutation {

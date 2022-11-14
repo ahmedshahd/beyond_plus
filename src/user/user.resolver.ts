@@ -13,6 +13,7 @@ import {
 import { UseGuards } from '@nestjs/common';
 import { CurrentUser } from '../helpers/user.decorator';
 import { graphQlKeycloakAuthGuard } from '../keycloak/guard/graphql-auth-guard';
+import { LoginUserInput } from './dto/login.input';
 
 @Resource('beyond-plus-resource')
 @Resolver('User')
@@ -36,6 +37,12 @@ export class UserResolver {
   @Query('user')
   findOne(@Args('id') id: number) {
     return this.userService.findOne(id);
+  }
+
+  @Public()
+  @Query('login')
+  login(@Args('loginUserInput') loginUserInput: LoginUserInput) {
+    return this.userService.login(loginUserInput);
   }
 
   @Mutation('updateUser')
