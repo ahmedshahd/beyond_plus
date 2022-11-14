@@ -26,6 +26,7 @@ import {
 } from 'nest-keycloak-connect';
 import { KeycloakConfigService } from './keycloak/config/keycloak.config.service';
 import { WelcomeScreenModule } from './welcome-screen/welcome-screen.module';
+import { LineOfBusinessModule } from './line-of-business/line-of-business.module';
 
 @Module({
   imports: [
@@ -67,6 +68,7 @@ import { WelcomeScreenModule } from './welcome-screen/welcome-screen.module';
     AddressModule,
     NotificationModule,
     WelcomeScreenModule,
+    LineOfBusinessModule,
   ],
   controllers: [AppController],
   providers: [

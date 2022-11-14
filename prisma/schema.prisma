@@ -117,3 +117,14 @@ model Notification {
   user      User?     @relation(fields: [userId], references: [id])
   userId    Int?
 }
+
+model lineOfBusiness {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  details     String
+  imageUrl    String
+  language    LanguageEnum @default(ARABIC)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime?    @updatedAt
+}
