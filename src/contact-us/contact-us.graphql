@@ -4,7 +4,7 @@ type ContactUs {
   id: Int!
   phoneNumber: String!
   email: String!
-  wbsiteUrl: DateTime!
+  websiteUrl: DateTime!
   createdAt: DateTime!
   updatedAt: DateTime
 }
@@ -12,14 +12,14 @@ type ContactUs {
 input CreateContactUsInput {
   phoneNumber: String!
   email: String!
-  wbsiteUrl: DateTime!
+  websiteUrl: DateTime!
 }
 
 input UpdateContactUsInput {
   id: Int!
   phoneNumber: String
   email: String
-  wbsiteUrl: DateTime
+  websiteUrl: DateTime
 }
 
 type Query {
