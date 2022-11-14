@@ -29,7 +29,7 @@ export class UserResolver {
   @UseGuards(graphQlKeycloakAuthGuard)
   @Query('users')
   findAll(@CurrentUser() user: any) {
-    console.log('user=', user);
+   // console.log('user=', user);
     return this.userService.findAll();
   }
 

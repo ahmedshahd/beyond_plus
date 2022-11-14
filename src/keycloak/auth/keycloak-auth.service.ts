@@ -4,6 +4,7 @@ import { KeycloakAuthUser } from './keycloak-auth-user';
 import * as querystring from 'querystring';
 import { IKeycloakUser } from '../interfaces/keycloak-user.interface';
 import { ConfigService } from '@nestjs/config';
+import { lastValueFrom } from 'rxjs';
 @Injectable()
 export class KeycloakAuthService {
   constructor(
@@ -13,8 +14,8 @@ export class KeycloakAuthService {
 
   async authorize(accessToken: string): Promise<KeycloakAuthUser> {
     try {
-      const response = await this.httpService
-        .request({
+      const response = await lastValueFrom(
+        this.httpService.request({
           method: 'post',
           url: `${this.configService.get<string>(
             'KEYCLOAK_BASE_URL',
@@ -24,15 +25,15 @@ export class KeycloakAuthService {
           headers: {
             'Content-type': 'application/x-www-form-urlencoded',
           },
-          data: querystring.stringify({
+          data: new URLSearchParams({
             token: accessToken,
             client_id: this.configService.get<string>('KEYCLOAK_CLIENT_ID'),
             client_secret: this.configService.get<string>(
               'KEYCLOAK_CLIENT_SECRET',
             ),
           }),
-        })
-        .toPromise();
+        }),
+      );
 
       if (!response.data?.active) {
         throw new HttpException(
@@ -54,8 +55,8 @@ export class KeycloakAuthService {
     try {
       const adminAccessToken = await this.getAdminAccessToken();
 
-      await this.httpService
-        .request({
+      await lastValueFrom(
+        this.httpService.request({
           method: 'post',
           url: `${this.configService.get<string>(
             'KEYCLOAK_BASE_URL',
@@ -67,11 +68,11 @@ export class KeycloakAuthService {
             Authorization: `Bearer ${adminAccessToken}`,
           },
           data: newUser,
-        })
-        .toPromise(); // not retreive user data
+        }),
+      ); // not retreive user data
 
-      const response = await this.httpService
-        .request({
+      const response = await lastValueFrom(
+        this.httpService.request({
           method: 'get',
           url: `${this.configService.get<string>(
             'KEYCLOAK_BASE_URL',
@@ -83,8 +84,8 @@ export class KeycloakAuthService {
             Authorization: `Bearer ${adminAccessToken}`,
           },
           params: { email: newUser['email'] },
-        })
-        .toPromise();
+        }),
+      );
 
       return response?.data[0];
     } catch (error) {
@@ -99,8 +100,8 @@ export class KeycloakAuthService {
     try {
       const adminAccessToken = await this.getAdminAccessToken();
 
-      const response = await this.httpService
-        .request({
+      const response = await lastValueFrom(
+        this.httpService.request({
           method: 'get',
           url: `${this.configService.get<string>(
             'KEYCLOAK_BASE_URL',
@@ -112,8 +113,8 @@ export class KeycloakAuthService {
             Authorization: `Bearer ${adminAccessToken}`,
           },
           params: { email },
-        })
-        .toPromise();
+        }),
+      );
 
       return response?.data[0];
     } catch (error) {
@@ -128,8 +129,8 @@ export class KeycloakAuthService {
     try {
       if (!isForgetPassword) {
         try {
-          await this.httpService
-            .request({
+          await lastValueFrom(
+            this.httpService.request({
               method: 'post',
               url: `${this.configService.get<string>(
                 'KEYCLOAK_BASE_URL',
@@ -139,7 +140,7 @@ export class KeycloakAuthService {
               headers: {
                 'Content-type': 'application/x-www-form-urlencoded',
               },
-              data: querystring.stringify({
+              data: new URLSearchParams({
                 client_secret: this.configService.get<string>(
                   'KEYCLOAK_CLIENT_SECRET',
                 ),
@@ -148,8 +149,8 @@ export class KeycloakAuthService {
                 username: user['username'],
                 password: passwordObj['old_password'],
               }),
-            })
-            .toPromise();
+            }),
+          );
         } catch (error) {
           throw new HttpException(
             'incorrect old password',
@@ -160,8 +161,8 @@ export class KeycloakAuthService {
 
       const adminAccessToken = await this.getAdminAccessToken();
 
-      await this.httpService
-        .request({
+      await lastValueFrom(
+        this.httpService.request({
           method: 'put',
           url: `${this.configService.get<string>(
             'KEYCLOAK_BASE_URL',
@@ -177,8 +178,8 @@ export class KeycloakAuthService {
             temporary: false,
             value: passwordObj['new_password'],
           },
-        })
-        .toPromise();
+        }),
+      );
     } catch (error) {
       throw new HttpException(
         error?.response?.data?.errorMessage || error.message,
@@ -190,9 +191,8 @@ export class KeycloakAuthService {
   async deleteUserById(id: string): Promise<void> {
     try {
       const adminAccessToken = await this.getAdminAccessToken();
-
-      await this.httpService
-        .request({
+      await lastValueFrom(
+        this.httpService.request({
           method: 'delete',
           url: `${this.configService.get<string>(
             'KEYCLOAK_BASE_URL',
@@ -204,8 +204,8 @@ export class KeycloakAuthService {
             Authorization: `Bearer ${adminAccessToken}`,
           },
           params: { id },
-        })
-        .toPromise();
+        }),
+      );
     } catch (error) {
       throw new HttpException(
         error?.response?.data?.errorMessage || error.message,
@@ -218,8 +218,8 @@ export class KeycloakAuthService {
     try {
       const adminAccessToken = await this.getAdminAccessToken();
 
-      await this.httpService
-        .request({
+      await lastValueFrom(
+        this.httpService.request({
           method: 'put',
           url: `${this.configService.get<string>(
             'KEYCLOAK_BASE_URL',
@@ -231,8 +231,8 @@ export class KeycloakAuthService {
             Authorization: `Bearer ${adminAccessToken}`,
           },
           data: data,
-        })
-        .toPromise();
+        }),
+      );
     } catch (error) {
       throw new HttpException(
         error?.response?.data?.errorMessage || error.message,
@@ -243,8 +243,8 @@ export class KeycloakAuthService {
 
   async getAdminAccessToken(): Promise<string> {
     try {
-      const response = await this.httpService
-        .request({
+      const response = await lastValueFrom(
+        this.httpService.request({
           method: 'post',
           url: `${this.configService.get<string>(
             'KEYCLOAK_BASE_URL',
@@ -254,15 +254,15 @@ export class KeycloakAuthService {
           headers: {
             'Content-type': 'application/x-www-form-urlencoded',
           },
-          data: querystring.stringify({
+          data: new URLSearchParams({
             client_id: this.configService.get<string>('KEYCLOAK_CLIENT_ID'),
             client_secret: this.configService.get<string>(
               'KEYCLOAK_CLIENT_SECRET',
             ),
             grant_type: 'client_credentials',
           }),
-        })
-        .toPromise();
+        }),
+      );
 
       if (!response?.data?.access_token) {
         throw new HttpException(
