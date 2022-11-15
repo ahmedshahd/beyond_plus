@@ -63,7 +63,7 @@ export class UserService {
       loginUserInput.password,
     );
   }
-  logout(user: any) {
+  logout(user: KeycloakAuthUser) {
     return this.keycloakAuthService.logout(user.id);
   }
 

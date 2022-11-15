@@ -77,7 +77,7 @@ export class UserResolver {
     return this.userService.remove(id);
   }
   @Query('logout')
-  logout(@CurrentUser() user: any) {
-    return this.userService.logout(user.id);
+  logout(@CurrentUser() user: KeycloakAuthUser) {
+    return this.userService.logout(user);
   }
 }
