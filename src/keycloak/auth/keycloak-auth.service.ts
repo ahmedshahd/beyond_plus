@@ -60,6 +60,29 @@ export class KeycloakAuthService {
     }
   }
 
+  async logout(id: string): Promise<void> {
+    try {
+      const adminAccessToken = await this.getAdminAccessToken();
+
+      await lastValueFrom(
+        this.httpService.request({
+          method: 'POST',
+          url: `${this.configService.get<string>(
+            'KEYCLOAK_BASE_URL',
+          )}/admin/realms/${this.configService.get<string>(
+            'KEYCLOAK_REALM_NAME',
+          )}/users/${id}`,
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${adminAccessToken}`,
+          },
+        }),
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async registerUser(newUser: IKeycloakUser): Promise<any> {
     try {
       const adminAccessToken = await this.getAdminAccessToken();

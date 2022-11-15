@@ -63,6 +63,9 @@ export class UserService {
       loginUserInput.password,
     );
   }
+  logout(user: KeycloakAuthUser) {
+    return this.keycloakAuthService.logout(user.id);
+  }
 
   resetPassword(
     resetPasswordUserInput: ResetPasswordUserInput,

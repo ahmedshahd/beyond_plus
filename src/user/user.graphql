@@ -56,9 +56,10 @@ input ResetPasswordUserInput {
 
 type Query {
   users: [User]!
-  user(id: Int!): User! 
+  user(id: Int!): User!
   login(loginUserInput: LoginUserInput!): LoginUserOutput!
-  accessTokenFromRefreshToken(refreshToken:String): LoginUserOutput!
+  accessTokenFromRefreshToken(refreshToken: String): LoginUserOutput!
+  logout(id: int!): void
 }
 
 type Mutation {
