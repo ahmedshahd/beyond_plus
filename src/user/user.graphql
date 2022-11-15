@@ -61,7 +61,7 @@ type Query {
   user(id: Int!): User!
   login(loginUserInput: LoginUserInput!): LoginUserOutput!
   accessTokenFromRefreshToken(refreshToken: String): LoginUserOutput!
-  logout(id: Int!): Void
+  logout: Void
 }
 
 type Mutation {

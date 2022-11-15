@@ -71,7 +71,7 @@ export class KeycloakAuthService {
             'KEYCLOAK_BASE_URL',
           )}/admin/realms/${this.configService.get<string>(
             'KEYCLOAK_REALM_NAME',
-          )}/users/${id}`,
+          )}/users/${id}/logout`,
           headers: {
             'Content-type': 'application/json',
             Authorization: `Bearer ${adminAccessToken}`,
@@ -79,7 +79,13 @@ export class KeycloakAuthService {
         }),
       );
     } catch (error) {
-      throw error;
+      throw new HttpException(
+        error?.response?.data?.error_description ||
+          error?.response?.data ||
+          error?.response?.data ||
+          error.message,
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
