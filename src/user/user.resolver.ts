@@ -14,6 +14,8 @@ import { UseGuards } from '@nestjs/common';
 import { CurrentUser } from '../helpers/user.decorator';
 import { GraphQlKeycloakAuthGuard } from '../keycloak/guard/graphql-auth-guard';
 import { LoginUserInput } from './dto/login.input';
+import { ResetPasswordUserInput } from './dto/reset-password.input';
+import { KeycloakAuthUser } from '../keycloak/auth/keycloak-auth-user';
 
 @Resource('beyond-plus-resource')
 @Resolver('User')
@@ -28,7 +30,7 @@ export class UserResolver {
   @Roles({ roles: ['admin_role'], mode: RoleMatchingMode.ANY })
   @Scopes('view')
   @Query('users')
-  findAll(@CurrentUser() user: any) {
+  findAll(@CurrentUser() user: KeycloakAuthUser) {
     console.log('user=', user);
     return this.userService.findAll();
   }
@@ -37,6 +39,15 @@ export class UserResolver {
   @Mutation('register')
   register(@Args('createUserInput') createUserInput: CreateUserInput) {
     return this.userService.register(createUserInput);
+  }
+
+  @Mutation('resetPassword')
+  resetPasswored(
+    @Args('resetPasswordUserInput')
+    resetPasswordUserInput: ResetPasswordUserInput,
+    @CurrentUser() user: KeycloakAuthUser,
+  ) {
+    return this.userService.resetPassword(resetPasswordUserInput, user);
   }
 
   @Query('user')

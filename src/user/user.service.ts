@@ -5,6 +5,8 @@ import { CreateUserInput } from './dto/create-user.input';
 import { LoginUserInput } from './dto/login.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { nanoid } from 'nanoid';
+import { ResetPasswordUserInput } from './dto/reset-password.input';
+import { KeycloakAuthUser } from '../keycloak/auth/keycloak-auth-user';
 
 @Injectable()
 export class UserService {
@@ -59,6 +61,20 @@ export class UserService {
     return this.keycloakAuthService.userLogin(
       loginUserInput.username,
       loginUserInput.password,
+    );
+  }
+
+  resetPassword(
+    resetPasswordUserInput: ResetPasswordUserInput,
+    user: KeycloakAuthUser,
+  ) {
+    return this.keycloakAuthService.resetPassword(
+      user,
+      {
+        newPassword: resetPasswordUserInput.newPassword,
+        oldPassword: resetPasswordUserInput.oldPassword,
+      },
+      false,
     );
   }
 

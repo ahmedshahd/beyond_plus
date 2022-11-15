@@ -49,7 +49,7 @@ export class KeycloakAuthService {
         );
       }
 
-      return response.data; //new KeycloakAuthUser(response.data);
+      return new KeycloakAuthUser(response.data);
     } catch (error) {
       throw new HttpException(
         error?.response?.data?.error_description ||
@@ -138,7 +138,11 @@ export class KeycloakAuthService {
     }
   }
 
-  async resetPassword(user, passwordObj, isForgetPassword): Promise<void> {
+  async resetPassword(
+    user: KeycloakAuthUser,
+    passwordObj,
+    isForgetPassword,
+  ): Promise<void> {
     try {
       if (!isForgetPassword) {
         try {
@@ -160,15 +164,12 @@ export class KeycloakAuthService {
                 client_id: this.configService.get<string>('KEYCLOAK_CLIENT_ID'),
                 grant_type: 'password',
                 username: user['username'],
-                password: passwordObj['old_password'],
+                password: passwordObj['oldPassword'],
               }),
             }),
           );
         } catch (error) {
-          throw new HttpException(
-            'incorrect old password',
-            HttpStatus.BAD_REQUEST,
-          );
+          throw new Error('Incorrect old password');
         }
       }
 
@@ -189,7 +190,7 @@ export class KeycloakAuthService {
           data: {
             type: 'password',
             temporary: false,
-            value: passwordObj['new_password'],
+            value: passwordObj['newPassword'],
           },
         }),
       );

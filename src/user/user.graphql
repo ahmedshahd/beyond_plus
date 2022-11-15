@@ -48,6 +48,12 @@ type LoginUserOutput {
   refreshExpiresIn: Int!
 }
 
+
+input ResetPasswordUserInput {
+  newPassword: String!
+  oldPassword: String!
+}
+
 type Query {
   users: [User]!
   user(id: Int!): User! 
@@ -57,6 +63,7 @@ type Query {
 
 type Mutation {
   register(createUserInput: CreateUserInput!): User
+  resetPassword(resetPasswordUserInput: ResetPasswordUserInput!): User
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User
