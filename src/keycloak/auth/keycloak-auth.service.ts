@@ -337,7 +337,7 @@ export class KeycloakAuthService {
 
       if (!response?.data?.access_token) {
         throw new HttpException(
-          'sorry, wrong user credentials',
+          'Sorry, Wrong user credentials',
           HttpStatus.UNAUTHORIZED,
         );
       }
