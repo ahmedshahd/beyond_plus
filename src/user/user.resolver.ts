@@ -76,4 +76,8 @@ export class UserResolver {
   remove(@Args('id') id: number) {
     return this.userService.remove(id);
   }
+  @Query('logout')
+  logout(@CurrentUser() user: any) {
+    return this.userService.logout(user.id);
+  }
 }
