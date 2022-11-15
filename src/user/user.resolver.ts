@@ -15,7 +15,7 @@ import { CurrentUser } from '../helpers/user.decorator';
 import { GraphQlKeycloakAuthGuard } from '../keycloak/guard/graphql-auth-guard';
 import { LoginUserInput } from './dto/login.input';
 import { ResetPasswordUserInput } from './dto/reset-password.input';
-import { KeycloakAuthUser } from '../keycloak/auth/keycloak-auth-user';
+import { IKeycloakAuthUser } from '../keycloak/auth/keycloak-auth-user';
 
 @Resource('beyond-plus-resource')
 @Resolver('User')
@@ -30,7 +30,7 @@ export class UserResolver {
   @Roles({ roles: ['admin_role'], mode: RoleMatchingMode.ANY })
   @Scopes('view')
   @Query('users')
-  findAll(@CurrentUser() user: KeycloakAuthUser) {
+  findAll(@CurrentUser() user: IKeycloakAuthUser) {
     console.log('user=', user);
     return this.userService.findAll();
   }
@@ -45,7 +45,7 @@ export class UserResolver {
   resetPasswored(
     @Args('resetPasswordUserInput')
     resetPasswordUserInput: ResetPasswordUserInput,
-    @CurrentUser() user: KeycloakAuthUser,
+    @CurrentUser() user: IKeycloakAuthUser,
   ) {
     return this.userService.resetPassword(resetPasswordUserInput, user);
   }
@@ -77,7 +77,7 @@ export class UserResolver {
     return this.userService.remove(id);
   }
   @Query('logout')
-  logout(@CurrentUser() user: KeycloakAuthUser) {
+  logout(@CurrentUser() user: IKeycloakAuthUser) {
     return this.userService.logout(user);
   }
 }

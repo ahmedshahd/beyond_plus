@@ -1,4 +1,4 @@
-export class KeycloakAuthUser {
+export class IKeycloakAuthUser {
   id: string;
   email: string;
   username: string;

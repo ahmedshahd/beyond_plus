@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { KeycloakAuthUser } from './keycloak-auth-user';
+import { IKeycloakAuthUser } from './keycloak-auth-user';
 import * as querystring from 'querystring';
 import { IKeycloakUser } from '../interfaces/keycloak-user.interface';
 import { ConfigService } from '@nestjs/config';
@@ -12,7 +12,7 @@ export class KeycloakAuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  async authorize(accessToken: string): Promise<KeycloakAuthUser> {
+  async authorize(accessToken: string): Promise<IKeycloakAuthUser> {
     try {
       const response = await lastValueFrom(
         this.httpService.request({
@@ -49,7 +49,7 @@ export class KeycloakAuthService {
         );
       }
 
-      return new KeycloakAuthUser(response.data);
+      return new IKeycloakAuthUser(response.data);
     } catch (error) {
       throw new HttpException(
         error?.response?.data?.error_description ||
@@ -162,7 +162,7 @@ export class KeycloakAuthService {
   }
 
   async resetPassword(
-    user: KeycloakAuthUser,
+    user: IKeycloakAuthUser,
     passwordObj,
     isForgetPassword,
   ): Promise<void> {
