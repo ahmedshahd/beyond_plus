@@ -9,14 +9,36 @@ import {
 import { KeycloakAuthService } from '../auth/keycloak-auth.service';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import * as jsonwebtoken from 'jsonwebtoken';
+import { Reflector } from '@nestjs/core';
+import {
+  META_SKIP_AUTH,
+  META_UNPROTECTED,
+} from 'nest-keycloak-connect/decorators/public.decorator';
 
 @Injectable()
 export class GraphQlKeycloakAuthGuard implements CanActivate {
-  constructor(private keycloakAuthService: KeycloakAuthService) {}
+  constructor(
+    private keycloakAuthService: KeycloakAuthService,
+    private readonly reflector: Reflector,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const gqlCtx = GqlExecutionContext?.create(context);
     const request = gqlCtx?.getContext()?.req;
+
+    const Unprotected = this.reflector.getAllAndOverride<boolean>(
+      META_UNPROTECTED,
+      [context.getClass(), context.getHandler()],
+    );
+    const Public = this.reflector.getAllAndOverride<boolean>(META_SKIP_AUTH, [
+      context.getClass(),
+      context.getHandler(),
+    ]);
+
+    // If unprotected is set skip Keycloak authentication
+    if (Unprotected && Public) {
+      return true;
+    }
 
     const header = request?.header('Authorization');
     if (!header) {
