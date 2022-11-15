@@ -286,7 +286,7 @@ export class KeycloakAuthService {
 
       if (!response?.data?.access_token) {
         throw new HttpException(
-          'sorry, wrong keycloak admin credentials',
+          'Sorry, Wrong keycloak admin credentials',
           HttpStatus.UNAUTHORIZED,
         );
       }
