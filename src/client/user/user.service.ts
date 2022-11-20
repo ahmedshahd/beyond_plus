@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { KeycloakAuthService } from '../keycloak/auth/keycloak-auth.service';
-import { PrismaService } from '../prisma.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { LoginUserInput } from './dto/login.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { nanoid } from 'nanoid';
 import { ResetPasswordUserInput } from './dto/reset-password.input';
-import { IKeycloakAuthUser } from '../keycloak/auth/keycloak-auth-user';
+import { PrismaService } from '../../prisma.service';
+import { IKeycloakAuthUser } from '../../keycloak/auth/keycloak-auth-user';
+import { KeycloakAuthService } from '../../keycloak/auth/keycloak-auth.service';
 
 @Injectable()
 export class UserService {

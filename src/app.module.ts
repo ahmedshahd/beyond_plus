@@ -7,15 +7,11 @@ import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PrismaService } from './prisma.service';
 import { ConfigModule } from '@nestjs/config';
-import { ContactUsModule } from './contact-us/contact-us.module';
-import { LearnIconModule } from './learn-icon/learn-icon.module';
-import { PrivacyPolicyModule } from './privacy-policy/privacy-policy.module';
-import { FaqModule } from './faq/faq.module';
-import { LabelModule } from './label/label.module';
-import { TermsAndConditionsModule } from './terms-and-conditions/terms-and-conditions.module';
-import { UserModule } from './user/user.module';
-import { AddressModule } from './address/address.module';
-import { NotificationModule } from './notification/notification.module';
+import { ContactUsModule } from './admin/contact-us/contact-us.module';
+import { LearnIconModule } from './admin/learn-icon/learn-icon.module';
+import { FaqModule } from './admin/faq/faq.module';
+import { LabelModule } from './admin/label/label.module';
+import { TermsAndConditionsModule } from './admin/terms-and-conditions/terms-and-conditions.module';
 import { KeycloakModule } from './keycloak/keycloak.module';
 import { APP_GUARD } from '@nestjs/core';
 import {
@@ -25,9 +21,13 @@ import {
   RoleGuard,
 } from 'nest-keycloak-connect';
 import { KeycloakConfigService } from './keycloak/config/keycloak.config.service';
-import { WelcomeScreenModule } from './welcome-screen/welcome-screen.module';
-import { LineOfBusinessModule } from './line-of-business/line-of-business.module';
+import { WelcomeScreenModule } from './admin/welcome-screen/welcome-screen.module';
+import { LineOfBusinessModule } from './admin/line-of-business/line-of-business.module';
 import { GraphQlKeycloakAuthGuard } from './keycloak/guard/graphql-auth-guard';
+import { UserModule } from './client/user/user.module';
+import { PrivacyPolicyModule } from './admin/privacy-policy/privacy-policy.module';
+import { AddressModule } from './client/address/address.module';
+import { NotificationModule } from './client/notification/notification.module';
 
 @Module({
   imports: [

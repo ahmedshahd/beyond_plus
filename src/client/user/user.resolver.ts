@@ -11,11 +11,10 @@ import {
   Unprotected,
 } from 'nest-keycloak-connect';
 import { UseGuards } from '@nestjs/common';
-import { CurrentUser } from '../helpers/user.decorator';
-import { GraphQlKeycloakAuthGuard } from '../keycloak/guard/graphql-auth-guard';
 import { LoginUserInput } from './dto/login.input';
 import { ResetPasswordUserInput } from './dto/reset-password.input';
-import { IKeycloakAuthUser } from '../keycloak/auth/keycloak-auth-user';
+import { IKeycloakAuthUser } from '../../keycloak/auth/keycloak-auth-user';
+import { CurrentUser } from '../../helpers/user.decorator';
 
 @Resource('beyond-plus-resource')
 @Resolver('User')
