@@ -7,11 +7,11 @@ import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PrismaService } from './prisma.service';
 import { ConfigModule } from '@nestjs/config';
-import { ContactUsModule } from './admin/contact-us/contact-us.module';
-import { LearnIconModule } from './admin/learn-icon/learn-icon.module';
-import { FaqModule } from './admin/faq/faq.module';
-import { LabelModule } from './admin/label/label.module';
-import { TermsAndConditionsModule } from './admin/terms-and-conditions/terms-and-conditions.module';
+import { ContactUsModule } from './admin/contact-us/contact-us.admin.module';
+import { LearnIconModule } from './admin/learn-icon/learn-icon.admin.module';
+import { FaqModule } from './admin/faq/faq.admin.module';
+import { LabelModule } from './admin/label/label.admin.module';
+import { TermsAndConditionsModule } from './admin/terms-and-conditions/terms-and-conditions.admin.module';
 import { KeycloakModule } from './keycloak/keycloak.module';
 import { APP_GUARD } from '@nestjs/core';
 import {
@@ -21,13 +21,13 @@ import {
   RoleGuard,
 } from 'nest-keycloak-connect';
 import { KeycloakConfigService } from './keycloak/config/keycloak.config.service';
-import { WelcomeScreenModule } from './admin/welcome-screen/welcome-screen.module';
-import { LineOfBusinessModule } from './admin/line-of-business/line-of-business.module';
+import { WelcomeScreenAdminModule } from './admin/welcome-screen/welcome-screen.admin.module';
+import { LineOfBusinessAdminModule } from './admin/line-of-business/line-of-business.admin.module';
 import { GraphQlKeycloakAuthGuard } from './keycloak/guard/graphql-auth-guard';
-import { UserModule } from './client/user/user.module';
-import { PrivacyPolicyModule } from './admin/privacy-policy/privacy-policy.module';
-import { AddressModule } from './client/address/address.module';
-import { NotificationModule } from './client/notification/notification.module';
+import { UserClientModule } from './client/user/user.client.module';
+import { PrivacyPolicyModule } from './admin/privacy-policy/privacy-policy.admin.module';
+import { AddressClientModule } from './client/address/address.client.module';
+import { NotificationClientModule } from './client/notification/notification.client.module';
 
 @Module({
   imports: [
@@ -66,11 +66,11 @@ import { NotificationModule } from './client/notification/notification.module';
     FaqModule,
     LabelModule,
     TermsAndConditionsModule,
-    UserModule,
-    AddressModule,
-    NotificationModule,
-    WelcomeScreenModule,
-    LineOfBusinessModule,
+    UserClientModule,
+    AddressClientModule,
+    NotificationClientModule,
+    WelcomeScreenAdminModule,
+    LineOfBusinessAdminModule,
   ],
   controllers: [AppController],
   providers: [
