@@ -10,36 +10,36 @@ export class LearnIconAdminService {
 
   async create(createLearnIconInput: CreateLearnIconInput) {
     return await this.prisma.learnIcon.create({
-      data:{
-        ...createLearnIconInput
-      }
-    })
+      data: {
+        ...createLearnIconInput,
+      },
+    });
   }
 
-  async findAll(language:LanguageEnum) {
+  async findAll(language: LanguageEnum) {
     return await this.prisma.learnIcon.findMany({
-      where:{
-        language
-      }
-    })
+      where: {
+        language,
+      },
+    });
   }
 
   async update(updateLearnIconInput: UpdateLearnIconInput) {
     return await this.prisma.learnIcon.update({
-      where:{
-        id: updateLearnIconInput.id
+      where: {
+        id: updateLearnIconInput.id,
       },
-      data:{
-        ...updateLearnIconInput
-      }
-    })
+      data: {
+        ...updateLearnIconInput,
+      },
+    });
   }
 
   async remove(id: number) {
     return await this.prisma.learnIcon.delete({
-      where:{
-        id
-      }
-    })
+      where: {
+        id,
+      },
+    });
   }
 }

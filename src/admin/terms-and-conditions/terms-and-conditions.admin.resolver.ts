@@ -4,7 +4,7 @@ import { CreateTermsAndConditionsInput } from './dto/create-terms-and-conditions
 import { UpdateTermsAndConditionsInput } from './dto/update-terms-and-conditions.input';
 import { TermsAndConditionsAdminService } from './terms-and-conditions.admin.service';
 
-@Resolver('TermsAndConditions')
+@Resolver('Admin/TermsAndConditions')
 export class TermsAndConditionsAdminResolver {
   constructor(
     private readonly termsAndConditionsAdminService: TermsAndConditionsAdminService,

@@ -4,7 +4,7 @@ import { CreateWelcomeScreenInput } from './dto/create-welcome-screen.input';
 import { UpdateWelcomeScreenInput } from './dto/update-welcome-screen.input';
 import { WelcomeScreenAdminService } from './welcome-screen.admin.service';
 
-@Resolver('WelcomeScreen')
+@Resolver('Admin/WelcomeScreen')
 export class WelcomeScreenAdminResolver {
   constructor(
     private readonly welcomeScreenAdminService: WelcomeScreenAdminService,

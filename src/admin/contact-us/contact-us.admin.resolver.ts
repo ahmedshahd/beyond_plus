@@ -4,7 +4,7 @@ import { ContactUsAdminService } from './contact-us.admin.service';
 import { CreateContactUsInput } from './dto/create-contact-us.input';
 import { UpdateContactUsInput } from './dto/update-contact-us.input';
 
-@Resolver('ContactUs')
+@Resolver('Admin/ContactUs')
 export class ContactUsAdminResolver {
   constructor(private readonly contactUsAdminService: ContactUsAdminService) {}
 

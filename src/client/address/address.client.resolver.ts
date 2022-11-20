@@ -3,7 +3,7 @@ import { AddressClientService } from './address.client.service';
 import { CreateAddressInput } from './dto/create-address.input';
 import { UpdateAddressInput } from './dto/update-address.input';
 
-@Resolver('Address')
+@Resolver('User/Address')
 export class AddressClientResolver {
   constructor(private readonly addressClientService: AddressClientService) {}
 

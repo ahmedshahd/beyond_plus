@@ -4,9 +4,11 @@ import { CreateLineOfBusinessInput } from './dto/create-line-of-business.input';
 import { UpdateLineOfBusinessInput } from './dto/update-line-of-business.input';
 import { LineOfBusinessAdminService } from './line-of-business.admin.service';
 
-@Resolver('LineOfBusiness')
+@Resolver('Admin/LineOfBusiness')
 export class LineOfBusinessAdminResolver {
-  constructor(private readonly lineOfBusinessAdminService: LineOfBusinessAdminService) {}
+  constructor(
+    private readonly lineOfBusinessAdminService: LineOfBusinessAdminService,
+  ) {}
 
   @Mutation('createLineOfBusiness')
   create(

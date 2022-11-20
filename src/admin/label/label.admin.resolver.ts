@@ -4,7 +4,7 @@ import { LabelAdminService } from './label.admin.service';
 import { CreateLabelInput } from './dto/create-label.input';
 import { UpdateLabelInput } from './dto/update-label.input';
 
-@Resolver('Label')
+@Resolver('Admin/Label')
 export class LabelAdminResolver {
   constructor(private readonly labelAdminService: LabelAdminService) {}
 

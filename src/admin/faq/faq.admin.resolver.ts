@@ -4,7 +4,7 @@ import { CreateFaqInput } from './dto/create-faq.input';
 import { UpdateFaqInput } from './dto/update-faq.input';
 import { LanguageEnum } from '@prisma/client';
 
-@Resolver('Faq')
+@Resolver('Admin/Faq')
 export class FaqAdminResolver {
   constructor(private readonly faqAdminService: FaqAdminService) {}
 

@@ -4,7 +4,7 @@ import { CreateLearnIconInput } from './dto/create-learn-icon.input';
 import { UpdateLearnIconInput } from './dto/update-learn-icon.input';
 import { LanguageEnum } from '@prisma/client';
 
-@Resolver('LearnIcon')
+@Resolver('Admin/LearnIcon')
 export class LearnIconAdminResolver {
   constructor(private readonly learnIconAdminService: LearnIconAdminService) {}
 

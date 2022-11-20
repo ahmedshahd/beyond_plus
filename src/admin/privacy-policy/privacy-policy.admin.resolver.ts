@@ -4,7 +4,7 @@ import { PrivacyPolicyAdminService } from './privacy-policy.admin.service';
 import { CreatePrivacyPolicyInput } from './dto/create-privacy-policy.input';
 import { UpdatePrivacyPolicyInput } from './dto/update-privacy-policy.input';
 
-@Resolver('PrivacyPolicy')
+@Resolver('Admin/PrivacyPolicy')
 export class PrivacyPolicyAdminResolver {
   constructor(
     private readonly privacyPolicyAdminService: PrivacyPolicyAdminService,

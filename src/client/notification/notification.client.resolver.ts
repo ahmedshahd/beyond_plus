@@ -2,7 +2,7 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { NotificationClientService } from './notification.client.service';
 import { CreateNotificationInput } from './dto/create-notification.input';
 
-@Resolver('Notification')
+@Resolver('User/Notification')
 export class NotificationClientResolver {
   constructor(
     private readonly notificationClientService: NotificationClientService,
