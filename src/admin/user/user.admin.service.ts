@@ -1,15 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
-import { LoginUserInput } from './dto/login.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { nanoid } from 'nanoid';
-import { ResetPasswordUserInput } from './dto/reset-password.input';
 import { PrismaService } from '../../prisma.service';
-import { IKeycloakAuthUser } from '../../keycloak/auth/keycloak-auth-user';
 import { KeycloakAuthService } from '../../keycloak/auth/keycloak-auth.service';
 
 @Injectable()
-export class UserClientService {
+export class UserAdminService {
   constructor(
     private prisma: PrismaService,
     private keycloakAuthService: KeycloakAuthService,
@@ -21,6 +18,10 @@ export class UserClientService {
         ...createUserInput,
       },
     });
+  }
+
+  findAll() {
+    return this.prisma.user.findMany();
   }
 
   findOne(id: number) {
@@ -53,36 +54,6 @@ export class UserClientService {
     return this.keycloakAuthService.registerUser(newUser);
   }
 
-  login(loginUserInput: LoginUserInput) {
-    return this.keycloakAuthService.userLogin(
-      loginUserInput.username,
-      loginUserInput.password,
-    );
-  }
-  logout(user: IKeycloakAuthUser) {
-    return this.keycloakAuthService.logout(user.id);
-  }
-
-  resetPassword(
-    resetPasswordUserInput: ResetPasswordUserInput,
-    user: IKeycloakAuthUser,
-  ) {
-    return this.keycloakAuthService.resetPassword(
-      user,
-      {
-        newPassword: resetPasswordUserInput.newPassword,
-        oldPassword: resetPasswordUserInput.oldPassword,
-      },
-      false,
-    );
-  }
-
-  userAccessTokenFromRefreshToken(refreshToken: string) {
-    return this.keycloakAuthService.userAccessTokenFromRefreshToken(
-      refreshToken,
-    );
-  }
-
   update(id: number, updateUserInput: UpdateUserInput) {
     return this.prisma.user.update({
       data: {
@@ -92,5 +63,9 @@ export class UserClientService {
         id: updateUserInput.id,
       },
     });
+  }
+
+  remove(id: number) {
+    return this.prisma.user.delete({ where: { id } });
   }
 }

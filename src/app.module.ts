@@ -28,6 +28,8 @@ import { UserClientModule } from './client/user/user.client.module';
 import { PrivacyPolicyModule } from './admin/privacy-policy/privacy-policy.admin.module';
 import { AddressClientModule } from './client/address/address.client.module';
 import { NotificationClientModule } from './client/notification/notification.client.module';
+import { UserAdminModule } from './admin/user/user.admin.module';
+import { AddressAdminModule } from './admin/address/address.admin.module';
 
 @Module({
   imports: [
@@ -66,11 +68,14 @@ import { NotificationClientModule } from './client/notification/notification.cli
     FaqModule,
     LabelModule,
     TermsAndConditionsModule,
+    WelcomeScreenAdminModule,
+    LineOfBusinessAdminModule,
+    UserAdminModule,
+    AddressAdminModule,
+
     UserClientModule,
     AddressClientModule,
     NotificationClientModule,
-    WelcomeScreenAdminModule,
-    LineOfBusinessAdminModule,
   ],
   controllers: [AppController],
   providers: [
@@ -78,7 +83,7 @@ import { NotificationClientModule } from './client/notification/notification.cli
     PrismaService,
     {
       provide: APP_GUARD,
-      useClass: GraphQlKeycloakAuthGuard, // instead of using AuthGuard
+      useClass: GraphQlKeycloakAuthGuard, // instead of using default AuthGuard
     },
     {
       provide: APP_GUARD,

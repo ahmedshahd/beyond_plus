@@ -26,13 +26,13 @@ export class UserClientResolver {
     return this.userClientService.create(createUserInput);
   }
 
-  @Roles({ roles: ['admin_role'], mode: RoleMatchingMode.ANY })
-  @Scopes('view')
-  @Query('users')
-  findAll(@CurrentUser() user: IKeycloakAuthUser) {
-    console.log('user=', user);
-    return this.userClientService.findAll();
-  }
+  // @Roles({ roles: ['admin_role'], mode: RoleMatchingMode.ANY })
+  // @Scopes('view')
+  // @Query('test')
+  // test(@CurrentUser() user: IKeycloakAuthUser) {
+  //   console.log('user=', user);
+  //   return 'success';
+  // }
 
   @Public()
   @Mutation('register')
@@ -71,11 +71,6 @@ export class UserClientResolver {
     return this.userClientService.update(updateUserInput.id, updateUserInput);
   }
 
-  @Mutation('removeUser')
-  remove(@Args('id') id: number) {
-    return this.userClientService.remove(id);
-  }
-  
   @Query('logout')
   logout(@CurrentUser() user: IKeycloakAuthUser) {
     return this.userClientService.logout(user);
