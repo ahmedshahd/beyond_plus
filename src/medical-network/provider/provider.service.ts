@@ -39,6 +39,11 @@ export class ProviderService {
     const result = await this.prisma.provider.findMany({
       where: { ...whereConditions },
       ...pagination.query,
+      include: {
+        providerType: true,
+        speciality: true,
+        area: true,
+      },
     });
 
     return {

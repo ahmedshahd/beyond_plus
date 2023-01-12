@@ -35,6 +35,11 @@ export class CityService {
     const result = await this.prisma.city.findMany({
       where: { ...whereConditions },
       ...pagination.query,
+      include: {
+        insuranceCompany: true,
+        country: true,
+        area: true,
+      },
     });
 
     return {

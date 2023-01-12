@@ -5,11 +5,17 @@ type SubSpeciality {
   name: String!
   language: LanguageEnum!
   specialityId: Int!
-  speciality: Speciality!
+  speciality: Speciality
   createdAt: DateTime!
   updatedAt: DateTime
 }
 
 type Query {
-  listAllSubSpecialityBySpecialityId(specialityId: Int!, search:String, page: Int, limit: Int): [SubSpeciality]!
+  listAllSubSpecialityBySpecialityId(
+    specialityId: Int!
+    language: LanguageEnum!
+    search: String
+    page: Int
+    limit: Int
+  ): [SubSpeciality]!
 }

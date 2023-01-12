@@ -35,6 +35,10 @@ export class SpecialityService {
     const result = await this.prisma.speciality.findMany({
       where: { ...whereConditions },
       ...pagination.query,
+      include: {
+        subSpeciality: true,
+        provider: true,
+      },
     });
 
     return {

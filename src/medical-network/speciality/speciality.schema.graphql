@@ -4,15 +4,15 @@ type Speciality {
   id: Int!
   name: String!
   language: LanguageEnum!
-  providerId: Int!
-  provider: Provider!
-  subSpeciality: [SubSpeciality]!
+  providerId: Int
+  provider: Provider
+  subSpeciality: [SubSpeciality]
   createdAt: DateTime!
   updatedAt: DateTime
 }
 
 type SpecialityByPagination {
-  speciality: [Speciality]!
+  speciality: [Speciality]
   pagination: Pagination
 }
 

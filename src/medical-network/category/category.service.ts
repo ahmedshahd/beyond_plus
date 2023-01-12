@@ -35,6 +35,9 @@ export class CategoryService {
     const result = await this.prisma.category.findMany({
       where: { ...whereConditions },
       ...pagination.query,
+      include: {
+        insuranceCompany: true,
+      },
     });
 
     return {

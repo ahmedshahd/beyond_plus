@@ -12,6 +12,9 @@ export class CountryService {
       where: {
         language,
       },
+      include: {
+        city: true,
+      },
     });
   }
 }

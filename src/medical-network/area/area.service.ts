@@ -33,6 +33,10 @@ export class AreaService {
     const result = await this.prisma.area.findMany({
       where: { ...whereConditions },
       ...pagination.query,
+      include: {
+        city: true,
+        provider: true,
+      },
     });
 
     return {
