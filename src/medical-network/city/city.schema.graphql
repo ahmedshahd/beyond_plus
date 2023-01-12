@@ -1,0 +1,24 @@
+scalar DateTime
+
+type City {
+    id: Int!
+    name: String!
+    countryId: Int!
+    insuranceCompanyId: Int!
+    language: LanguageEnum!
+    createdAt: DateTime
+    updatedAt: DateTime
+    area: [Area]!
+    country: Country!
+    insuranceCompany: InsuranceCompany!
+}
+
+type CityByPagination {
+   city : [City]!
+   pagination: Pagination 
+}
+
+
+type Query {
+    listAllCitiesByInsuranceCompanyId (insuranceCompanyId: Int!, language: LanguageEnum!, search:String, page: Int, limit: Int): CityByPagination!
+}

@@ -1,0 +1,19 @@
+scalar DateTime
+
+type ProviderType {
+  id: Int!
+  name: String!
+  language: LanguageEnum!
+  insuranceCompanyId: Int!
+  insuranceCompany: InsuranceCompany!
+  provider: [Provider]!
+}
+
+type ProviderTypeByPagination {
+   providerType : [ProviderType]!
+   pagination: Pagination 
+}
+
+type Query {
+  listAllProviderTypesByInsuranceCompanyId(insuranceCompanyId: Int!, language: LanguageEnum! ,search:String, page: Int, limit: Int): ProviderTypeByPagination!
+}
