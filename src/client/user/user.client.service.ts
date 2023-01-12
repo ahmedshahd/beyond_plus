@@ -18,10 +18,6 @@ export class UserClientService {
     });
   }
 
-  findAll() {
-    return this.prisma.user.findMany();
-  }
-
   findOne(id: number) {
     return this.prisma.user.findUnique({ where: { id } });
   }
@@ -35,9 +31,5 @@ export class UserClientService {
         id: updateUserInput.id,
       },
     });
-  }
-
-  remove(id: number) {
-    return this.prisma.user.delete({ where: { id } });
   }
 }

@@ -30,6 +30,8 @@ import { UploaderModule } from './medical-network/uploader/uploader.module';
 import { BullModule } from '@nestjs/bull';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ApiKeyModule } from './auth/api-key/api-key.module';
+import { UserAdminModule } from './admin/user/user.admin.module';
+import { AddressAdminModule } from './admin/address/address.admin.module';
 
 @Module({
   imports: [
@@ -64,6 +66,10 @@ import { ApiKeyModule } from './auth/api-key/api-key.module';
     FaqModule,
     LabelModule,
     TermsAndConditionsModule,
+    WelcomeScreenAdminModule,
+    LineOfBusinessAdminModule,
+    UserAdminModule,
+    AddressAdminModule,
     UserClientModule,
     AddressClientModule,
     NotificationClientModule,
@@ -93,5 +99,11 @@ import { ApiKeyModule } from './auth/api-key/api-key.module';
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
+  ],
+  controllers: [AppController],
+  providers: [
+    AppService,
+    PrismaService,
+  ],
 })
 export class AppModule {}

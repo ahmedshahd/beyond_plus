@@ -22,6 +22,7 @@ export class UserClientResolver {
     return this.userClientService.findAll();
   }
 
+
   @Query('user')
   findOne(@Args('id') id: number) {
     return this.userClientService.findOne(id);
@@ -35,5 +36,9 @@ export class UserClientResolver {
   @Mutation('removeUser')
   remove(@Args('id') id: number) {
     return this.userClientService.remove(id);
+
+  @Query('logout')
+  logout(@CurrentUser() user: IKeycloakAuthUser) {
+    return this.userClientService.logout(user);
   }
 }
