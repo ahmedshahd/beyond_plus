@@ -1,0 +1,21 @@
+scalar DateTime
+
+type Category {
+  id: Int!
+  tier: String!
+  tierRank: String!
+  insuranceCompany: InsuranceCompany!
+  language: LanguageEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+type CategoryByPagination {
+   category : [Category]!
+   pagination: Pagination 
+}
+
+
+type Query {
+  listAllCateoriesByInsuranceCompanyId (insuranceCompanyId: Int!, language: LanguageEnum, search:String, page: Int, limit: Int): [City]!
+}

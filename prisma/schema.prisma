@@ -2,7 +2,9 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native", "linux-musl"]
+  previewFeatures = ["interactiveTransactions", "fullTextSearch"]
 }
 
 datasource db {
@@ -83,7 +85,6 @@ model User {
   insuranceCompanyName         String?
   medicalInsuranceCardNumber   String?
   medicalInsuranceCardImageUrl String?
-  keycloakUserId               String?        @unique
   createdAt                    DateTime       @default(now())
   updatedAt                    DateTime?      @updatedAt
   address                      Address[]
@@ -126,4 +127,139 @@ model lineOfBusiness {
   language    LanguageEnum @default(ARABIC)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime?    @updatedAt
+}
+
+//********* Medical Network **********//
+
+model InsuranceCompany {
+  id                Int                @id @default(autoincrement())
+  name              String
+  language          LanguageEnum       @default(ARABIC)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime?          @updatedAt
+  parentId          Int?
+  tpa               InsuranceCompany?  @relation("TpaHasInsuranceCompanies", fields: [parentId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  category          Category[]
+  city              City[]
+  insurance_company InsuranceCompany[] @relation("TpaHasInsuranceCompanies")
+  providerType      ProviderType[]
+
+  @@unique([name, language], name: "InsuranceCompany_name_language_unique_constraint")
+}
+
+model Category {
+  id                 Int              @id @default(autoincrement())
+  tier               String
+  tierRank           String
+  language           LanguageEnum     @default(ARABIC)
+  insuranceCompanyId Int
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime?        @updatedAt
+  insuranceCompany   InsuranceCompany @relation(fields: [insuranceCompanyId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  provider           Provider[]
+
+  @@unique([tierRank, language, insuranceCompanyId], name: "Category_tierRank_language_insuranceCompanyId_unique_constraint")
+}
+
+model ProviderType {
+  id                 Int              @id @default(autoincrement())
+  name               String
+  language           LanguageEnum     @default(ARABIC)
+  insuranceCompanyId Int
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime?        @updatedAt
+  insuranceCompany   InsuranceCompany @relation(fields: [insuranceCompanyId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  provider           Provider[]
+
+  @@unique([name, language, insuranceCompanyId], name: "ProviderType_name_language_insuranceCompanyId_unique_constraint")
+}
+
+model Provider {
+  id                   Int          @id @default(autoincrement())
+  name                 String
+  language             LanguageEnum @default(ARABIC)
+  address              String
+  longitude            Float
+  latitude             Float
+  phoneNumber          String[]
+  email                String
+  fax                  String       @default("")
+  isOnline             Boolean
+  hasChronicMedication Boolean
+  websiteUrl           String
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime?    @updatedAt
+  providerTypeId       Int
+  areaId               Int
+  area                 Area         @relation(fields: [areaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  categoryId           Int
+  category             Category     @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  providerType         ProviderType @relation(fields: [providerTypeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  speciality           Speciality[]
+
+  @@unique([name, language, providerTypeId, areaId, categoryId, address, phoneNumber, fax, email, websiteUrl, longitude, latitude], name: "Provider_name_language_providerTypeId_areaId_categoryId_address_phoneNumber_fax_email_websiteUrl_longitude_latitude_unique_constraint")
+}
+
+model Speciality {
+  id            Int             @id @default(autoincrement())
+  name          String
+  language      LanguageEnum    @default(ARABIC)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime?       @updatedAt
+  providerId    Int
+  provider      Provider        @relation(fields: [providerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  subSpeciality SubSpeciality[]
+
+  @@unique([name, language, providerId], name: "Speciality_name_language_providerId_unique_constraint")
+}
+
+model SubSpeciality {
+  id           Int          @id @default(autoincrement())
+  name         String
+  language     LanguageEnum @default(ARABIC)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime?    @updatedAt
+  specialityId Int
+  speciality   Speciality   @relation(fields: [specialityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@unique([name, language, specialityId], name: "SubSpeciality_name_language_specialityId_unique_constraint")
+}
+
+model Country {
+  id        Int          @id @default(autoincrement())
+  name      String
+  language  LanguageEnum @default(ARABIC)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime?    @updatedAt
+  city      City[]
+
+  @@unique([name, language], name: "Country_name_language_unique_constraint")
+}
+
+model City {
+  id                 Int              @id @default(autoincrement())
+  name               String
+  language           LanguageEnum     @default(ARABIC)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime?        @updatedAt
+  countryId          Int
+  insuranceCompanyId Int
+  country            Country          @relation(fields: [countryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  insuranceCompany   InsuranceCompany @relation(fields: [insuranceCompanyId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  area               Area[]
+
+  @@unique([name, language, countryId, insuranceCompanyId], name: "City_name_language_countryId_insuranceCompanyId_unique_constraint")
+}
+
+model Area {
+  id        Int          @id @default(autoincrement())
+  name      String
+  language  LanguageEnum @default(ARABIC)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime?    @updatedAt
+  cityId    Int
+  city      City         @relation(fields: [cityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  provider  Provider[]
+
+  @@unique([name, language, cityId], name: "Area_name_language_cityId_unique_constraint")
 }

@@ -1,0 +1,56 @@
+scalar DateTime
+
+enum LanguageEnum {
+  ARABIC
+  ENGLISH
+}
+
+type InsuranceCompany {
+  id: Int!
+  name: String!
+  language: LanguageEnum!
+  createdAt: DateTime
+  updatedAt: DateTime
+  parentId: Int
+}
+
+type Tpa {
+  id: Int!
+  name: String!
+  language: LanguageEnum!
+  createdAt: DateTime
+  updatedAt: DateTime
+  parentId: Int
+}
+
+type Pagination {
+  totalItemsCount: Int
+  pagesCount: Int
+  page: Int
+}
+
+type TpaByPagination {
+  tpa: [Tpa]!
+  pagination: Pagination
+}
+
+type InsuranceCompanyByPagination {
+  insuranceCompany: [InsuranceCompany]!
+  pagination: Pagination
+}
+
+type Query {
+  listAllTpas(
+    language: LanguageEnum!
+    search: String
+    page: Int
+    limit: Int
+  ): TpaByPagination!
+  listAllInsuranceCompaniesByTpaId(
+    tpaId: Int!
+    language: LanguageEnum!
+    search: String
+    page: Int
+    limit: Int
+  ): InsuranceCompanyByPagination!
+}

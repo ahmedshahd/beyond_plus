@@ -1,0 +1,30 @@
+scalar DateTime
+
+type Provider {
+  id: Int!
+  name: String!
+  language: LanguageEnum!
+  address: String!
+  longitude: Float!
+  latitude: Float!
+  phoneNumber: [String]!
+  email: String!
+  isOnline: Boolean!
+  hasChronicMedication: Boolean!
+  websiteUrl: String!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  providerType: ProviderType!
+  areaId: Int!
+  area: Area!
+  speciality: Speciality!
+}
+
+type ProviderByPagination {
+   provider : [Provider]!
+   pagination: Pagination 
+}
+
+type Query {
+  listAllProvidersByProviderTypeIdAndAreaId(providerTypeId: Int!, areaId: Int!, categoryId: Int!, search:String, language: LanguageEnum, page: Int, limit: Int): ProviderByPagination!
+}

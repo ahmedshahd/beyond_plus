@@ -1,0 +1,27 @@
+scalar DateTime
+
+type Speciality {
+  id: Int!
+  name: String!
+  language: LanguageEnum!
+  providerId: Int!
+  provider: Provider!
+  subSpeciality: [SubSpeciality]!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+type SpecialityByPagination {
+  speciality: [Speciality]!
+  pagination: Pagination
+}
+
+type Query {
+  listAllSpecialityByProviderId(
+    providerId: Int!
+    language: LanguageEnum!
+    search: String
+    page: Int
+    limit: Int
+  ): SpecialityByPagination!
+}
