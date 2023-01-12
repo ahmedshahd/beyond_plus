@@ -11,7 +11,7 @@ type Category {
 }
 
 type CategoryByPagination {
-   category : [Category]!
+   category: [Category]!
    pagination: Pagination 
 }
 

@@ -4,24 +4,24 @@ type Provider {
   id: Int!
   name: String!
   language: LanguageEnum!
-  address: String!
-  longitude: Float!
-  latitude: Float!
-  phoneNumber: [String]!
-  email: String!
-  isOnline: Boolean!
-  hasChronicMedication: Boolean!
-  websiteUrl: String!
-  createdAt: DateTime!
+  address: String
+  longitude: Float
+  latitude: Float
+  phoneNumber: [String]
+  email: String
+  isOnline: Boolean
+  hasChronicMedication: Boolean
+  websiteUrl: String
+  createdAt: DateTime
   updatedAt: DateTime
-  providerType: ProviderType!
-  areaId: Int!
-  area: Area!
-  speciality: Speciality!
+  providerType: ProviderType
+  areaId: Int
+  area: Area
+  speciality: Speciality
 }
 
 type ProviderByPagination {
-   provider : [Provider]!
+   provider: [Provider]!
    pagination: Pagination 
 }
 
