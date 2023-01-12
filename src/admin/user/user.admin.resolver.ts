@@ -2,18 +2,8 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UserAdminService } from './user.admin.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import {
-  Public,
-  Resource,
-  RoleMatchingMode,
-  Roles,
-  Scopes,
-  Unprotected,
-} from 'nest-keycloak-connect';
-import { IKeycloakAuthUser } from '../../keycloak/auth/keycloak-auth-user';
 import { CurrentUser } from '../../helpers/user.decorator';
 
-@Resource('beyond-plus-resource')
 @Resolver('Admin/User')
 export class UserAdminResolver {
   constructor(private readonly userAdminService: UserAdminService) {}
