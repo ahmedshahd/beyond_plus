@@ -12,6 +12,7 @@ WORKDIR /usr/src/service
 
 COPY ./package.json /usr/src/service/package.json
 COPY ./package-lock.json /usr/src/service/package-lock.json
+COPY ./prisma /usr/src/service/prisma
 
 RUN npm i 
 RUN npm run prisma:generate
