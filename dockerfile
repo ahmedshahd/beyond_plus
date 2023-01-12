@@ -1,4 +1,4 @@
-FROM node:18-alpine As production
+FROM node:14-alpine As production
 
 ENV PORT=8000
 ENV DATABASE_URL= postgresql://postgres:9qmOq80u8Sj@beyond-plus-db.cvm3ri1wjhhb.us-east-1.rds.amazonaws.com:5432/postgres?schema=public&connection_limit=10000&pool_timeout=0
@@ -16,6 +16,7 @@ COPY ./prisma /usr/src/service/prisma
 
 RUN npm i 
 RUN npm run prisma:generate
+RUN npx prisma generate
 
 COPY . /usr/src/service
 
