@@ -3,14 +3,10 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { nanoid } from 'nanoid';
 import { PrismaService } from '../../prisma.service';
-import { KeycloakAuthService } from '../../keycloak/auth/keycloak-auth.service';
 
 @Injectable()
 export class UserAdminService {
-  constructor(
-    private prisma: PrismaService,
-    private keycloakAuthService: KeycloakAuthService,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   create(createUserInput: CreateUserInput) {
     return this.prisma.user.create({
@@ -51,7 +47,6 @@ export class UserAdminService {
     delete newUser.password;
     delete newUser.mobile;
 
-    return this.keycloakAuthService.registerUser(newUser);
   }
 
   update(id: number, updateUserInput: UpdateUserInput) {

@@ -13,7 +13,7 @@ import { LabelModule } from './admin/label/label.admin.module';
 import { TermsAndConditionsModule } from './admin/terms-and-conditions/terms-and-conditions.admin.module';
 import { WelcomeScreenAdminModule } from './admin/welcome-screen/welcome-screen.admin.module';
 import { LineOfBusinessAdminModule } from './admin/line-of-business/line-of-business.admin.module';
-import { UserClientModule } from './client/user/user.client.module';
+// import { UserClientModule } from './client/user/user.client.module';
 import { PrivacyPolicyModule } from './admin/privacy-policy/privacy-policy.admin.module';
 import { AddressClientModule } from './client/address/address.client.module';
 import { NotificationClientModule } from './client/notification/notification.client.module';
@@ -70,7 +70,7 @@ import { AddressAdminModule } from './admin/address/address.admin.module';
     LineOfBusinessAdminModule,
     UserAdminModule,
     AddressAdminModule,
-    UserClientModule,
+    //UserClientModule,
     AddressClientModule,
     NotificationClientModule,
     WelcomeScreenAdminModule,
@@ -99,11 +99,5 @@ import { AddressAdminModule } from './admin/address/address.admin.module';
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
-  ],
-  controllers: [AppController],
-  providers: [
-    AppService,
-    PrismaService,
-  ],
 })
 export class AppModule {}
