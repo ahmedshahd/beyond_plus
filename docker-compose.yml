@@ -13,7 +13,6 @@ services:
     ports:
       - "8000:8000"
     environment:
-      NODE_ENV: production
       DATABASE_URL: postgresql://postgres:9qmOq80u8Sj@beyond-plus-db.cvm3ri1wjhhb.us-east-1.rds.amazonaws.com:5432/postgres?schema=public&connection_limit=10000&pool_timeout=0
       PORT: 8000
       REDIS_HOST: cache
