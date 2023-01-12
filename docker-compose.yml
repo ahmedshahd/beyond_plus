@@ -1,11 +1,11 @@
 version: "3.9"
 services:
-  medical-network-api:
+  beyond-plus-api:
     stdin_open: true
     build:
       context: .
       dockerfile: dockerfile
-    container_name: medical-network-backend
+    container_name: beyond-plus-backend
     links:
       - cache
     depends_on:
@@ -34,9 +34,9 @@ services:
   traefik:
     image: traefik:v2.7.0
     restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - traefik-certificates:/etc/traefik/acme
+    # volumes:
+    #   - /var/run/docker.sock:/var/run/docker.sock
+    #   - traefik-certificates:/etc/traefik/acme
     command:
       - "--log.level=WARN"
       - "--accesslog=true"
