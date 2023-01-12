@@ -10,6 +10,11 @@ type SubSpeciality {
   updatedAt: DateTime
 }
 
+type SubSpecialityByPagination {
+  subSpeciality: [SubSpeciality]!
+  pagination: Pagination
+}
+
 type Query {
   listAllSubSpecialityBySpecialityId(
     specialityId: Int!
@@ -17,5 +22,5 @@ type Query {
     search: String
     page: Int
     limit: Int
-  ): [SubSpeciality]!
+  ): SubSpecialityByPagination!
 }
