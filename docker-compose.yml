@@ -1,4 +1,6 @@
 version: "3.9"
+volumes:
+  traefik-certificates:
 services:
   plus:
     stdin_open: true
