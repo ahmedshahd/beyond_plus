@@ -1,0 +1,77 @@
+version: "3.9"
+services:
+  medical-network-api:
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: medical-network-backend
+    links:
+      - cache
+    depends_on:
+      - cache
+    ports:
+      - "8000:8000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://postgres:9qmOq80u8Sj@beyond-plus-db.cvm3ri1wjhhb.us-east-1.rds.amazonaws.com:5432/postgres?schema=public&connection_limit=10000&pool_timeout=0
+      PORT: 8000
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+      API_KEY: 2ab9c3d4e5f91ab7c3d4e5f6
+      MULTER_MAX_FILE_SIZE: 1e+8
+      MULTER_DESTINATION: /public/files
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.medical.rule=Host(`api.beyond-solution.com`)"
+      - "traefik.http.routers.medical.service=medical"
+      - "traefik.http.routers.medical.entrypoints=websecure"
+      - "traefik.http.services.medical.loadbalancer.server.port=8000"
+      - "traefik.http.routers.medical.tls=true"
+      - "traefik.http.routers.medical.tls.certresolver=letsencrypt"
+      - "traefik.http.services.medical.loadbalancer.passhostheader=true"
+  traefik:
+    image: traefik:v2.7.0
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - traefik-certificates:/etc/traefik/acme
+    command:
+      - "--log.level=WARN"
+      - "--accesslog=true"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--ping=true"
+      - "--ping.entrypoint=ping"
+      - "--entryPoints.ping.address=:8082"
+      - "--entryPoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entryPoints.websecure.address=:443"
+      - "--providers.docker=true"
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--providers.docker.exposedByDefault=false"
+      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.email=muhammad.elshafie@beyond-solution.com"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/etc/traefik/acme/acme.json"
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+
+  cache:
+    image: redis
+    container_name: redis
+    ports:
+      - 6379:6379
+    command:
+      - redis-server
+      - /redis.conf
+    volumes:
+      - /redis.conf:/redis.conf  
+    restart: always
+
+volumes:
+  redis:
+    driver: local
