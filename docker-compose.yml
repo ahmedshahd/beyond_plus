@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-  beyond-plus-api:
+  plus:
     stdin_open: true
     build:
       context: .
@@ -24,13 +24,13 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.medical.rule=Host(`api.beyond-solution.com`)"
-      - "traefik.http.routers.medical.service=medical"
-      - "traefik.http.routers.medical.entrypoints=websecure"
-      - "traefik.http.services.medical.loadbalancer.server.port=8000"
-      - "traefik.http.routers.medical.tls=true"
-      - "traefik.http.routers.medical.tls.certresolver=letsencrypt"
-      - "traefik.http.services.medical.loadbalancer.passhostheader=true"
+      - "traefik.http.routers.plus.rule=Host(`plus.beyond-solution.com`)"
+      - "traefik.http.routers.plus.service=plus"
+      - "traefik.http.routers.plus.entrypoints=websecure"
+      - "traefik.http.services.plus.loadbalancer.server.port=8000"
+      - "traefik.http.routers.plus.tls=true"
+      - "traefik.http.routers.plus.tls.certresolver=letsencrypt"
+      - "traefik.http.services.plus.loadbalancer.passhostheader=true"
   traefik:
     image: traefik:v2.7.0
     restart: unless-stopped
