@@ -14,6 +14,7 @@ COPY ./package.json /usr/src/service/package.json
 COPY ./package-lock.json /usr/src/service/package-lock.json
 
 RUN npm i 
+RUN npm run prisma:generate
 
 COPY . /usr/src/service
 
