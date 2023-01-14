@@ -11,11 +11,16 @@ type Category {
 }
 
 type CategoryByPagination {
-   category: [Category]!
-   pagination: Pagination 
+  category: [Category]!
+  pagination: Pagination
 }
 
-
 type Query {
-  listAllCateoriesByInsuranceCompanyId (insuranceCompanyId: Int!, language: LanguageEnum, search:String, page: Int, limit: Int): [City]!
+  listAllCateoriesByInsuranceCompanyId(
+    insuranceCompanyId: Int!
+    language: LanguageEnum
+    search: String
+    page: Int
+    limit: Int
+  ): CategoryByPagination!
 }

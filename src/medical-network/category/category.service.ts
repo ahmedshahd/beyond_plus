@@ -41,7 +41,7 @@ export class CategoryService {
     });
 
     return {
-      providerType: result,
+      category: result,
       pagination: pagination.response,
     };
   }
