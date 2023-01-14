@@ -9,7 +9,7 @@ export class SubSpecialityResolver {
   @Query('listAllSubSpecialityBySpecialityId')
   async listAllSubSpecialityBySpecialityId(
     @Args() args: PaginationAndSearchArgs,
-    @Args('specialityId') specialityId: number,
+    @Args('specialityId') specialityId: number[],
     @Args('language') language: LanguageEnum,
   ) {
     return this.subSpecialityService.listAllSubSpecialityBySpecialityId(

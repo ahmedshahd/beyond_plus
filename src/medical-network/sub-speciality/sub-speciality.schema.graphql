@@ -17,7 +17,7 @@ type SubSpecialityByPagination {
 
 type Query {
   listAllSubSpecialityBySpecialityId(
-    specialityId: Int!
+    specialityId: [Int!]!
     language: LanguageEnum!
     search: String
     page: Int

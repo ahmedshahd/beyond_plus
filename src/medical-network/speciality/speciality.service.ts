@@ -8,14 +8,14 @@ export class SpecialityService {
   constructor(private prisma: PrismaService) {}
 
   async listAllSpecialityByProviderId(
-    providerId: number,
+    providerId: number[],
     language: LanguageEnum,
     search: string,
     page: number,
     limit: number,
   ) {
     const whereConditions: any = {
-      providerId,
+      providerId: { in: providerId },
       name: search
         ? {
             contains: search,
@@ -24,7 +24,7 @@ export class SpecialityService {
         : undefined,
       language,
     };
-    console.log(whereConditions);
+
     const pagination = await getPagination(
       'speciality',
       whereConditions,

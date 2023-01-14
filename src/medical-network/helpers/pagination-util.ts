@@ -8,6 +8,7 @@ export const getPagination = async (
   page = 1,
   limit = 25,
 ) => {
+
   const totalItemsCount = await prisma[modelName].count({
     where: whereConditions,
   });

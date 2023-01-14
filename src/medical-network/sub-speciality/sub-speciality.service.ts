@@ -8,14 +8,14 @@ export class SubSpecialityService {
   constructor(private prisma: PrismaService) {}
 
   async listAllSubSpecialityBySpecialityId(
-    specialityId: number,
+    specialityId: number[],
     language: LanguageEnum,
     search: string,
     page: number,
     limit: number,
   ) {
     const whereConditions: any = {
-      specialityId,
+      specialityId: { in: specialityId },
       name: search
         ? {
             contains: search,
