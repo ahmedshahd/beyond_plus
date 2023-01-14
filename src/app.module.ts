@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -32,6 +32,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ApiKeyModule } from './auth/api-key/api-key.module';
 import { UserAdminModule } from './admin/user/user.admin.module';
 import { AddressAdminModule } from './admin/address/address.admin.module';
+import { ApiKeyMiddleware } from './middlewares/api-key.middleware';
 
 @Module({
   imports: [
@@ -100,4 +101,11 @@ import { AddressAdminModule } from './admin/address/address.admin.module';
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ApiKeyMiddleware).forRoutes({
+      path: '*',
+      method: RequestMethod.ALL,
+    });
+  }
+}

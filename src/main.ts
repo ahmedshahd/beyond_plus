@@ -9,6 +9,7 @@ import * as basicAuth from 'express-basic-auth';
 import { createBullBoard } from 'bull-board';
 import { BullAdapter } from 'bull-board/bullAdapter';
 import { CSV_QUEUE } from './medical-network/constants/queue.data';
+import { ApiKeyMiddleware } from './middlewares/api-key.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {

@@ -29,12 +29,12 @@ export class UploaderController {
   constructor(private uploaderService: UploaderService) {}
 
   @ApiHeader({
-    name: 'API_KEY',
-    example: '2ab9c3d4e5f91ab7c3d4e5f6',
+    name: 'api-key',
+    example: '',
     required: true,
-    description: 'API_KEY',
+    description: 'api-key',
   })
-  @UseGuards(AuthGuard('api-key'))
+  // @UseGuards(AuthGuard('api-key'))
   @ApiQuery({
     name: 'language',
     type: 'string',
