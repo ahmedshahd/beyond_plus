@@ -7,14 +7,14 @@ export class AreaService {
   constructor(private prisma: PrismaService) {}
 
   async listAllAreasByCityId(
-    cityId: number,
+    cityId: number[],
     language: LanguageEnum,
     search: string,
     page: number,
     limit: number,
   ) {
     const whereConditions: any = {
-      cityId,
+      cityId: { in: cityId },
       language: language,
       name: search
         ? {

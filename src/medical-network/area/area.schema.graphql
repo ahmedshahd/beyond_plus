@@ -17,7 +17,7 @@ type AreaByPagination {
 
 type Query {
   listAllAreasByCityId(
-    cityId: Int!
+    cityId: [Int!]!
     language: LanguageEnum!
     search: String
     page: Int

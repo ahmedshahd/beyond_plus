@@ -21,10 +21,18 @@ type Provider {
 }
 
 type ProviderByPagination {
-   provider: [Provider]!
-   pagination: Pagination 
+  provider: [Provider]!
+  pagination: Pagination
 }
 
 type Query {
-  listAllProvidersByProviderTypeIdAndAreaId(providerTypeId: Int!, areaId: Int!, categoryId: Int!, search:String, language: LanguageEnum, page: Int, limit: Int): ProviderByPagination!
+  listAllProvidersByProviderTypeIdAndAreaId(
+    providerTypeId: [Int!]!
+    areaId: [Int!]!
+    categoryId: [Int!]!
+    language: LanguageEnum!
+    search: String
+    page: Int
+    limit: Int
+  ): ProviderByPagination!
 }

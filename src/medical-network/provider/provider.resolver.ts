@@ -10,9 +10,9 @@ export class ProviderResolver {
   @Query('listAllProvidersByProviderTypeIdAndAreaId')
   async listAllProvidersByProviderTypeIdAndAreaId(
     @Args('language') language: LanguageEnum,
-    @Args('providerTypeId') providerTypeId: number,
-    @Args('areaId') areaId: number,
-    @Args('categoryId') categoryId: number,
+    @Args('providerTypeId') providerTypeId: number[],
+    @Args('areaId') areaId: number[],
+    @Args('categoryId') categoryId: number[],
     @Args() args: PaginationAndSearchArgs,
   ) {
     return this.providerService.listAllProvidersByProviderTypeIdAndAreaId(

@@ -9,7 +9,7 @@ export class AreaResolver {
 
   @Query('listAllAreasByCityId')
   async listAllAreasByCityId(
-    @Args('cityId') cityId: number,
+    @Args('cityId') cityId: number[],
     @Args('language') language: LanguageEnum,
     @Args() args: PaginationAndSearchArgs,
   ) {
