@@ -36,7 +36,6 @@ export class ProviderTypeService {
       where: { ...whereConditions },
       ...pagination.query,
       include: {
-        provider: true,
         insuranceCompany: true,
       },
     });

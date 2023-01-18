@@ -212,11 +212,42 @@ export class UploaderService {
                 update: {},
               });
 
+              const speciality = await prisma.speciality.upsert({
+                where: {
+                  Speciality_name_language_providerTypeId_unique_constraint: {
+                    language: language,
+                    name: data.speciality.trim(),
+                    providerTypeId: providerType.id,
+                  },
+                },
+                create: {
+                  language: language,
+                  name: data.speciality.trim(),
+                  providerTypeId: providerType.id,
+                },
+                update: {},
+              });
+
+              const subSpeciality = await prisma.subSpeciality.upsert({
+                where: {
+                  SubSpeciality_name_language_specialityId_unique_constraint: {
+                    specialityId: speciality.id,
+                    language: language,
+                    name: data.subSpeciality.trim(),
+                  },
+                },
+                create: {
+                  specialityId: speciality.id,
+                  language: language,
+                  name: data.subSpeciality.trim(),
+                },
+                update: {},
+              });
+
               const provider = await prisma.provider.upsert({
                 where: {
-                  Provider_name_language_providerTypeId_areaId_categoryId_address_phoneNumber_fax_email_websiteUrl_longitude_latitude_unique_constraint:
+                  Provider_name_language_speciality_areaId_categoryId_address_phoneNumber_fax_email_websiteUrl_longitude_latitude_unique_constraint:
                     {
-                      providerTypeId: providerType.id,
                       areaId: area.id,
                       categoryId: category.id,
                       name: data.provider.trim(),
@@ -228,10 +259,10 @@ export class UploaderService {
                       latitude: parseFloat(data.latitude.trim()) || 0,
                       phoneNumber: data.phoneNumber.trim().split('|'),
                       websiteUrl: data.websiteUrl.trim() || '',
+                      specialityId: speciality.id,
                     },
                 },
                 create: {
-                  providerTypeId: providerType.id,
                   areaId: area.id,
                   categoryId: category.id,
                   name: data.provider,
@@ -251,38 +282,8 @@ export class UploaderService {
                     data.isOnline.trim().toLocaleLowerCase() == 'no'
                       ? false
                       : true,
-                },
-                update: {},
-              });
-
-              const speciality = await prisma.speciality.upsert({
-                where: {
-                  Speciality_name_language_providerId_unique_constraint: {
-                    language: language,
-                    name: data.speciality.trim(),
-                    providerId: provider.id,
-                  },
-                },
-                create: {
-                  language: language,
-                  name: data.speciality.trim(),
-                  providerId: provider.id,
-                },
-                update: {},
-              });
-
-              const subSpeciality = await prisma.subSpeciality.upsert({
-                where: {
-                  SubSpeciality_name_language_specialityId_unique_constraint: {
-                    specialityId: speciality.id,
-                    language: language,
-                    name: data.subSpeciality.trim(),
-                  },
-                },
-                create: {
                   specialityId: speciality.id,
-                  language: language,
-                  name: data.subSpeciality.trim(),
+                  subSpecialityId: subSpeciality.id || null,
                 },
                 update: {},
               });

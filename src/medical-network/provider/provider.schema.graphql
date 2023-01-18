@@ -14,10 +14,12 @@ type Provider {
   websiteUrl: String
   createdAt: DateTime
   updatedAt: DateTime
-  providerType: ProviderType
   areaId: Int
   area: Area
   speciality: Speciality
+  specialityId: Int
+  subSpeciality: SubSpeciality
+  subSpecialityId: Int
 }
 
 type ProviderByPagination {
@@ -27,10 +29,11 @@ type ProviderByPagination {
 
 type Query {
   listAllProvidersByProviderTypeIdAndAreaId(
-    providerTypeId: [Int!]!
+    language: LanguageEnum!
+    specialityId: [Int!]!
+    subSpecialityId: [Int!]!
     areaId: [Int!]!
     categoryId: [Int!]!
-    language: LanguageEnum!
     search: String
     page: Int
     limit: Int

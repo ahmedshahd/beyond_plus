@@ -169,48 +169,50 @@ model ProviderType {
   createdAt          DateTime         @default(now())
   updatedAt          DateTime?        @updatedAt
   insuranceCompany   InsuranceCompany @relation(fields: [insuranceCompanyId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  provider           Provider[]
+  speciality         Speciality[]
 
   @@unique([name, language, insuranceCompanyId], name: "ProviderType_name_language_insuranceCompanyId_unique_constraint")
 }
 
 model Provider {
-  id                   Int          @id @default(autoincrement())
+  id                   Int            @id @default(autoincrement())
   name                 String
-  language             LanguageEnum @default(ARABIC)
+  language             LanguageEnum   @default(ARABIC)
   address              String
   longitude            Float
   latitude             Float
   phoneNumber          String[]
   email                String
-  fax                  String       @default("")
+  fax                  String         @default("")
   isOnline             Boolean
   hasChronicMedication Boolean
   websiteUrl           String
-  createdAt            DateTime     @default(now())
-  updatedAt            DateTime?    @updatedAt
-  providerTypeId       Int
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime?      @updatedAt
   areaId               Int
-  area                 Area         @relation(fields: [areaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  area                 Area           @relation(fields: [areaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   categoryId           Int
-  category             Category     @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  providerType         ProviderType @relation(fields: [providerTypeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  speciality           Speciality[]
+  category             Category       @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  specialityId         Int
+  speciality           Speciality     @relation(fields: [specialityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  subSpecialityId      Int?
+  subSpeciality        SubSpeciality? @relation(fields: [subSpecialityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
-  @@unique([name, language, providerTypeId, areaId, categoryId, address, phoneNumber, fax, email, websiteUrl, longitude, latitude], name: "Provider_name_language_providerTypeId_areaId_categoryId_address_phoneNumber_fax_email_websiteUrl_longitude_latitude_unique_constraint")
+  @@unique([name, language, areaId, specialityId, categoryId, address, phoneNumber, fax, email, websiteUrl, longitude, latitude], name: "Provider_name_language_speciality_areaId_categoryId_address_phoneNumber_fax_email_websiteUrl_longitude_latitude_unique_constraint")
 }
 
 model Speciality {
-  id            Int             @id @default(autoincrement())
-  name          String
-  language      LanguageEnum    @default(ARABIC)
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime?       @updatedAt
-  providerId    Int
-  provider      Provider        @relation(fields: [providerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  subSpeciality SubSpeciality[]
+  id             Int             @id @default(autoincrement())
+  name           String
+  language       LanguageEnum    @default(ARABIC)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime?       @updatedAt
+  providerTypeId Int
+  providerType   ProviderType    @relation(fields: [providerTypeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  subSpeciality  SubSpeciality[]
+  provider       Provider[]
 
-  @@unique([name, language, providerId], name: "Speciality_name_language_providerId_unique_constraint")
+  @@unique([name, language, providerTypeId], name: "Speciality_name_language_providerTypeId_unique_constraint")
 }
 
 model SubSpeciality {
@@ -221,6 +223,7 @@ model SubSpeciality {
   updatedAt    DateTime?    @updatedAt
   specialityId Int
   speciality   Speciality   @relation(fields: [specialityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  provider     Provider[]
 
   @@unique([name, language, specialityId], name: "SubSpeciality_name_language_specialityId_unique_constraint")
 }

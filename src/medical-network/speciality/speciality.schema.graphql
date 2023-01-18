@@ -4,8 +4,8 @@ type Speciality {
   id: Int!
   name: String!
   language: LanguageEnum!
-  providerId: Int
-  provider: Provider
+  providerTypeId: Int
+  providerType: ProviderType
   subSpeciality: [SubSpeciality]
   createdAt: DateTime!
   updatedAt: DateTime
@@ -18,7 +18,7 @@ type SpecialityByPagination {
 
 type Query {
   listAllSpecialityByProviderId(
-    providerId: [Int!]!
+    providerTypeId: [Int!]!
     language: LanguageEnum!
     search: String
     page: Int

@@ -195,9 +195,10 @@ CREATE TABLE "Provider" (
     "websiteUrl" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
-    "providerTypeId" INTEGER NOT NULL,
     "areaId" INTEGER NOT NULL,
     "categoryId" INTEGER NOT NULL,
+    "specialityId" INTEGER NOT NULL,
+    "subSpecialityId" INTEGER,
 
     CONSTRAINT "Provider_pkey" PRIMARY KEY ("id")
 );
@@ -209,7 +210,7 @@ CREATE TABLE "Speciality" (
     "language" "LanguageEnum" NOT NULL DEFAULT 'ARABIC',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
-    "providerId" INTEGER NOT NULL,
+    "providerTypeId" INTEGER NOT NULL,
 
     CONSTRAINT "Speciality_pkey" PRIMARY KEY ("id")
 );
@@ -275,10 +276,10 @@ CREATE UNIQUE INDEX "Category_tierRank_language_insuranceCompanyId_key" ON "Cate
 CREATE UNIQUE INDEX "ProviderType_name_language_insuranceCompanyId_key" ON "ProviderType"("name", "language", "insuranceCompanyId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Provider_name_language_providerTypeId_areaId_categoryId_add_key" ON "Provider"("name", "language", "providerTypeId", "areaId", "categoryId", "address", "phoneNumber", "fax", "email", "websiteUrl", "longitude", "latitude");
+CREATE UNIQUE INDEX "Provider_name_language_areaId_specialityId_categoryId_addre_key" ON "Provider"("name", "language", "areaId", "specialityId", "categoryId", "address", "phoneNumber", "fax", "email", "websiteUrl", "longitude", "latitude");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Speciality_name_language_providerId_key" ON "Speciality"("name", "language", "providerId");
+CREATE UNIQUE INDEX "Speciality_name_language_providerTypeId_key" ON "Speciality"("name", "language", "providerTypeId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "SubSpeciality_name_language_specialityId_key" ON "SubSpeciality"("name", "language", "specialityId");
@@ -314,10 +315,13 @@ ALTER TABLE "Provider" ADD CONSTRAINT "Provider_areaId_fkey" FOREIGN KEY ("areaI
 ALTER TABLE "Provider" ADD CONSTRAINT "Provider_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Provider" ADD CONSTRAINT "Provider_providerTypeId_fkey" FOREIGN KEY ("providerTypeId") REFERENCES "ProviderType"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Provider" ADD CONSTRAINT "Provider_specialityId_fkey" FOREIGN KEY ("specialityId") REFERENCES "Speciality"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Speciality" ADD CONSTRAINT "Speciality_providerId_fkey" FOREIGN KEY ("providerId") REFERENCES "Provider"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Provider" ADD CONSTRAINT "Provider_subSpecialityId_fkey" FOREIGN KEY ("subSpecialityId") REFERENCES "SubSpeciality"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Speciality" ADD CONSTRAINT "Speciality_providerTypeId_fkey" FOREIGN KEY ("providerTypeId") REFERENCES "ProviderType"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "SubSpeciality" ADD CONSTRAINT "SubSpeciality_specialityId_fkey" FOREIGN KEY ("specialityId") REFERENCES "Speciality"("id") ON DELETE CASCADE ON UPDATE CASCADE;

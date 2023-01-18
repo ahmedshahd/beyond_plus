@@ -9,7 +9,8 @@ export class ProviderService {
 
   async listAllProvidersByProviderTypeIdAndAreaId(
     language: LanguageEnum,
-    providerTypeId: number[],
+    specialityId: number[],
+    subSpecialityId: number[],
     areaId: number[],
     categoryId: number[],
     search: string,
@@ -18,7 +19,8 @@ export class ProviderService {
   ) {
     const whereConditions: any = {
       language: language,
-      providerTypeId: { in: providerTypeId },
+      specialityId: { in: specialityId },
+      subSpecialityId: { in: subSpecialityId },
       areaId: { in: areaId },
       categoryId: { in: categoryId },
       name: search
@@ -40,9 +42,9 @@ export class ProviderService {
       where: { ...whereConditions },
       ...pagination.query,
       include: {
-        providerType: true,
-        speciality: true,
         area: true,
+        speciality: true,
+        subSpeciality: true,
       },
     });
 
