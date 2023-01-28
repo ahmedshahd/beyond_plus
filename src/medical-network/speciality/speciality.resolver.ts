@@ -6,13 +6,13 @@ import { PaginationAndSearchArgs } from '../helpers/pagination-util.dto';
 @Resolver('Speciality')
 export class SpecialityResolver {
   constructor(private readonly specialityService: SpecialityService) {}
-  @Query('listAllSpecialityByProviderId')
-  async listAllSpecialityByProviderId(
+  @Query('listAllSpecialityByProviderTypeId')
+  async listAllSpecialityByProviderTypeId(
     @Args() args: PaginationAndSearchArgs,
     @Args('providerId') providerId: number[],
     @Args('language') language: LanguageEnum,
   ) {
-    return this.specialityService.listAllSpecialityByProviderId(
+    return this.specialityService.listAllSpecialityByProviderTypeId(
       providerId,
       language,
       args.search,
