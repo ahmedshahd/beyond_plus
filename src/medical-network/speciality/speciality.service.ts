@@ -7,15 +7,15 @@ import { getPagination } from '../helpers/pagination-util';
 export class SpecialityService {
   constructor(private prisma: PrismaService) {}
 
-  async listAllSpecialityByProviderId(
-    providerId: number[],
+  async listAllSpecialityByProviderTypeId(
+    providerTypeId: number[],
     language: LanguageEnum,
     search: string,
     page: number,
     limit: number,
   ) {
     const whereConditions: any = {
-      providerId: { in: providerId },
+      providerTypeId: { in: providerTypeId },
       name: search
         ? {
             contains: search,

@@ -17,7 +17,7 @@ type SpecialityByPagination {
 }
 
 type Query {
-  listAllSpecialityByProviderId(
+  listAllSpecialityByProviderTypeId(
     providerTypeId: [Int!]!
     language: LanguageEnum!
     search: String
