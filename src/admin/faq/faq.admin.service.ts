@@ -7,9 +7,10 @@ import { UpdateFaqInput } from './dto/update-faq.input';
 @Injectable()
 export class FaqAdminService {
   constructor(private prisma: PrismaService) {}
-  async create(createFaqInput: CreateFaqInput) {
+  async create(createFaqInput: CreateFaqInput, language: LanguageEnum) {
     return await this.prisma.fAQ.create({
       data: {
+        language,
         ...createFaqInput,
       },
     });

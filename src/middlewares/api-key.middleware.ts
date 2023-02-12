@@ -14,6 +14,9 @@ export class ApiKeyMiddleware implements NestMiddleware {
     if (req?.url?.includes('/graphql')) {
       return next();
     }
+    if (req?.url?.includes('/upload')) {
+      return next();
+    }
 
     if (!apiKey) {
       throw new HttpException('api key not found', HttpStatus.UNAUTHORIZED);

@@ -9,8 +9,11 @@ export class FaqAdminResolver {
   constructor(private readonly faqAdminService: FaqAdminService) {}
 
   @Mutation('createFaq')
-  create(@Args('createFaqInput') createFaqInput: CreateFaqInput) {
-    return this.faqAdminService.create(createFaqInput);
+  create(
+    @Args('createFaqInput') createFaqInput: CreateFaqInput,
+    @Args('language') language: LanguageEnum,
+  ) {
+    return this.faqAdminService.create(createFaqInput, language);
   }
 
   @Query('faq')
