@@ -8,9 +8,13 @@ import { UpdateLearnIconInput } from './dto/update-learn-icon.input';
 export class LearnIconAdminService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createLearnIconInput: CreateLearnIconInput) {
+  async create(
+    createLearnIconInput: CreateLearnIconInput,
+    language: LanguageEnum,
+  ) {
     return await this.prisma.learnIcon.create({
       data: {
+        language,
         ...createLearnIconInput,
       },
     });

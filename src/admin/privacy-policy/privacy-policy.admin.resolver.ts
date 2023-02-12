@@ -14,8 +14,13 @@ export class PrivacyPolicyAdminResolver {
   create(
     @Args('createPrivacyPolicyInput')
     createPrivacyPolicyInput: CreatePrivacyPolicyInput,
+    @Args('language')
+    language: LanguageEnum,
   ) {
-    return this.privacyPolicyAdminService.create(createPrivacyPolicyInput);
+    return this.privacyPolicyAdminService.create(
+      createPrivacyPolicyInput,
+      language,
+    );
   }
 
   @Query('privacyPolicy')

@@ -14,8 +14,13 @@ export class WelcomeScreenAdminResolver {
   create(
     @Args('createWelcomeScreenInput')
     createWelcomeScreenInput: CreateWelcomeScreenInput,
+    @Args('language')
+    language: LanguageEnum,
   ) {
-    return this.welcomeScreenAdminService.create(createWelcomeScreenInput);
+    return this.welcomeScreenAdminService.create(
+      createWelcomeScreenInput,
+      language,
+    );
   }
 
   @Query('welcomeScreen')

@@ -8,42 +8,42 @@ import { LanguageEnum } from '@prisma/client';
 export class PrivacyPolicyAdminService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createPrivacyPolicyInput: CreatePrivacyPolicyInput) {
+  async create(
+    createPrivacyPolicyInput: CreatePrivacyPolicyInput,
+    language: LanguageEnum,
+  ) {
     return await this.prisma.privacyPolicy.create({
       data: {
-        ...createPrivacyPolicyInput
-      }
-    })
+        language,
+        ...createPrivacyPolicyInput,
+      },
+    });
   }
-
 
   async findAll(language: LanguageEnum) {
     return await this.prisma.privacyPolicy.findMany({
-      where:{
-        language
-      }
-    })
+      where: {
+        language,
+      },
+    });
   }
-
- 
 
   async update(updatePrivacyPolicyInput: UpdatePrivacyPolicyInput) {
     return await this.prisma.privacyPolicy.update({
       where: {
-        id : updatePrivacyPolicyInput.id
+        id: updatePrivacyPolicyInput.id,
       },
       data: {
-        ...updatePrivacyPolicyInput
-
-      }
-    })}
-
-  async remove(id: number) {
-    return   await this.prisma.privacyPolicy.delete({
-      where: {
-        id
-      }
-    })}
-
+        ...updatePrivacyPolicyInput,
+      },
+    });
   }
 
+  async remove(id: number) {
+    return await this.prisma.privacyPolicy.delete({
+      where: {
+        id,
+      },
+    });
+  }
+}

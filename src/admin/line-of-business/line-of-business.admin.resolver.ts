@@ -14,8 +14,13 @@ export class LineOfBusinessAdminResolver {
   create(
     @Args('createLineOfBusinessInput')
     createLineOfBusinessInput: CreateLineOfBusinessInput,
+    @Args('language')
+    language: LanguageEnum,
   ) {
-    return this.lineOfBusinessAdminService.create(createLineOfBusinessInput);
+    return this.lineOfBusinessAdminService.create(
+      createLineOfBusinessInput,
+      language,
+    );
   }
 
   @Query('lineOfBusiness')

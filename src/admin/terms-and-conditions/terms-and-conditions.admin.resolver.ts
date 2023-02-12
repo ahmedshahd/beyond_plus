@@ -14,9 +14,12 @@ export class TermsAndConditionsAdminResolver {
   create(
     @Args('createTermsAndConditionsInput')
     createTermsAndConditionInput: CreateTermsAndConditionsInput,
+    @Args('language')
+    language: LanguageEnum,
   ) {
     return this.termsAndConditionsAdminService.create(
       createTermsAndConditionInput,
+      language,
     );
   }
 

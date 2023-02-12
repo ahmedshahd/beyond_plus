@@ -7,36 +7,42 @@ import { UpdateTermsAndConditionsInput } from './dto/update-terms-and-conditions
 export class TermsAndConditionsAdminService {
   constructor(private prisma: PrismaService) {}
 
-  async  create(createTermsAndConditionsInput: CreateTermsAndConditionsInput) {
+  async create(
+    createTermsAndConditionsInput: CreateTermsAndConditionsInput,
+    language: LanguageEnum,
+  ) {
     return await this.prisma.termsAndConditions.create({
-      data:{
-        ...createTermsAndConditionsInput
-      }
-    })
-  }
-
-  async findAll(language:LanguageEnum) {
-    return await this.prisma.termsAndConditions.findMany({
-      where:{
-        language
+      data: {
+        language,
+        ...createTermsAndConditionsInput,
       },
-    })
+    });
   }
 
-  async update( updateTermsAndConditionsInput: UpdateTermsAndConditionsInput) {
+  async findAll(language: LanguageEnum) {
+    return await this.prisma.termsAndConditions.findMany({
+      where: {
+        language,
+      },
+    });
+  }
+
+  async update(updateTermsAndConditionsInput: UpdateTermsAndConditionsInput) {
     return await this.prisma.termsAndConditions.update({
       where: {
-                 id:updateTermsAndConditionsInput.id      },
+        id: updateTermsAndConditionsInput.id,
+      },
       data: {
-        ...updateTermsAndConditionsInput
-      }
-    })}
+        ...updateTermsAndConditionsInput,
+      },
+    });
+  }
 
-    async remove(id: number) {
-      return await this.prisma.termsAndConditions.delete({
-        where:{
-          id
-        }
-      })
-    }
+  async remove(id: number) {
+    return await this.prisma.termsAndConditions.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }

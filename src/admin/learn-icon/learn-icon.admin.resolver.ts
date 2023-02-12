@@ -11,8 +11,9 @@ export class LearnIconAdminResolver {
   @Mutation('createLearnIcon')
   create(
     @Args('createLearnIconInput') createLearnIconInput: CreateLearnIconInput,
+    @Args('language') language: LanguageEnum,
   ) {
-    return this.learnIconAdminService.create(createLearnIconInput);
+    return this.learnIconAdminService.create(createLearnIconInput, language);
   }
 
   @Query('learnIcon')

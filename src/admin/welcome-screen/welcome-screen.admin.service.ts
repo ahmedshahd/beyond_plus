@@ -7,9 +7,13 @@ import { UpdateWelcomeScreenInput } from './dto/update-welcome-screen.input';
 export class WelcomeScreenAdminService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createWelcomeScreenInput: CreateWelcomeScreenInput) {
+  async create(
+    createWelcomeScreenInput: CreateWelcomeScreenInput,
+    language: LanguageEnum,
+  ) {
     return await this.prisma.welcomeScreen.create({
       data: {
+        language,
         ...createWelcomeScreenInput,
       },
     });

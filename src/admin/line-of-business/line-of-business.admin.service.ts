@@ -7,9 +7,13 @@ import { UpdateLineOfBusinessInput } from './dto/update-line-of-business.input';
 export class LineOfBusinessAdminService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createLineOfBusinessInput: CreateLineOfBusinessInput) {
+  async create(
+    createLineOfBusinessInput: CreateLineOfBusinessInput,
+    language: LanguageEnum,
+  ) {
     return await this.prisma.lineOfBusiness.create({
       data: {
+        language,
         ...createLineOfBusinessInput,
       },
     });
