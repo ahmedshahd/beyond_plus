@@ -9,8 +9,11 @@ export class LabelAdminResolver {
   constructor(private readonly labelAdminService: LabelAdminService) {}
 
   @Mutation('createLabel')
-  create(@Args('createLabelInput') createLabelInput: CreateLabelInput) {
-    return this.labelAdminService.create(createLabelInput);
+  create(
+    @Args('createLabelInput') createLabelInput: CreateLabelInput,
+    @Args('language') language: LanguageEnum,
+  ) {
+    return this.labelAdminService.create(createLabelInput, language);
   }
 
   @Query('label')

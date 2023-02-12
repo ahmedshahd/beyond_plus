@@ -7,9 +7,10 @@ import { UpdateLabelInput } from './dto/update-label.input';
 @Injectable()
 export class LabelAdminService {
   constructor(private prisma: PrismaService) {}
-  async create(createLabelInput: CreateLabelInput) {
+  async create(createLabelInput: CreateLabelInput, language: LanguageEnum) {
     return await this.prisma.label.create({
       data: {
+        language,
         ...createLabelInput,
       },
     });
