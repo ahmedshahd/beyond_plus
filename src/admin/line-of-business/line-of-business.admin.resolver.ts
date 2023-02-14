@@ -24,7 +24,7 @@ export class LineOfBusinessAdminResolver {
   }
 
   @Query('lineOfBusiness')
-  findAll(language: LanguageEnum) {
+  findAll(@Args('language') language: LanguageEnum) {
     return this.lineOfBusinessAdminService.findAll(language);
   }
 

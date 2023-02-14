@@ -24,7 +24,7 @@ export class TermsAndConditionsAdminResolver {
   }
 
   @Query('termsAndConditions')
-  findAll(language: LanguageEnum) {
+  findAll(@Args('language') language: LanguageEnum) {
     return this.termsAndConditionsAdminService.findAll(language);
   }
 
