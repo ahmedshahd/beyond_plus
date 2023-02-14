@@ -1,5 +1,4 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { LanguageEnum } from '@prisma/client';
 import { ContactUsAdminService } from './contact-us.admin.service';
 import { CreateContactUsInput } from './dto/create-contact-us.input';
 import { UpdateContactUsInput } from './dto/update-contact-us.input';
@@ -12,6 +11,7 @@ export class ContactUsAdminResolver {
   create(
     @Args('createContactUsInput') createContactUsInput: CreateContactUsInput,
   ) {
+    console.log(createContactUsInput);
     return this.contactUsAdminService.create(createContactUsInput);
   }
 

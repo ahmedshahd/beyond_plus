@@ -1,4 +1,3 @@
-import { LanguageEnum, Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { CreateContactUsInput } from './dto/create-contact-us.input';
 import { UpdateContactUsInput } from './dto/update-contact-us.input';

@@ -24,7 +24,7 @@ export class WelcomeScreenAdminResolver {
   }
 
   @Query('welcomeScreen')
-  findAll(language: LanguageEnum) {
+  findAll(@Args('language') language: LanguageEnum) {
     return this.welcomeScreenAdminService.findAll(language);
   }
 
