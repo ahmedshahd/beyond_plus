@@ -17,7 +17,7 @@ export class LabelAdminResolver {
   }
 
   @Query('label')
-  findAll(language: LanguageEnum) {
+  findAll(@Args('language') language: LanguageEnum) {
     return this.labelAdminService.findAll(language);
   }
 
