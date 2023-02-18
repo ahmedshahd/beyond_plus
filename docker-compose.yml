@@ -21,58 +21,59 @@ services:
       MULTER_MAX_FILE_SIZE: 1e+8
       MULTER_DESTINATION: /public/files
     restart: always
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.plus.rule=Host(`plus.beyond-solution.com`)"
-      - "traefik.http.routers.plus.service=plus"
-      - "traefik.http.routers.plus.entrypoints=websecure"
-      - "traefik.http.services.plus.loadbalancer.server.port=8000"
-      - "traefik.http.routers.plus.tls=true"
-      - "traefik.http.routers.plus.tls.certresolver=letsencrypt"
-      - "traefik.http.services.plus.loadbalancer.passhostheader=true"
-  traefik:
-    image: traefik:v2.7.0
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - traefik-certificates:/etc/traefik/acme
-    command:
-      - "--log.level=WARN"
-      - "--accesslog=true"
-      - "--api.dashboard=true"
-      - "--api.insecure=true"
-      - "--ping=true"
-      - "--ping.entrypoint=ping"
-      - "--entryPoints.ping.address=:8082"
-      - "--entryPoints.web.address=:80"
-      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-      - "--entryPoints.websecure.address=:443"
-      - "--providers.docker=true"
-      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
-      - "--providers.docker.exposedByDefault=false"
-      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
-      - "--certificatesresolvers.letsencrypt.acme.email=muhammad.elshafie@beyond-solution.com"
-      - "--certificatesresolvers.letsencrypt.acme.storage=/etc/traefik/acme/acme.json"
-    ports:
-      - 80:80
-      - 443:443
-      - 8080:8080
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.plus.rule=Host(`plus.beyond-solution.com`)"
+    #   - "traefik.http.routers.plus.service=plus"
+    #   - "traefik.http.routers.plus.entrypoints=websecure"
+    #   - "traefik.http.services.plus.loadbalancer.server.port=8000"
+    #   - "traefik.http.routers.plus.tls=true"
+    #   - "traefik.http.routers.plus.tls.certresolver=letsencrypt"
+    #   - "traefik.http.services.plus.loadbalancer.passhostheader=true"
+  # traefik:
+  #   image: traefik:v2.7.0
+  #   restart: unless-stopped
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - traefik-certificates:/etc/traefik/acme
+  #   command:
+  #     - "--log.level=WARN"
+  #     - "--accesslog=true"
+  #     - "--api.dashboard=true"
+  #     - "--api.insecure=true"
+  #     - "--ping=true"
+  #     - "--ping.entrypoint=ping"
+  #     - "--entryPoints.ping.address=:8082"
+  #     - "--entryPoints.web.address=:80"
+  #     - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+  #     - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+  #     - "--entryPoints.websecure.address=:443"
+  #     - "--providers.docker=true"
+  #     - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+  #     - "--providers.docker.exposedByDefault=false"
+  #     - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+  #     - "--certificatesresolvers.letsencrypt.acme.email=muhammad.elshafie@beyond-solution.com"
+  #     - "--certificatesresolvers.letsencrypt.acme.storage=/etc/traefik/acme/acme.json"
+      
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #     - 8080:8080
 
-  cache:
-    image: redis
-    container_name: redis
-    ports:
-      - 6379:6379
-    command:
-      - redis-server
-      - /redis.conf
-    volumes:
-      - /redis.conf:/redis.conf  
-    restart: always
+    cache:
+      image: redis:latest
+      container_name: redis
+      ports:
+        - 6379:6379
+      command:
+        - redis-server
+        - /redis.conf
+      volumes:
+        - /redis.conf:/redis.conf  
+      restart: always
 
 volumes:
   redis:
     driver: local
-  traefik-certificates:
+  # traefik-certificates:
 
