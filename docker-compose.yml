@@ -23,13 +23,15 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.plus.rule=Host(`plus.beyond-solution.com`) && PathPrefix(`/bull`)"
+      - "traefik.http.routers.plus.rule=Host(`plus.beyond-solution.com`) "
       - "traefik.http.routers.plus.service=plus"
       - "traefik.http.routers.plus.entrypoints=websecure"
       - "traefik.http.services.plus.loadbalancer.server.port=8000"
       - "traefik.http.routers.plus.tls=true"
       - "traefik.http.routers.plus.tls.certresolver=letsencrypt"
       - "traefik.http.services.plus.loadbalancer.passhostheader=true"
+      - "traefik.http.routers.plus.middlewares=plus-stripprefix"
+      - "traefik.http.middlewares.plus-stripprefix.stripprefix.prefixes=/bull"
   traefik:
     image: traefik:v2.7.0
     restart: unless-stopped
@@ -76,3 +78,5 @@ volumes:
     driver: local
   traefik-certificates:
 
+
+    
