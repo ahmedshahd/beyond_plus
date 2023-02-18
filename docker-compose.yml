@@ -35,8 +35,8 @@ services:
 
 volumes:
     redis:
-    driver: local
-
+     driver: local
+ 
 
 
     # labels:
