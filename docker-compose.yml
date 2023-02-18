@@ -21,6 +21,24 @@ services:
       MULTER_MAX_FILE_SIZE: 1e+8
       MULTER_DESTINATION: /public/files
     restart: always
+  cache:
+      image: redis:latest
+      container_name: redis
+      ports:
+        - 6379:6379
+      command:
+        - redis-server
+        - /redis.conf
+      volumes:
+        - /redis.conf:/redis.conf  
+      restart: always
+
+volumes:
+    redis:
+    driver: local
+
+
+
     # labels:
     #   - "traefik.enable=true"
     #   - "traefik.http.routers.plus.rule=Host(`plus.beyond-solution.com`)"
@@ -60,20 +78,6 @@ services:
   #     - 443:443
   #     - 8080:8080
 
-    cache:
-      image: redis:latest
-      container_name: redis
-      ports:
-        - 6379:6379
-      command:
-        - redis-server
-        - /redis.conf
-      volumes:
-        - /redis.conf:/redis.conf  
-      restart: always
-
-volumes:
-  redis:
-    driver: local
+ 
   # traefik-certificates:
 
