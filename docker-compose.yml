@@ -23,7 +23,7 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.plus.rule=Host(`plus.beyond-solution.com`)"
+      - "traefik.http.routers.plus.rule=Host(`plus.beyond-solution.com`) && PathPrefix(`/bull`)"
       - "traefik.http.routers.plus.service=plus"
       - "traefik.http.routers.plus.entrypoints=websecure"
       - "traefik.http.services.plus.loadbalancer.server.port=8000"
