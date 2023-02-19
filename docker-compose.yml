@@ -6,20 +6,20 @@ services:
       context: .
       dockerfile: dockerfile
     container_name: beyond-plus-backend
-    links:
-      - cache
     depends_on:
-      - cache
+      - redis
     ports:
       - "8000:8000"
     environment:
       DATABASE_URL: postgresql://postgres:9qmOq80u8Sj@beyond-plus-db.cvm3ri1wjhhb.us-east-1.rds.amazonaws.com:5432/postgres?schema=public&connection_limit=10000&pool_timeout=0
       PORT: 8000
-      REDIS_HOST: cache
+      REDIS_URL: redis:6379
       REDIS_PORT: 6379
       API_KEY: 2ab9c3d4e5f91ab7c3d4e5f6
       MULTER_MAX_FILE_SIZE: 1e+8
       MULTER_DESTINATION: /public/files
+      CHOKIDAR_USEPOLLING: 'true'
+      CHOKIDAR_INTERVAL: 1000
     restart: always
     labels:
       - "traefik.enable=true"
@@ -61,16 +61,25 @@ services:
       - 443:443
       - 8080:8080
 
-  cache:
-    image: redis:latest
+  redis-commander:
+    container_name: redis-commander
+    image: rediscommander/redis-commander
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"    
+
+  redis:
+    image: redis
     container_name: redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
     ports:
       - 6379:6379
     command:
       - redis-server
       - /redis.conf
-    volumes:
-      - /redis.conf:/redis.conf  
     restart: always
 
 volumes:

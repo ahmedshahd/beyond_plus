@@ -7,18 +7,22 @@ import { BullModule } from '@nestjs/bull';
 import * as Queue from 'bull';
 import * as basicAuth from 'express-basic-auth';
 import { CSV_QUEUE } from './medical-network/constants/queue.data';
-import { Queue as QueueMQ, Worker } from 'bullmq';
+// import { Queue as QueueMQ, Worker } from 'bullmq';
 
 import {
   ExpressAdapter,
   createBullBoard,
   BullMQAdapter,
+  BullAdapter,
 } from '@bull-board/express';
+import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
     logger: ['error', 'warn', 'log'],
   });
+
+  let configService = app.get(ConfigService);
 
   app.use(json({ limit: '100mb' }));
   app.use(urlencoded({ limit: '100mb', extended: true }));
@@ -40,19 +44,19 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  const redisOptions = {
-    host: 'localhost',
-  };
+  // const redisOptions = {
+  //   host: 'localhost',
+  // };
 
-  const csvQUEUE = new QueueMQ(CSV_QUEUE, { connection: redisOptions });
+  const csvQUEUE = new Queue(CSV_QUEUE, {
+    redis: configService.get<string>('REDIS_URL'),
+  });
 
   const serverAdapter = new ExpressAdapter();
   serverAdapter.setBasePath('/admin/queues');
 
   const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
-    queues: [
-      new BullMQAdapter(csvQUEUE, { allowRetries: true, readOnlyMode: true }),
-    ],
+    queues: [new BullAdapter(csvQUEUE, { readOnlyMode: true })],
     serverAdapter: serverAdapter,
   });
 
@@ -71,6 +75,6 @@ async function bootstrap() {
     serverAdapter.getRouter(),
   );
 
-  await app.listen(8000);
+  await app.listen(configService.get<string>('PORT') || 8000);
 }
 bootstrap();
