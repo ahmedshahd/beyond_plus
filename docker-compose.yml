@@ -7,15 +7,15 @@ services:
       dockerfile: dockerfile
     container_name: beyond-plus-backend
     links:
-      - redis
+      - cache
     depends_on:
-      - redis
+      - cache
     ports:
       - "8000:8000"
     environment:
       DATABASE_URL: postgresql://postgres:9qmOq80u8Sj@beyond-plus-db.cvm3ri1wjhhb.us-east-1.rds.amazonaws.com:5432/postgres?schema=public&connection_limit=10000&pool_timeout=0
       PORT: 8000
-      REDIS_HOST: redis
+      REDIS_HOST: cache
       REDIS_PORT: 6379
       API_KEY: 2ab9c3d4e5f91ab7c3d4e5f6
       MULTER_MAX_FILE_SIZE: 1e+8
@@ -23,15 +23,13 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.plus.rule=Host(`plus.beyond-solution.com`) "
+      - "traefik.http.routers.plus.rule=Host(`plus.beyond-solution.com`)"
       - "traefik.http.routers.plus.service=plus"
       - "traefik.http.routers.plus.entrypoints=websecure"
       - "traefik.http.services.plus.loadbalancer.server.port=8000"
       - "traefik.http.routers.plus.tls=true"
       - "traefik.http.routers.plus.tls.certresolver=letsencrypt"
       - "traefik.http.services.plus.loadbalancer.passhostheader=true"
-      - "traefik.http.routers.plus.middlewares=plus-stripprefix"
-      - "traefik.http.middlewares.plus-stripprefix.stripprefix.prefixes=/bull"
   traefik:
     image: traefik:v2.7.0
     restart: unless-stopped
@@ -61,44 +59,20 @@ services:
       - 443:443
       - 8080:8080
 
-
-  redis:
+  cache:
     image: redis
     container_name: redis
     ports:
       - 6379:6379
-    command:  sh -c 'chmod +x /entrypoint.sh && /entrypoint.sh'
+    command:
+      - redis-server
+      - /redis.conf
     volumes:
-      - redis_data:/data
-      - ./redis.conf:/redis.conf
-      - ./entrypoint.sh:/entrypoint.sh
+      - /redis.conf:/redis.conf  
     restart: always
 
 volumes:
-  redis_data:
+  redis:
     driver: local
   traefik-certificates:
     driver: local
-
-
-
-#   redis:
-#     image: redis
-#     container_name: redis
-#     ports:
-#       - 6379:6379
-#     command:
-#       - redis-server --appendonly yes && sysctl vm.overcommit_memory=1
-#       - /redis.conf
-#     volumes:
-#         -  redis_data:/data
-#         - /redis.conf:/redis.conf  
-#     restart: always
-
-# volumes:
-#   redis:
-#     driver: local
-#   traefik-certificates:
-
-
-    
