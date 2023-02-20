@@ -61,22 +61,44 @@ services:
       - 443:443
       - 8080:8080
 
+
   redis:
     image: redis
     container_name: redis
     ports:
       - 6379:6379
-    command:
-      - redis-server
-      - /redis.conf
+    command: /entrypoint.sh
     volumes:
-      - /redis.conf:/redis.conf  
+      - redis_data:/data
+      - ./redis.conf:/redis.conf
+      - ./entrypoint.sh:/entrypoint.sh
     restart: always
 
 volumes:
-  redis:
+  redis_data:
     driver: local
   traefik-certificates:
+    driver: local
+
+
+
+#   redis:
+#     image: redis
+#     container_name: redis
+#     ports:
+#       - 6379:6379
+#     command:
+#       - redis-server --appendonly yes && sysctl vm.overcommit_memory=1
+#       - /redis.conf
+#     volumes:
+#         -  redis_data:/data
+#         - /redis.conf:/redis.conf  
+#     restart: always
+
+# volumes:
+#   redis:
+#     driver: local
+#   traefik-certificates:
 
 
     
