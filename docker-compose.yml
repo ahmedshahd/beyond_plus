@@ -64,9 +64,7 @@ services:
     container_name: redis
     ports:
       - 6379:6379
-    command:
-      - redis-server --protected-mode yes --requirepass *PROrat666
-      - /redis.conf
+    command: redis-server --protected-mode yes --requirepass PROrat666
     volumes:
       - /redis.conf:/redis.conf  
     restart: always

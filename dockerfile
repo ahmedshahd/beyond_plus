@@ -4,6 +4,7 @@ ENV PORT=8000
 ENV DATABASE_URL= postgresql://postgres:9qmOq80u8Sj@beyond-plus-db.cvm3ri1wjhhb.us-east-1.rds.amazonaws.com:5432/postgres?schema=public&connection_limit=10000&pool_timeout=0
 ENV REDIS_HOST=localhost
 ENV REDIS_PORT=6379
+ENV REDIS_PORT=PROrat666
 ENV API_KEY=2ab9c3d4e5f91ab7c3d4e5f6
 ENV MULTER_MAX_FILE_SIZE=1e+8
 ENV MULTER_DESTINATION=/public/files
