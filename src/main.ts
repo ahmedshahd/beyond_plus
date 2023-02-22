@@ -43,7 +43,6 @@ async function bootstrap() {
 
   const redisOptions = {
     host: configService.get<string>('REDIS_HOST'),
-    password: configService.get<string>('REDIS_PASSWORD'),
   };
 
   const csvQUEUE = new Queue(CSV_QUEUE, { redis: redisOptions });
