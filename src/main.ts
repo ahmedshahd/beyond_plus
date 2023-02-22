@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { json, urlencoded } from 'express';
@@ -19,7 +20,7 @@ async function bootstrap() {
     cors: true,
     logger: ['error', 'warn', 'log'],
   });
-
+  const configService = app.get(ConfigService);
   app.use(json({ limit: '100mb' }));
   app.use(urlencoded({ limit: '100mb', extended: true }));
 
@@ -41,7 +42,8 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   const redisOptions = {
-    host: 'localhost',
+    host: configService.get<string>('REDIS_HOST'),
+    password: configService.get<string>('REDIS_PASSWORD'),
   };
 
   const csvQUEUE = new Queue(CSV_QUEUE, { redis: redisOptions });
