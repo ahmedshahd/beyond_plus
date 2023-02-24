@@ -33,6 +33,7 @@ import { ApiKeyModule } from './auth/api-key/api-key.module';
 import { UserAdminModule } from './admin/user/user.admin.module';
 import { AddressAdminModule } from './admin/address/address.admin.module';
 import { ApiKeyMiddleware } from './middlewares/api-key.middleware';
+import { CsvUploaderModule } from './csv-uploader/csv-uploader.module';
 
 @Module({
   imports: [
@@ -97,6 +98,7 @@ import { ApiKeyMiddleware } from './middlewares/api-key.middleware';
       }),
       inject: [ConfigService],
     }),
+    CsvUploaderModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
