@@ -1,4 +1,4 @@
-FROM node:14-alpine As production
+FROM node:16.17.1-alpine As production
 
 ENV PORT=8000
 ENV DATABASE_URL= postgresql://postgres:9qmOq80u8Sj@beyond-plus-db.cvm3ri1wjhhb.us-east-1.rds.amazonaws.com:5432/postgres?schema=public&connection_limit=10000&pool_timeout=0
@@ -10,7 +10,7 @@ WORKDIR /usr/src/service
 
 COPY ./package.json /usr/src/service/package.json
 
-# COPY ./package-lock.json /usr/src/service/package-lock.json
+COPY ./package-lock.json /usr/src/service/package-lock.json
 
 COPY ./prisma /usr/src/service/prisma
 
