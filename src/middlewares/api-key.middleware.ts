@@ -14,9 +14,7 @@ export class ApiKeyMiddleware implements NestMiddleware {
     if (req?.url?.includes('/graphql')) {
       return next();
     }
-    if (req?.url?.includes('/bull')) {
-      return next();
-    }
+
     if (req?.url?.includes('/upload')) {
       return next();
     }

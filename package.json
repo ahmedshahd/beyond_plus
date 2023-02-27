@@ -22,7 +22,6 @@
     "prisma:generate": "npx prisma generate"
   },
   "dependencies": {
-    "@bull-board/express": "^4.12.1",
     "@nestjs/apollo": "^10.1.3",
     "@nestjs/axios": "^1.0.0",
     "@nestjs/cli": "^9.0.0",
