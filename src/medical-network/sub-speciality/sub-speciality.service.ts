@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { LanguageEnum } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { getPagination } from '../helpers/pagination-util';
+import { CreateSubSpecialityInput } from './dto/create-speciality.input';
+import { UpdateSubSpecialityInput } from './dto/update-speciality.input';
 
 @Injectable()
 export class SubSpecialityService {
@@ -42,5 +44,37 @@ export class SubSpecialityService {
       subSpeciality: result,
       pagination: pagination.response,
     };
+  }
+  async create(
+    createSubSpecialityInput: CreateSubSpecialityInput,
+    language: LanguageEnum,
+  ) {
+    console.log('createSubSpecialityInput', createSubSpecialityInput);
+    return await this.prisma.subSpeciality.create({
+      data: {
+        language,
+        ...createSubSpecialityInput,
+      },
+    });
+  }
+
+  async update(updateSubSpecialityInput: UpdateSubSpecialityInput) {
+    console.log('updateSubSpecialityInput', updateSubSpecialityInput);
+    return await this.prisma.subSpeciality.update({
+      where: {
+        id: updateSubSpecialityInput.id,
+      },
+      data: {
+        ...updateSubSpecialityInput,
+      },
+    });
+  }
+
+  async remove(id: number) {
+    return await this.prisma.subSpeciality.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

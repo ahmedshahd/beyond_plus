@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { LanguageEnum } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { getPagination } from '../helpers/pagination-util';
+import { CreateProviderInput } from './dto/create-provider.input';
+import { UpdateProviderInput } from './dto/update-provider.input';
 
 @Injectable()
 export class ProviderService {
@@ -52,5 +54,38 @@ export class ProviderService {
       provider: result,
       pagination: pagination.response,
     };
+  }
+
+  async create(
+    createProviderInput: CreateProviderInput,
+    language: LanguageEnum,
+  ) {
+    console.log('createProviderInput', createProviderInput);
+    return await this.prisma.provider.create({
+      data: {
+        language,
+        ...createProviderInput,
+      },
+    });
+  }
+
+  async update(updateProviderInput: UpdateProviderInput) {
+    console.log('updateProviderInput', updateProviderInput);
+    return await this.prisma.provider.update({
+      where: {
+        id: updateProviderInput.id,
+      },
+      data: {
+        ...updateProviderInput,
+      },
+    });
+  }
+
+  async remove(id: number) {
+    return await this.prisma.provider.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

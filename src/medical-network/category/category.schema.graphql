@@ -4,7 +4,8 @@ type Category {
   id: Int!
   tier: String!
   tierRank: String!
-  insuranceCompany: InsuranceCompany!
+  insuranceCompany: InsuranceCompany
+  insuranceCompanyId: Int!
   language: LanguageEnum!
   createdAt: DateTime!
   updatedAt: DateTime
@@ -15,6 +16,19 @@ type CategoryByPagination {
   pagination: Pagination
 }
 
+input CreateCategoryInput {
+  tier: String!
+  tierRank: String!
+  insuranceCompanyId: Int!
+}
+
+input UpdateCategoryInput {
+  id: Int!
+  tier: String
+  tierRank: String
+  insuranceCompanyId: Int
+}
+
 type Query {
   listAllCateoriesByInsuranceCompanyId(
     insuranceCompanyId: Int!
@@ -23,4 +37,13 @@ type Query {
     page: Int
     limit: Int
   ): CategoryByPagination!
+}
+
+type Mutation {
+  createCategory(
+    createCategoryInput: CreateCategoryInput!
+    language: LanguageEnum!
+  ): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  removeCategory(id: Int!): Category
 }

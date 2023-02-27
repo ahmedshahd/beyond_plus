@@ -3,7 +3,6 @@ scalar DateTime
 type Provider {
   id: Int!
   name: String!
-  language: LanguageEnum!
   address: String
   longitude: Float
   latitude: Float
@@ -12,19 +11,53 @@ type Provider {
   isOnline: Boolean
   hasChronicMedication: Boolean
   websiteUrl: String
-  createdAt: DateTime
-  updatedAt: DateTime
   areaId: Int
   area: Area
   speciality: Speciality
   specialityId: Int
   subSpeciality: SubSpeciality
   subSpecialityId: Int
+  language: LanguageEnum!
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 type ProviderByPagination {
   provider: [Provider]!
   pagination: Pagination
+}
+
+input CreateProviderInput {
+  name: String!
+  address: String
+  longitude: Float
+  latitude: Float
+  phoneNumber: [String]
+  email: String
+  isOnline: Boolean
+  hasChronicMedication: Boolean
+  websiteUrl: String
+  categoryId: Int
+  areaId: Int
+  specialityId: Int
+  subSpecialityId: Int
+}
+
+input UpdateProviderInput {
+  id: Int!
+  name: String
+  address: String
+  longitude: Float
+  latitude: Float
+  phoneNumber: [String]
+  email: String
+  isOnline: Boolean
+  hasChronicMedication: Boolean
+  websiteUrl: String
+  categoryId: Int
+  areaId: Int
+  specialityId: Int
+  subSpecialityId: Int
 }
 
 type Query {
@@ -38,4 +71,13 @@ type Query {
     page: Int
     limit: Int
   ): ProviderByPagination!
+}
+
+type Mutation {
+  createProvider(
+    createProviderInput: CreateProviderInput!
+    language: LanguageEnum!
+  ): Provider!
+  updateProvider(updateProviderInput: UpdateProviderInput!): Provider!
+  removeProvider(id: Int!): Provider
 }

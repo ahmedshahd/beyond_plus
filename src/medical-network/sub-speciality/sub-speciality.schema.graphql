@@ -15,6 +15,17 @@ type SubSpecialityByPagination {
   pagination: Pagination
 }
 
+input CreateSubSpecialityInput {
+  name: String!
+  specialityId: Int!
+}
+
+input UpdateSubSpecialityInput {
+  id: Int!
+  name: String
+  specialityId: Int
+}
+
 type Query {
   listAllSubSpecialityBySpecialityId(
     specialityId: [Int!]!
@@ -23,4 +34,15 @@ type Query {
     page: Int
     limit: Int
   ): SubSpecialityByPagination!
+}
+
+type Mutation {
+  createSubSpeciality(
+    createSubSpecialityInput: CreateSubSpecialityInput!
+    language: LanguageEnum!
+  ): SubSpeciality!
+  updateSubSpeciality(
+    updateSubSpecialityInput: UpdateSubSpecialityInput!
+  ): SubSpeciality!
+  removeSubSpeciality(id: Int!): SubSpeciality
 }

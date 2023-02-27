@@ -14,6 +14,17 @@ type ProviderTypeByPagination {
   pagination: Pagination
 }
 
+input CreateProviderTypeInput {
+  name: String!
+  insuranceCompanyId: Int!
+}
+
+input UpdateProviderTypeInput {
+  id: Int!
+  name: String
+  insuranceCompanyId: Int
+}
+
 type Query {
   listAllProviderTypesByInsuranceCompanyId(
     insuranceCompanyId: Int!
@@ -22,4 +33,15 @@ type Query {
     page: Int
     limit: Int
   ): ProviderTypeByPagination!
+}
+
+type Mutation {
+  createProviderType(
+    createProviderTypeInput: CreateProviderTypeInput!
+    language: LanguageEnum!
+  ): ProviderType!
+  updateProviderType(
+    updateProviderTypeInput: UpdateProviderTypeInput!
+  ): ProviderType!
+  removeProviderType(id: Int!): ProviderType
 }

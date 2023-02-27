@@ -131,18 +131,31 @@ model lineOfBusiness {
 
 //********* Medical Network **********//
 
+model Tpa {
+  id                 Int                @id @default(autoincrement())
+  name               String
+  category           Category[]
+  city               City[]
+  providerType       ProviderType[]
+  language           LanguageEnum       @default(ARABIC)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime?          @updatedAt
+  insuranceCompanies InsuranceCompany[]
+
+  @@unique([name, language], name: "Tpa_name_language_unique_constraint")
+}
+
 model InsuranceCompany {
-  id                Int                @id @default(autoincrement())
-  name              String
-  language          LanguageEnum       @default(ARABIC)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime?          @updatedAt
-  parentId          Int?
-  tpa               InsuranceCompany?  @relation("TpaHasInsuranceCompanies", fields: [parentId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  category          Category[]
-  city              City[]
-  insurance_company InsuranceCompany[] @relation("TpaHasInsuranceCompanies")
-  providerType      ProviderType[]
+  id           Int            @id @default(autoincrement())
+  name         String
+  category     Category[]
+  city         City[]
+  providerType ProviderType[]
+  tpaId        Int?
+  Tpa          Tpa?           @relation(fields: [tpaId], references: [id])
+  language     LanguageEnum   @default(ARABIC)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime?      @updatedAt
 
   @@unique([name, language], name: "InsuranceCompany_name_language_unique_constraint")
 }
@@ -157,6 +170,8 @@ model Category {
   updatedAt          DateTime?        @updatedAt
   insuranceCompany   InsuranceCompany @relation(fields: [insuranceCompanyId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   provider           Provider[]
+  Tpa                Tpa?             @relation(fields: [tpaId], references: [id])
+  tpaId              Int?
 
   @@unique([tierRank, language, insuranceCompanyId], name: "Category_tierRank_language_insuranceCompanyId_unique_constraint")
 }
@@ -164,12 +179,14 @@ model Category {
 model ProviderType {
   id                 Int              @id @default(autoincrement())
   name               String
-  language           LanguageEnum     @default(ARABIC)
   insuranceCompanyId Int
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime?        @updatedAt
   insuranceCompany   InsuranceCompany @relation(fields: [insuranceCompanyId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   speciality         Speciality[]
+  Tpa                Tpa?             @relation(fields: [tpaId], references: [id])
+  tpaId              Int?
+  language           LanguageEnum     @default(ARABIC)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime?        @updatedAt
 
   @@unique([name, language, insuranceCompanyId], name: "ProviderType_name_language_insuranceCompanyId_unique_constraint")
 }
@@ -177,18 +194,15 @@ model ProviderType {
 model Provider {
   id                   Int            @id @default(autoincrement())
   name                 String
-  language             LanguageEnum   @default(ARABIC)
   address              String
-  longitude            Float
-  latitude             Float
+  longitude            Float?
+  latitude             Float?
   phoneNumber          String[]
-  email                String
-  fax                  String         @default("")
-  isOnline             Boolean
-  hasChronicMedication Boolean
-  websiteUrl           String
-  createdAt            DateTime       @default(now())
-  updatedAt            DateTime?      @updatedAt
+  email                String?
+  fax                  String?        @default("")
+  isOnline             Boolean?
+  hasChronicMedication Boolean?
+  websiteUrl           String?
   areaId               Int
   area                 Area           @relation(fields: [areaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   categoryId           Int
@@ -197,8 +211,11 @@ model Provider {
   speciality           Speciality     @relation(fields: [specialityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   subSpecialityId      Int?
   subSpeciality        SubSpeciality? @relation(fields: [subSpecialityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  language             LanguageEnum   @default(ARABIC)
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime?      @updatedAt
 
-  @@unique([name, language, areaId, specialityId, categoryId, address, phoneNumber, fax, email, websiteUrl, longitude, latitude], name: "Provider_name_language_speciality_areaId_categoryId_address_phoneNumber_fax_email_websiteUrl_longitude_latitude_unique_constraint")
+  @@unique([name, language, areaId, specialityId, categoryId, address, phoneNumber], name: "Provider_name_language_speciality_areaId_categoryId_address_phoneNumber_unique_constraint")
 }
 
 model Speciality {
@@ -242,14 +259,16 @@ model Country {
 model City {
   id                 Int              @id @default(autoincrement())
   name               String
-  language           LanguageEnum     @default(ARABIC)
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime?        @updatedAt
   countryId          Int
   insuranceCompanyId Int
   country            Country          @relation(fields: [countryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   insuranceCompany   InsuranceCompany @relation(fields: [insuranceCompanyId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   area               Area[]
+  Tpa                Tpa?             @relation(fields: [tpaId], references: [id])
+  tpaId              Int?
+  language           LanguageEnum     @default(ARABIC)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime?        @updatedAt
 
   @@unique([name, language, countryId, insuranceCompanyId], name: "City_name_language_countryId_insuranceCompanyId_unique_constraint")
 }

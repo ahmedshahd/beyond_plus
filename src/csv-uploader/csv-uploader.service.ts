@@ -98,14 +98,14 @@ export class CsvUploaderService {
             },
           });
 
-          const tpa = await prisma.insuranceCompany.upsert({
+          const tpa = await prisma.tpa.upsert({
             where: {
-              InsuranceCompany_name_language_unique_constraint: {
+              Tpa_name_language_unique_constraint: {
                 name: tpaName,
                 language: language,
               },
             },
-            create: { name: tpaName, language: language, parentId: null },
+            create: { name: tpaName, language: language },
             update: {},
           });
 
@@ -119,7 +119,7 @@ export class CsvUploaderService {
             create: {
               name: insuranceCompanyName,
               language: language,
-              parentId: tpa.id,
+              tpaId: tpa.id,
             },
             update: {},
           });
@@ -234,19 +234,14 @@ export class CsvUploaderService {
 
               const provider = await prisma.provider.upsert({
                 where: {
-                  Provider_name_language_speciality_areaId_categoryId_address_phoneNumber_fax_email_websiteUrl_longitude_latitude_unique_constraint:
+                  Provider_name_language_speciality_areaId_categoryId_address_phoneNumber_unique_constraint:
                     {
                       areaId: area.id,
                       categoryId: category.id,
                       name: data.provider.trim(),
                       language: language,
                       address: data.address.trim(),
-                      email: data.email || ' ',
-                      fax: data.fax || ' ',
-                      longitude: parseFloat(data.longitude.trim()) || 0,
-                      latitude: parseFloat(data.latitude.trim()) || 0,
                       phoneNumber: data.phoneNumber.trim().split('|'),
-                      websiteUrl: data.websiteUrl.trim() || '',
                       specialityId: speciality.id,
                     },
                 },

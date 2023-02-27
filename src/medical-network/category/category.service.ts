@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { LanguageEnum } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { getPagination } from '../helpers/pagination-util';
+import { CreateCategoryInput } from './dto/create-category.input';
+import { UpdateCategoryInput } from './dto/update-category.input';
 
 @Injectable()
 export class CategoryService {
@@ -44,5 +46,38 @@ export class CategoryService {
       category: result,
       pagination: pagination.response,
     };
+  }
+
+  async create(
+    createCategoryInput: CreateCategoryInput,
+    language: LanguageEnum,
+  ) {
+    console.log('createTpaInput', createCategoryInput);
+    return await this.prisma.category.create({
+      data: {
+        language,
+        ...createCategoryInput,
+      },
+    });
+  }
+
+  async update(updateCategoryInput: UpdateCategoryInput) {
+    console.log('updateCategoryInput', updateCategoryInput);
+    return await this.prisma.category.update({
+      where: {
+        id: updateCategoryInput.id,
+      },
+      data: {
+        ...updateCategoryInput,
+      },
+    });
+  }
+
+  async remove(id: number) {
+    return await this.prisma.category.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

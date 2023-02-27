@@ -110,14 +110,14 @@ export class UploaderService {
             },
           });
 
-          const tpa = await prisma.insuranceCompany.upsert({
+          const tpa = await prisma.tpa.upsert({
             where: {
-              InsuranceCompany_name_language_unique_constraint: {
+              Tpa_name_language_unique_constraint: {
                 name: tpaName,
                 language: language,
               },
             },
-            create: { name: tpaName, language: language, parentId: null },
+            create: { name: tpaName, language: language },
             update: {},
           });
 
@@ -131,7 +131,7 @@ export class UploaderService {
             create: {
               name: insuranceCompanyName,
               language: language,
-              parentId: tpa.id,
+              tpaId: tpa.id,
             },
             update: {},
           });

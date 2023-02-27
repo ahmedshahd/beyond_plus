@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { LanguageEnum } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { getPagination } from '../helpers/pagination-util';
+import { CreateAreaInput } from './dto/create-area.input';
+import { UpdateAreaInput } from './dto/update-area.input';
 @Injectable()
 export class AreaService {
   constructor(private prisma: PrismaService) {}
@@ -43,5 +45,35 @@ export class AreaService {
       area: result,
       pagination: pagination.response,
     };
+  }
+
+  async create(createAreaInput: CreateAreaInput, language: LanguageEnum) {
+    console.log('createAreaInput', createAreaInput);
+    return await this.prisma.area.create({
+      data: {
+        language,
+        ...createAreaInput,
+      },
+    });
+  }
+
+  async update(updateAreaInput: UpdateAreaInput) {
+    console.log('updateAreaInput', updateAreaInput);
+    return await this.prisma.area.update({
+      where: {
+        id: updateAreaInput.id,
+      },
+      data: {
+        ...updateAreaInput,
+      },
+    });
+  }
+
+  async remove(id: number) {
+    return await this.prisma.area.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

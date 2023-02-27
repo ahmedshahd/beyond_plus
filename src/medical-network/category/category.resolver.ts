@@ -1,7 +1,9 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { LanguageEnum } from '@prisma/client';
 import { PaginationAndSearchArgs } from '../helpers/pagination-util.dto';
 import { CategoryService } from './category.service';
+import { CreateCategoryInput } from './dto/create-category.input';
+import { UpdateCategoryInput } from './dto/update-category.input';
 
 @Resolver('Category')
 export class CategoryResolver {
@@ -19,5 +21,25 @@ export class CategoryResolver {
       args.page,
       args.limit,
     );
+  }
+
+  @Mutation('createCategory')
+  create(
+    @Args('createCategoryInput') createCategoryInput: CreateCategoryInput,
+    @Args('language') language: LanguageEnum,
+  ) {
+    return this.categoryService.create(createCategoryInput, language);
+  }
+
+  @Mutation('updateCategory')
+  update(
+    @Args('updateCategoryInput') updateCategoryInput: UpdateCategoryInput,
+  ) {
+    return this.categoryService.update(updateCategoryInput);
+  }
+
+  @Mutation('removeCategory')
+  remove(@Args('id') id: number) {
+    return this.categoryService.remove(id);
   }
 }

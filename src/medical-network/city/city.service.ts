@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { LanguageEnum } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { getPagination } from '../helpers/pagination-util';
+import { CreateCityInput } from './dto/create-city.input';
+import { UpdateCityInput } from './dto/update.city.input';
 
 @Injectable()
 export class CityService {
@@ -46,5 +48,35 @@ export class CityService {
       city: result,
       pagination: pagination.response,
     };
+  }
+
+  async create(createCityInput: CreateCityInput, language: LanguageEnum) {
+    console.log('createCityInput', createCityInput);
+    return await this.prisma.city.create({
+      data: {
+        language,
+        ...createCityInput,
+      },
+    });
+  }
+
+  async update(updateCityInput: UpdateCityInput) {
+    console.log('updateCityInput', updateCityInput);
+    return await this.prisma.city.update({
+      where: {
+        id: updateCityInput.id,
+      },
+      data: {
+        ...updateCityInput,
+      },
+    });
+  }
+
+  async remove(id: number) {
+    return await this.prisma.city.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

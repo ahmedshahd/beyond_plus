@@ -1,7 +1,9 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { LanguageEnum } from '@prisma/client';
 import { PaginationAndSearchArgs } from '../helpers/pagination-util.dto';
 import { AreaService } from './area.service';
+import { CreateAreaInput } from './dto/create-area.input';
+import { UpdateAreaInput } from './dto/update-area.input';
 
 @Resolver('Area')
 export class AreaResolver {
@@ -20,5 +22,22 @@ export class AreaResolver {
       args.page,
       args.limit,
     );
+  }
+  @Mutation('createArea')
+  create(
+    @Args('createAreaInput') createAreaInput: CreateAreaInput,
+    @Args('language') language: LanguageEnum,
+  ) {
+    return this.areaService.create(createAreaInput, language);
+  }
+
+  @Mutation('updateArea')
+  update(@Args('updateAreaInput') updateAreaInput: UpdateAreaInput) {
+    return this.areaService.update(updateAreaInput);
+  }
+
+  @Mutation('removeArea')
+  remove(@Args('id') id: number) {
+    return this.areaService.remove(id);
   }
 }

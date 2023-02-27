@@ -11,27 +11,13 @@ type InsuranceCompany {
   language: LanguageEnum!
   createdAt: DateTime
   updatedAt: DateTime
-  parentId: Int
-}
-
-type Tpa {
-  id: Int!
-  name: String!
-  language: LanguageEnum!
-  createdAt: DateTime
-  updatedAt: DateTime
-  parentId: Int
+  tpaId: Int
 }
 
 type Pagination {
   totalItemsCount: Int
   pagesCount: Int
   page: Int
-}
-
-type TpaByPagination {
-  tpa: [Tpa]!
-  pagination: Pagination
 }
 
 type InsuranceCompanyByPagination {
@@ -41,33 +27,18 @@ type InsuranceCompanyByPagination {
 
 input CreateInsuranceCompanyInput {
   name: String!
-  parentId: Int
+  tpaId: Int
 }
 
 input UpdateInsuranceCompanyInput {
   id: Int!
-  name: String!
-  parentId: Int
+  name: String
+  tpaId: Int
 }
 
-input CreateTpaInput {
-  name: String!
-}
-
-input UpdateTpaInput {
-  id: Int!
-  name: String!
-}
 type Query {
-  listAllTpas(
-    language: LanguageEnum!
-    search: String
-    page: Int
-    limit: Int
-  ): TpaByPagination!
   listAllInsuranceCompaniesByTpaId(
     tpaId: Int!
-    language: LanguageEnum!
     search: String
     page: Int
     limit: Int
@@ -83,10 +54,4 @@ type Mutation {
     updateInsuranceCompanyInput: UpdateInsuranceCompanyInput!
   ): InsuranceCompany!
   removeInsuranceCompany(id: Int!): InsuranceCompany
-  createTpa(
-    createInsuranceCompanyInput: CreateTpaInput!
-    language: LanguageEnum!
-  ): InsuranceCompany!
-  updateTpa(updateInsuranceCompanyInput: UpdateTpaInput!): InsuranceCompany!
-  removeTpa(id: Int!): Tpa
 }
