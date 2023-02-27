@@ -12,10 +12,7 @@ type Provider {
   hasChronicMedication: Boolean
   websiteUrl: String
   areaId: Int
-  area: Area
-  speciality: Speciality
   specialityId: Int
-  subSpeciality: SubSpeciality
   subSpecialityId: Int
   language: LanguageEnum!
   createdAt: DateTime
@@ -29,17 +26,17 @@ type ProviderByPagination {
 
 input CreateProviderInput {
   name: String!
-  address: String
+  address: String!
   longitude: Float
   latitude: Float
-  phoneNumber: [String]
+  phoneNumber: [String]!
   email: String
   isOnline: Boolean
   hasChronicMedication: Boolean
   websiteUrl: String
-  categoryId: Int
-  areaId: Int
-  specialityId: Int
+  categoryId: Int!
+  areaId: Int!
+  specialityId: Int!
   subSpecialityId: Int
 }
 
