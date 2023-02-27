@@ -34,6 +34,7 @@ import { UserAdminModule } from './admin/user/user.admin.module';
 import { AddressAdminModule } from './admin/address/address.admin.module';
 import { ApiKeyMiddleware } from './middlewares/api-key.middleware';
 import { CsvUploaderModule } from './csv-uploader/csv-uploader.module';
+import { TpaModule } from './medical-network/tpa/tpa.module';
 
 @Module({
   imports: [
@@ -99,6 +100,7 @@ import { CsvUploaderModule } from './csv-uploader/csv-uploader.module';
       inject: [ConfigService],
     }),
     CsvUploaderModule,
+    TpaModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

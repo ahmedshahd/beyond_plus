@@ -3,7 +3,7 @@ scalar DateTime
 type Tpa {
   id: Int!
   name: String!
-  insuranceCompany: [InsuranceCompany]!
+  insuranceCompanies: [InsuranceCompany]
   language: LanguageEnum!
   createdAt: DateTime
   updatedAt: DateTime

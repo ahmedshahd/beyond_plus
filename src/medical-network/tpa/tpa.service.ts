@@ -30,6 +30,9 @@ export class TpaService {
     const result = await this.prisma.tpa.findMany({
       where: { ...whereConditions },
       ...pagination.query,
+      include: {
+        insuranceCompanies: true,
+      },
     });
 
     return {

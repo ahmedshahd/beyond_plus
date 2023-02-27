@@ -9,14 +9,6 @@ import { LanguageEnum } from '@prisma/client';
 export class TpaResolver {
   constructor(private readonly tpaService: TpaService) {}
 
-  @Mutation()
-  createTpa(
-    @Args('createTpaInput') createTpaInput: CreateTpaInput,
-    @Args('language') language: LanguageEnum,
-  ) {
-    return this.tpaService.create(createTpaInput, language);
-  }
-
   @Query('listAllTpas')
   async findAll(
     @Args() args: PaginationAndSearchArgs,
