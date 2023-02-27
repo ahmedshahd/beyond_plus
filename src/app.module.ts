@@ -26,10 +26,7 @@ import { ProviderModule } from './medical-network/provider/provider.module';
 import { CategoryModule } from './medical-network/category/category.module';
 import { SpecialityModule } from './medical-network/speciality/speciality.module';
 import { SubSpecialityModule } from './medical-network/sub-speciality/sub-speciality.module';
-import { UploaderModule } from './medical-network/uploader/uploader.module';
-import { BullModule } from '@nestjs/bull';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ApiKeyModule } from './auth/api-key/api-key.module';
+import { ConfigModule } from '@nestjs/config';
 import { UserAdminModule } from './admin/user/user.admin.module';
 import { AddressAdminModule } from './admin/address/address.admin.module';
 import { ApiKeyMiddleware } from './middlewares/api-key.middleware';
@@ -78,7 +75,6 @@ import { TpaModule } from './medical-network/tpa/tpa.module';
     NotificationClientModule,
     WelcomeScreenAdminModule,
     LineOfBusinessAdminModule,
-    ApiKeyModule,
     InsuranceCompanyModule,
     CountryModule,
     CityModule,
@@ -88,17 +84,6 @@ import { TpaModule } from './medical-network/tpa/tpa.module';
     CategoryModule,
     SpecialityModule,
     SubSpecialityModule,
-    UploaderModule,
-    BullModule.forRootAsync({
-      useFactory: (configService: ConfigService) => ({
-        redis: {
-          host: configService.get<string>('REDIS_HOST'),
-          port: +configService.get<number>('REDIS_PORT'),
-          password: configService.get<string>('REDIS_PASSWORD'),
-        },
-      }),
-      inject: [ConfigService],
-    }),
     CsvUploaderModule,
     TpaModule,
   ],

@@ -20,7 +20,7 @@ import {
   ApiQuery,
 } from '@nestjs/swagger';
 import { LanguageEnum } from '@prisma/client';
-import { multerOptions } from 'src/medical-network/uploader/uploader.options';
+import { multerOptions } from './uploader.options';
 
 @Controller('csv-uploader')
 export class CsvUploaderController {
