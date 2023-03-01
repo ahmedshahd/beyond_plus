@@ -9,6 +9,15 @@ import { UpdateTpaInput } from './dto/update-tpa.input';
 export class TpaService {
   constructor(private prisma: PrismaService) {}
 
+  async getTpaId(name: string) {
+    // console.log('name', name);
+    return await this.prisma.tpa.findFirst({
+      where: {
+        name,
+      },
+    });
+  }
+
   async findAll(
     language: LanguageEnum,
     search: string,

@@ -10,6 +10,11 @@ export class InsuranceCompanyResolver {
     private readonly insuranceCompanyService: InsuranceCompanyService,
   ) {}
 
+  @Query('getInsuranceCompanyId')
+  async getInsuranceCompanyId(@Args('name') name: string) {
+    return this.insuranceCompanyService.getInsuranceCompanyId(name);
+  }
+
   @Query('listAllInsuranceCompaniesByTpaId')
   async listAllInsuranceCompaniesByTpaId(
     @Args() args: PaginationAndSearchArgs,

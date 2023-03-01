@@ -43,6 +43,7 @@ type Query {
     page: Int
     limit: Int
   ): InsuranceCompanyByPagination!
+  getInsuranceCompanyId(name: String!): InsuranceCompany!
 }
 
 type Mutation {

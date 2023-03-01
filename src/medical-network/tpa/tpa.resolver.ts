@@ -13,13 +13,17 @@ export class TpaResolver {
   async findAll(
     @Args() args: PaginationAndSearchArgs,
     @Args('language') language: LanguageEnum,
-  ) /*: [InsuranceCompany]*/ {
+  ) {
     return this.tpaService.findAll(
       language,
       args.search,
       args.page,
       args.limit,
     );
+  }
+  @Query('getTpaId')
+  async getTpaId(@Args('name') name: string) {
+    return this.tpaService.getTpaId(name);
   }
 
   @Mutation('createTpa')
