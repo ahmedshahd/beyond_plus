@@ -9,7 +9,7 @@ import { UpdateCategoryInput } from './dto/update-category.input';
 export class CategoryService {
   constructor(private prisma: PrismaService) {}
 
-  async listAllCateoriesByInsuranceCompanyId(
+  async listAllCategoriesByInsuranceCompanyId(
     language: LanguageEnum,
     insuranceCompanyId: number,
     search: string,
@@ -52,7 +52,7 @@ export class CategoryService {
     createCategoryInput: CreateCategoryInput,
     language: LanguageEnum,
   ) {
-    console.log('createTpaInput', createCategoryInput);
+    console.log('createCategoryInput', createCategoryInput);
     return await this.prisma.category.create({
       data: {
         language,

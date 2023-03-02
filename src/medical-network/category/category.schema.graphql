@@ -30,9 +30,9 @@ input UpdateCategoryInput {
 }
 
 type Query {
-  listAllCateoriesByInsuranceCompanyId(
+  listAllCategoriesByInsuranceCompanyId(
     insuranceCompanyId: Int!
-    language: LanguageEnum
+    language: LanguageEnum!
     search: String
     page: Int
     limit: Int

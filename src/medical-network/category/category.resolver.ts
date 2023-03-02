@@ -8,13 +8,13 @@ import { UpdateCategoryInput } from './dto/update-category.input';
 @Resolver('Category')
 export class CategoryResolver {
   constructor(private readonly categoryService: CategoryService) {}
-  @Query('listAllCateoriesByInsuranceCompanyId')
+  @Query('listAllCategoriesByInsuranceCompanyId')
   async listAllCateoriesByInsuranceCompanyId(
     @Args('language') language: LanguageEnum,
     @Args('insuranceCompanyId') insuranceCompanyId: number,
     @Args() args: PaginationAndSearchArgs,
   ) {
-    return this.categoryService.listAllCateoriesByInsuranceCompanyId(
+    return this.categoryService.listAllCategoriesByInsuranceCompanyId(
       language,
       insuranceCompanyId,
       args.search,
