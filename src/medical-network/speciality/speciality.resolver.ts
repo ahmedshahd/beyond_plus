@@ -11,11 +11,11 @@ export class SpecialityResolver {
   @Query('listAllSpecialityByProviderTypeId')
   async listAllSpecialityByProviderTypeId(
     @Args() args: PaginationAndSearchArgs,
-    @Args('providerId') providerId: number[],
+    @Args('providerTypeId') providerTypeId: number[],
     @Args('language') language: LanguageEnum,
   ) {
     return this.specialityService.listAllSpecialityByProviderTypeId(
-      providerId,
+      providerTypeId,
       language,
       args.search,
       args.page,
