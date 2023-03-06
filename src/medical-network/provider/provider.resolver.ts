@@ -9,7 +9,9 @@ import { ProviderService } from './provider.service';
 export class ProviderResolver {
   constructor(private readonly providerService: ProviderService) {}
 
-  @Query('listAllProvidersByProviderTypeIdAndAreaId')
+  @Query(
+    'listAllProvidersBySpecialityIdAndSubSpecialityIdAndAreaIdAndCategoryId',
+  )
   async listAllProvidersByProviderTypeIdAndAreaId(
     @Args('language') language: LanguageEnum,
     @Args('specialityId') specialityId: number[],
@@ -18,11 +20,11 @@ export class ProviderResolver {
     @Args('categoryId') categoryId: number[],
     @Args() args: PaginationAndSearchArgs,
   ) {
-    return this.providerService.listAllProvidersByProviderTypeIdAndAreaId(
+    return this.providerService.listAllProvidersBySpecialityIdAndSubSpecialityIdAndAreaIdAndCategoryId(
       language,
-      areaId,
       specialityId,
       subSpecialityId,
+      areaId,
       categoryId,
       args.search,
       args.page,

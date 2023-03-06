@@ -9,7 +9,7 @@ import { UpdateProviderInput } from './dto/update-provider.input';
 export class ProviderService {
   constructor(private prisma: PrismaService) {}
 
-  async listAllProvidersByProviderTypeIdAndAreaId(
+  async listAllProvidersBySpecialityIdAndSubSpecialityIdAndAreaIdAndCategoryId(
     language: LanguageEnum,
     specialityId: number[],
     subSpecialityId: number[],
@@ -47,6 +47,7 @@ export class ProviderService {
         area: true,
         speciality: true,
         subSpeciality: true,
+        category: true,
       },
     });
 

@@ -58,7 +58,7 @@ input UpdateProviderInput {
 }
 
 type Query {
-  listAllProvidersByProviderTypeIdAndAreaId(
+  listAllProvidersBySpecialityIdAndSubSpecialityIdAndAreaIdAndCategoryId(
     language: LanguageEnum!
     specialityId: [Int!]!
     subSpecialityId: [Int!]!
