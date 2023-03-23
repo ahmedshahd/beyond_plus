@@ -129,6 +129,29 @@ model lineOfBusiness {
   updatedAt   DateTime?    @updatedAt
 }
 
+model ClientCity {
+  id         Int          @id @default(autoincrement())
+  name       String
+  clientArea ClientArea[]
+  language   LanguageEnum @default(ARABIC)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime?    @updatedAt
+
+  @@unique([name, language], name: "ClientCity_name_language_unique_constraint")
+}
+
+model ClientArea {
+  id           Int          @id @default(autoincrement())
+  name         String
+  clientCityId Int
+  ClientCity   ClientCity   @relation(fields: [clientCityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  language     LanguageEnum @default(ARABIC)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime?    @updatedAt
+
+  @@unique([name, language, clientCityId], name: "ClientArea_name_language_clientCityId_unique_constraint")
+}
+
 //********* Medical Network **********//
 
 model Tpa {
