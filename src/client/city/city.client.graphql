@@ -1,0 +1,40 @@
+type ClientCity {
+  id: Int!
+  name: String!
+  clientArea: [ClientArea]
+  language: LanguageEnum!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type ClientCityByPagination {
+  clientCity: [ClientCity]!
+  pagination: Pagination
+}
+
+input CreateClientCityInput {
+  name: String!
+}
+
+input UpdateClientCityInput {
+  id: Int!
+  name: String
+}
+
+type Query {
+  listAllClientCities(
+    language: LanguageEnum!
+    search: String
+    page: Int
+    limit: Int
+  ): ClientCityByPagination!
+}
+
+type Mutation {
+  createClientCity(
+    createClientCityInput: CreateClientCityInput!
+    language: LanguageEnum!
+  ): ClientCity!
+  updateClientCity(updateClientCityInput: UpdateClientCityInput!): ClientCity!
+  removeClientCity(id: Int!): ClientCity
+}

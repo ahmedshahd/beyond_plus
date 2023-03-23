@@ -32,6 +32,8 @@ import { AddressAdminModule } from './admin/address/address.admin.module';
 import { ApiKeyMiddleware } from './middlewares/api-key.middleware';
 import { CsvUploaderModule } from './csv-uploader/csv-uploader.module';
 import { TpaModule } from './medical-network/tpa/tpa.module';
+import { CityClientModule } from './client/city/city.client.module';
+import { AreaClientModule } from './client/area/area.client.module';
 
 @Module({
   imports: [
@@ -86,6 +88,8 @@ import { TpaModule } from './medical-network/tpa/tpa.module';
     SubSpecialityModule,
     CsvUploaderModule,
     TpaModule,
+    CityClientModule,
+    AreaClientModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
