@@ -15,6 +15,10 @@ export class CsvUploaderService {
     tpaName: string,
     insuranceCompanyName: string,
   ) {
+    console.log('filePath from service', filePath);
+    // const csvFilePath = filePath.replace(/\.xlsx$/, '.csv');
+    // console.log('csvFilePath', csvFilePath);
+
     const items = await this.csvByStream(filePath);
 
     await this.bulkCreateSheet(items, language, insuranceCompanyName, tpaName);

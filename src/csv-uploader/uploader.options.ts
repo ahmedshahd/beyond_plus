@@ -19,11 +19,18 @@ export const multerOptions: MulterOptions = {
   },
   // Check the mimetypes to allow for upload
   fileFilter: (req: any, file: any, cb: any) => {
-    if (file.mimetype.match(/\/(csv|xlsm)$/)) {
+    if (
+      file.mimetype.startsWith(
+        'application/vnd.openxmlformats-officedocument.spreadsheetml',
+      )
+    ) {
       // Allow storage of file
       cb(null, true);
     } else {
+      console.log('file', file);
       // Reject file
+      console.log('mimetype', file.mimetype);
+
       return cb(
         new HttpException(
           `Unsupported file type ${extname(file.originalname)}`,
@@ -50,8 +57,9 @@ export const multerOptions: MulterOptions = {
     },
     // File modification details
     filename: (req: any, file: any, cb: any) => {
+      console.log("`${uuid()}${'.csv'}`", `${uuid()}${'.csv'}`);
       // Calling the callback passing the random name generated with the original extension name
-      cb(null, `${uuid()}${extname(file.originalname)}`);
+      cb(null, `${uuid()}${'.csv'}`);
     },
   }),
 };
