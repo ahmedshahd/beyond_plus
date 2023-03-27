@@ -13,7 +13,8 @@ type Provider {
   websiteUrl: String
   areaId: Int
   specialityId: Int
-  subSpecialityId: Int
+  # subSpecialityId: Int
+  # subSpeciality: SubSpeciality
   categoryId: Int
   language: LanguageEnum!
   createdAt: DateTime
@@ -38,7 +39,7 @@ input CreateProviderInput {
   categoryId: Int!
   areaId: Int!
   specialityId: Int!
-  subSpecialityId: Int
+  # subSpecialityId: Int
 }
 
 input UpdateProviderInput {
@@ -55,14 +56,14 @@ input UpdateProviderInput {
   categoryId: Int
   areaId: Int
   specialityId: Int
-  subSpecialityId: Int
+  # subSpecialityId: Int
 }
 
 type Query {
   listAllProvidersBySpecialityIdAndSubSpecialityIdAndAreaIdAndCategoryId(
     language: LanguageEnum!
     specialityId: [Int!]!
-    subSpecialityId: [Int!]!
+    # subSpecialityId: [Int!]!
     areaId: [Int!]!
     categoryId: [Int!]!
     search: String

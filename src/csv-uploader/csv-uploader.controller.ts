@@ -89,7 +89,11 @@ export class CsvUploaderController {
         message: 'File Uploaded Successfully',
       });
     } catch (error) {
-      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+      console.log(error);
+      throw new HttpException(
+        { reason: 'error in try catch block of uploader controller' },
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 }

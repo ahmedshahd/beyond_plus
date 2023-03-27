@@ -12,7 +12,7 @@ export class ProviderService {
   async listAllProvidersBySpecialityIdAndSubSpecialityIdAndAreaIdAndCategoryId(
     language: LanguageEnum,
     specialityId: number[],
-    subSpecialityId: number[],
+    // subSpecialityId: number[],
     areaId: number[],
     categoryId: number[],
     search: string,
@@ -22,7 +22,7 @@ export class ProviderService {
     const whereConditions: any = {
       language: language,
       specialityId: { in: specialityId },
-      subSpecialityId: { in: subSpecialityId },
+      // subSpecialityId: { in: subSpecialityId },
       areaId: { in: areaId },
       categoryId: { in: categoryId },
       name: search
@@ -46,7 +46,7 @@ export class ProviderService {
       include: {
         area: true,
         speciality: true,
-        subSpeciality: true,
+        // subSpeciality: true,
         category: true,
       },
     });
