@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { LanguageEnum, Prisma, PrismaClient } from '@prisma/client';
 import * as fs from 'fs';
 import { parse } from 'papaparse';
@@ -30,44 +35,52 @@ export class CsvUploaderService {
       let count = 0; // cache the running count
       let head = [];
       const result = [];
-      parse(file, {
-        worker: true, // Don't bog down the main thread if its a big file
-        step: function (row: {
-          data: Array<string>;
-          errors: Array<{
-            type: string;
-            code: string;
-            message: string;
-            row: number;
-          }>;
-          meta: {
-            delimiter: string;
-          };
-        }) {
-          if (row.errors.length > 0) {
-            const errorsMessages = row.errors
-              .map((obj) => {
-                return obj.message;
-              })
-              .join(',');
+      parse(
+        file,
+        {
+          worker: true, // Don't bog down the main thread if its a big file
+          step: function (row: {
+            data: Array<string>;
+            errors: Array<{
+              type: string;
+              code: string;
+              message: string;
+              row: number;
+            }>;
+            meta: {
+              delimiter: string;
+            };
+          }) {
+            if (row.errors.length > 0) {
+              const errorsMessages = row.errors
+                .map((obj) => {
+                  return obj.message;
+                })
+                .join(',');
 
-            reject(errorsMessages);
-          }
-          if (count == 0) {
-            head = row.data;
-          } else {
-            const current = row.data.reduce((obj, ele, index) => {
-              obj[head[index]] = ele;
-              return obj;
-            }, {});
-            result.push(current);
-          }
-          count++;
+              reject(errorsMessages);
+            }
+            if (count == 0) {
+              head = row.data;
+            } else {
+              const current = row.data.reduce((obj, ele, index) => {
+                obj[head[index]] = ele;
+                return obj;
+              }, {});
+              console.log(current);
+              result.push(current);
+            }
+            count++;
+          },
+          complete: function () {
+            resolve(result);
+          },
         },
-        complete: function () {
-          resolve(result);
+        {
+          header: true,
+          skipEmptyLines: true,
         },
-      });
+      );
     });
   }
 
@@ -130,6 +143,10 @@ export class CsvUploaderService {
 
           await Promise.all(
             items.map(async (data, index) => {
+              // console.log(`we are inserting the row number${index}`);
+              // console.log(data, index);
+              // console.log(data['tier'], index);
+
               const category = await prisma.category.upsert({
                 where: {
                   Category_tierRank_language_insuranceCompanyId_unique_constraint:
@@ -280,7 +297,11 @@ export class CsvUploaderService {
         { timeout: 10000000000 },
       );
     } catch (error) {
-      throw new BadRequestException(error);
+      console.log('FROM TRANSICTION ERROR');
+      throw new HttpException(
+        { reason: 'error in try catch block of transaction' },
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 }
