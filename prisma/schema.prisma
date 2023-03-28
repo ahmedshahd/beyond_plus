@@ -175,7 +175,7 @@ model InsuranceCompany {
   city         City[]
   providerType ProviderType[]
   tpaId        Int?
-  Tpa          Tpa?           @relation(fields: [tpaId], references: [id])
+  Tpa          Tpa?           @relation(fields: [tpaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   language     LanguageEnum   @default(ARABIC)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime?      @updatedAt
