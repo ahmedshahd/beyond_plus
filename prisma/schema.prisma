@@ -95,8 +95,8 @@ model Address {
   id             Int       @id @default(autoincrement())
   userId         Int
   user           User      @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  longitude      Float
-  latitude       Float
+  longitude      Float     @default(0.0)
+  latitude       Float     @default(0.0)
   streetName     String
   buildingNumber Int
   floorNumber    Int
@@ -218,8 +218,8 @@ model Provider {
   id                   Int            @id @default(autoincrement())
   name                 String
   address              String
-  longitude            Float?
-  latitude             Float?
+  longitude            Float?         @default(0.0)
+  latitude             Float?         @default(0.0)
   phoneNumber          String[]
   email                String?
   fax                  String?        @default("")

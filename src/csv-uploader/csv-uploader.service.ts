@@ -278,8 +278,8 @@ export class CsvUploaderService {
                       : true,
                   email: data.email || ' ',
                   fax: data.fax || ' ',
-                  longitude: parseFloat(data.longitude.trim()) || 0,
-                  latitude: parseFloat(data.latitude.trim()) || 0,
+                  longitude: parseFloat(data.longitude.trim()) || 0.0,
+                  latitude: parseFloat(data.latitude.trim()) || 0.0,
                   phoneNumber: data.phoneNumber.trim().split('|'),
                   websiteUrl: data.websiteUrl.trim() || '',
                   isOnline:
