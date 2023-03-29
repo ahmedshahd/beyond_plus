@@ -67,7 +67,7 @@ export class CsvUploaderService {
                 obj[head[index]] = ele;
                 return obj;
               }, {});
-              console.log(current);
+              // console.log(current);
               result.push(current);
             }
             count++;
@@ -90,6 +90,22 @@ export class CsvUploaderService {
     insuranceCompanyName: string,
     tpaName: string,
   ) {
+    const uniqueItems = items.filter(
+      (provider, index, self) =>
+        index ===
+        self.findIndex(
+          (item) =>
+            item.speciality === provider.speciality &&
+            item.area === provider.area &&
+            item.subSpeciality === provider.subSpeciality &&
+            item.phoneNumber === provider.phoneNumber &&
+            item.provider === provider.provider &&
+            item.address === provider.address,
+          // add more properties if needed
+        ),
+    );
+    console.log('uniqueItems', uniqueItems);
+
     try {
       return this.prisma.$transaction(
         async (prisma: any) => {
@@ -142,7 +158,7 @@ export class CsvUploaderService {
           });
 
           await Promise.all(
-            items.map(async (data, index) => {
+            uniqueItems.map(async (data, index) => {
               // console.log(`we are inserting the row number${index}`);
               // console.log(data, index);
               // console.log(data['tier'], index);
