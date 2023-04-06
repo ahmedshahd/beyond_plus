@@ -1,4 +1,3 @@
-import { InsuranceCompany } from './../../graphql';
 import { Injectable } from '@nestjs/common';
 import { LanguageEnum } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
