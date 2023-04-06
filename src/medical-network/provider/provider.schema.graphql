@@ -13,7 +13,7 @@ type Provider {
   websiteUrl: String
   areaId: Int
   specialityId: Int
-  # subSpecialityId: Int
+  # insuranceCompanyId: Int
   # subSpeciality: SubSpeciality
   categoryId: Int
   language: LanguageEnum!
@@ -61,15 +61,21 @@ input UpdateProviderInput {
 
 type Query {
   listAllProvidersBySpecialityIdAndSubSpecialityIdAndAreaIdAndCategoryId(
-    language: LanguageEnum!
-    specialityId: [Int!]!
+    specialityId: [Int]
     # subSpecialityId: [Int!]!
-    areaId: [Int!]!
-    categoryId: [Int!]!
+    areaId: [Int]
+    categoryId: [Int]
     search: String
     page: Int
     limit: Int
   ): ProviderByPagination!
+
+  # listAllProvidersByInsuranceCompanyId(
+  #   insuranceCompanyId: Int!
+  #   search: String
+  #   page: Int
+  #   limit: Int
+  # ): ProviderByPagination!
 }
 
 type Mutation {

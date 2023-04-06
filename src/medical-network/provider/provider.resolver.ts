@@ -21,7 +21,6 @@ export class ProviderResolver {
     @Args() args: PaginationAndSearchArgs,
   ) {
     return this.providerService.listAllProvidersBySpecialityIdAndSubSpecialityIdAndAreaIdAndCategoryId(
-      language,
       specialityId,
       // subSpecialityId,
       areaId,
@@ -31,6 +30,20 @@ export class ProviderResolver {
       args.limit,
     );
   }
+
+  // @Query('listAllProvidersByInsuranceCompanyId')
+  // async listAllProvidersByInsuranceCompanyId(
+  //   @Args('insuranceCompanyId') insuranceCompanyId: number,
+  //   @Args() args: PaginationAndSearchArgs,
+  // ) {
+  //   return this.providerService.listAllProvidersByInsuranceCompanyId(
+  //     insuranceCompanyId,
+  //     args.search,
+  //     args.page,
+  //     args.limit,
+  //   );
+  // }
+
   @Mutation('createProvider')
   create(
     @Args('createProviderInput') createProviderInput: CreateProviderInput,

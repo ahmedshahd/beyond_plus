@@ -1,3 +1,4 @@
+import { InsuranceCompany } from './../../graphql';
 import { Injectable } from '@nestjs/common';
 import { LanguageEnum } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
@@ -10,7 +11,6 @@ export class ProviderService {
   constructor(private prisma: PrismaService) {}
 
   async listAllProvidersBySpecialityIdAndSubSpecialityIdAndAreaIdAndCategoryId(
-    language: LanguageEnum,
     specialityId: number[],
     // subSpecialityId: number[],
     areaId: number[],
@@ -20,11 +20,6 @@ export class ProviderService {
     limit: number,
   ) {
     const whereConditions: any = {
-      language: language,
-      specialityId: { in: specialityId },
-      // subSpecialityId: { in: subSpecialityId },
-      areaId: { in: areaId },
-      categoryId: { in: categoryId },
       name: search
         ? {
             contains: search,
@@ -32,6 +27,19 @@ export class ProviderService {
           }
         : undefined,
     };
+
+    if (specialityId) {
+      whereConditions.specialityId = { in: specialityId };
+    }
+
+    if (areaId) {
+      whereConditions.areaId = { in: areaId };
+    }
+
+    if (categoryId) {
+      whereConditions.categoryId = { in: categoryId };
+    }
+    console.log('whereConditions', whereConditions);
 
     const pagination = await getPagination(
       'provider',
@@ -56,6 +64,40 @@ export class ProviderService {
       pagination: pagination.response,
     };
   }
+
+  // async listAllProvidersByInsuranceCompanyId(
+  //   insuranceCompanyId: number,
+  //   search: string,
+  //   page: number,
+  //   limit: number,
+  // ) {
+  //   const whereConditions: any = {
+  //     insuranceCompanyId: insuranceCompanyId,
+  //     name: search
+  //       ? {
+  //           contains: search,
+  //           mode: 'insensitive',
+  //         }
+  //       : undefined,
+  //   };
+
+  //   const pagination = await getPagination(
+  //     'provider',
+  //     whereConditions,
+  //     page,
+  //     limit,
+  //   );
+
+  //   const result = await this.prisma.provider.findMany({
+  //     where: { ...whereConditions },
+  //     ...pagination.query,
+  //   });
+
+  //   return {
+  //     provider: result,
+  //     pagination: pagination.response,
+  //   };
+  // }
 
   async create(
     createProviderInput: CreateProviderInput,
