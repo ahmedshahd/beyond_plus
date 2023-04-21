@@ -144,9 +144,10 @@ export class CsvUploaderService {
 
           const insuranceCompany = await prisma.insuranceCompany.upsert({
             where: {
-              InsuranceCompany_name_language_unique_constraint: {
+              InsuranceCompany_name_language_tpaId_unique_constraint: {
                 name: insuranceCompanyName,
                 language: language,
+                tpaId: tpa.id,
               },
             },
             create: {

@@ -180,7 +180,7 @@ model InsuranceCompany {
   createdAt    DateTime       @default(now())
   updatedAt    DateTime?      @updatedAt
 
-  @@unique([name, language], name: "InsuranceCompany_name_language_unique_constraint")
+  @@unique([name, language, tpaId], name: "InsuranceCompany_name_language_tpaId_unique_constraint")
 }
 
 model Category {
