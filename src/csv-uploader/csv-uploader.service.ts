@@ -95,6 +95,8 @@ export class CsvUploaderService {
         index ===
         self.findIndex(
           (item) =>
+            item.tier === provider.tier &&
+            item.tierRank === provider.tierRank &&
             item.speciality === provider.speciality &&
             item.area === provider.area &&
             item.subSpeciality === provider.subSpeciality &&
