@@ -306,6 +306,8 @@ export class CsvUploaderService {
                       ? false
                       : true,
                   specialityId: speciality.id,
+                  providerTypeId: providerType.id,
+
                   subSpecialityId: subSpeciality.id || null,
                 },
                 update: {},

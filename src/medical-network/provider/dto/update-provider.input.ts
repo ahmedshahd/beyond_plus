@@ -14,4 +14,5 @@ export class UpdateProviderInput {
   categoryId?: number;
   specialityId?: number;
   subSpecialityId?: number;
+  providerTypeId?: number;
 }

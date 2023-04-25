@@ -13,4 +13,5 @@ export class CreateProviderInput {
   categoryId: number;
   specialityId: number;
   subSpecialityId?: number;
+  providerTypeId: number;
 }

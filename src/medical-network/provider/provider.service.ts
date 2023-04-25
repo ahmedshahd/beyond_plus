@@ -14,6 +14,7 @@ export class ProviderService {
     // subSpecialityId: number[],
     areaId: number[],
     categoryId: number[],
+    providerTypeId: number[],
     search: string,
     page: number,
     limit: number,
@@ -38,6 +39,11 @@ export class ProviderService {
     if (categoryId) {
       whereConditions.categoryId = { in: categoryId };
     }
+
+    if (providerTypeId) {
+      whereConditions.providerTypeId = { in: providerTypeId };
+    }
+
     console.log('whereConditions', whereConditions);
 
     const pagination = await getPagination(
@@ -53,6 +59,7 @@ export class ProviderService {
       include: {
         area: true,
         speciality: true,
+        // providerType:true,
         // subSpeciality: true,
         category: true,
       },
@@ -63,40 +70,6 @@ export class ProviderService {
       pagination: pagination.response,
     };
   }
-
-  // async listAllProvidersByInsuranceCompanyId(
-  //   insuranceCompanyId: number,
-  //   search: string,
-  //   page: number,
-  //   limit: number,
-  // ) {
-  //   const whereConditions: any = {
-  //     insuranceCompanyId: insuranceCompanyId,
-  //     name: search
-  //       ? {
-  //           contains: search,
-  //           mode: 'insensitive',
-  //         }
-  //       : undefined,
-  //   };
-
-  //   const pagination = await getPagination(
-  //     'provider',
-  //     whereConditions,
-  //     page,
-  //     limit,
-  //   );
-
-  //   const result = await this.prisma.provider.findMany({
-  //     where: { ...whereConditions },
-  //     ...pagination.query,
-  //   });
-
-  //   return {
-  //     provider: result,
-  //     pagination: pagination.response,
-  //   };
-  // }
 
   async create(
     createProviderInput: CreateProviderInput,

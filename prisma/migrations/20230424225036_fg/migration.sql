@@ -6,7 +6,7 @@ CREATE TABLE "ContactUs" (
     "id" SERIAL NOT NULL,
     "phoneNumber" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "websiteUrl" TIMESTAMP(3) NOT NULL,
+    "websiteUrl" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
 
@@ -143,13 +143,47 @@ CREATE TABLE "lineOfBusiness" (
 );
 
 -- CreateTable
-CREATE TABLE "InsuranceCompany" (
+CREATE TABLE "ClientCity" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "language" "LanguageEnum" NOT NULL DEFAULT 'ARABIC',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
-    "parentId" INTEGER,
+
+    CONSTRAINT "ClientCity_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ClientArea" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "clientCityId" INTEGER NOT NULL,
+    "language" "LanguageEnum" NOT NULL DEFAULT 'ARABIC',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
+
+    CONSTRAINT "ClientArea_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Tpa" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "language" "LanguageEnum" NOT NULL DEFAULT 'ARABIC',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
+
+    CONSTRAINT "Tpa_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "InsuranceCompany" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "tpaId" INTEGER,
+    "language" "LanguageEnum" NOT NULL DEFAULT 'ARABIC',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "InsuranceCompany_pkey" PRIMARY KEY ("id")
 );
@@ -163,6 +197,7 @@ CREATE TABLE "Category" (
     "insuranceCompanyId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
+    "tpaId" INTEGER,
 
     CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
 );
@@ -171,8 +206,9 @@ CREATE TABLE "Category" (
 CREATE TABLE "ProviderType" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "language" "LanguageEnum" NOT NULL DEFAULT 'ARABIC',
     "insuranceCompanyId" INTEGER NOT NULL,
+    "tpaId" INTEGER,
+    "language" "LanguageEnum" NOT NULL DEFAULT 'ARABIC',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
 
@@ -183,22 +219,23 @@ CREATE TABLE "ProviderType" (
 CREATE TABLE "Provider" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "language" "LanguageEnum" NOT NULL DEFAULT 'ARABIC',
     "address" TEXT NOT NULL,
-    "longitude" DOUBLE PRECISION NOT NULL,
-    "latitude" DOUBLE PRECISION NOT NULL,
+    "longitude" DOUBLE PRECISION,
+    "latitude" DOUBLE PRECISION,
     "phoneNumber" TEXT[],
-    "email" TEXT NOT NULL,
-    "fax" TEXT NOT NULL DEFAULT '',
-    "isOnline" BOOLEAN NOT NULL,
-    "hasChronicMedication" BOOLEAN NOT NULL,
-    "websiteUrl" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3),
+    "email" TEXT,
+    "fax" TEXT DEFAULT '',
+    "isOnline" BOOLEAN,
+    "hasChronicMedication" BOOLEAN,
+    "websiteUrl" TEXT,
     "areaId" INTEGER NOT NULL,
     "categoryId" INTEGER NOT NULL,
+    "providerTypeId" INTEGER NOT NULL,
     "specialityId" INTEGER NOT NULL,
     "subSpecialityId" INTEGER,
+    "language" "LanguageEnum" NOT NULL DEFAULT 'ARABIC',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "Provider_pkey" PRIMARY KEY ("id")
 );
@@ -242,11 +279,12 @@ CREATE TABLE "Country" (
 CREATE TABLE "City" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "countryId" INTEGER NOT NULL,
+    "insuranceCompanyId" INTEGER NOT NULL,
+    "tpaId" INTEGER,
     "language" "LanguageEnum" NOT NULL DEFAULT 'ARABIC',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
-    "countryId" INTEGER NOT NULL,
-    "insuranceCompanyId" INTEGER NOT NULL,
 
     CONSTRAINT "City_pkey" PRIMARY KEY ("id")
 );
@@ -267,7 +305,16 @@ CREATE TABLE "Area" (
 CREATE UNIQUE INDEX "ContactUs_email_key" ON "ContactUs"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "InsuranceCompany_name_language_key" ON "InsuranceCompany"("name", "language");
+CREATE UNIQUE INDEX "ClientCity_name_language_key" ON "ClientCity"("name", "language");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ClientArea_name_language_clientCityId_key" ON "ClientArea"("name", "language", "clientCityId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Tpa_name_language_key" ON "Tpa"("name", "language");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "InsuranceCompany_name_language_tpaId_key" ON "InsuranceCompany"("name", "language", "tpaId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Category_tierRank_language_insuranceCompanyId_key" ON "Category"("tierRank", "language", "insuranceCompanyId");
@@ -276,7 +323,7 @@ CREATE UNIQUE INDEX "Category_tierRank_language_insuranceCompanyId_key" ON "Cate
 CREATE UNIQUE INDEX "ProviderType_name_language_insuranceCompanyId_key" ON "ProviderType"("name", "language", "insuranceCompanyId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Provider_name_language_areaId_specialityId_categoryId_addre_key" ON "Provider"("name", "language", "areaId", "specialityId", "categoryId", "address", "phoneNumber", "fax", "email", "websiteUrl", "longitude", "latitude");
+CREATE UNIQUE INDEX "Provider_name_language_areaId_specialityId_categoryId_addre_key" ON "Provider"("name", "language", "areaId", "specialityId", "categoryId", "address", "phoneNumber");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Speciality_name_language_providerTypeId_key" ON "Speciality"("name", "language", "providerTypeId");
@@ -300,19 +347,31 @@ ALTER TABLE "Address" ADD CONSTRAINT "Address_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "Notification" ADD CONSTRAINT "Notification_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "InsuranceCompany" ADD CONSTRAINT "InsuranceCompany_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "InsuranceCompany"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ClientArea" ADD CONSTRAINT "ClientArea_clientCityId_fkey" FOREIGN KEY ("clientCityId") REFERENCES "ClientCity"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "InsuranceCompany" ADD CONSTRAINT "InsuranceCompany_tpaId_fkey" FOREIGN KEY ("tpaId") REFERENCES "Tpa"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Category" ADD CONSTRAINT "Category_insuranceCompanyId_fkey" FOREIGN KEY ("insuranceCompanyId") REFERENCES "InsuranceCompany"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Category" ADD CONSTRAINT "Category_tpaId_fkey" FOREIGN KEY ("tpaId") REFERENCES "Tpa"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "ProviderType" ADD CONSTRAINT "ProviderType_insuranceCompanyId_fkey" FOREIGN KEY ("insuranceCompanyId") REFERENCES "InsuranceCompany"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProviderType" ADD CONSTRAINT "ProviderType_tpaId_fkey" FOREIGN KEY ("tpaId") REFERENCES "Tpa"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Provider" ADD CONSTRAINT "Provider_areaId_fkey" FOREIGN KEY ("areaId") REFERENCES "Area"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Provider" ADD CONSTRAINT "Provider_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Provider" ADD CONSTRAINT "Provider_providerTypeId_fkey" FOREIGN KEY ("providerTypeId") REFERENCES "ProviderType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Provider" ADD CONSTRAINT "Provider_specialityId_fkey" FOREIGN KEY ("specialityId") REFERENCES "Speciality"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -331,6 +390,9 @@ ALTER TABLE "City" ADD CONSTRAINT "City_countryId_fkey" FOREIGN KEY ("countryId"
 
 -- AddForeignKey
 ALTER TABLE "City" ADD CONSTRAINT "City_insuranceCompanyId_fkey" FOREIGN KEY ("insuranceCompanyId") REFERENCES "InsuranceCompany"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "City" ADD CONSTRAINT "City_tpaId_fkey" FOREIGN KEY ("tpaId") REFERENCES "Tpa"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Area" ADD CONSTRAINT "Area_cityId_fkey" FOREIGN KEY ("cityId") REFERENCES "City"("id") ON DELETE CASCADE ON UPDATE CASCADE;

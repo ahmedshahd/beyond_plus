@@ -18,6 +18,7 @@ export class ProviderResolver {
     // @Args('subSpecialityId') subSpecialityId: number[],
     @Args('areaId') areaId: number[],
     @Args('categoryId') categoryId: number[],
+    @Args('providerTypeId') providerTypeId: number[],
     @Args() args: PaginationAndSearchArgs,
   ) {
     return this.providerService.listAllProvidersBySpecialityIdAndSubSpecialityIdAndAreaIdAndCategoryId(
@@ -25,6 +26,7 @@ export class ProviderResolver {
       // subSpecialityId,
       areaId,
       categoryId,
+      providerTypeId,
       args.search,
       args.page,
       args.limit,
