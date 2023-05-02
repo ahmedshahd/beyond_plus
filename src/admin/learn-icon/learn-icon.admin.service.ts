@@ -20,10 +20,16 @@ export class LearnIconAdminService {
     });
   }
 
-  async findAll(language: LanguageEnum) {
+  async findAll(language: LanguageEnum, search: string) {
     return await this.prisma.learnIcon.findMany({
       where: {
         language,
+        name: search
+          ? {
+              contains: search,
+              mode: 'insensitive',
+            }
+          : undefined,
       },
     });
   }

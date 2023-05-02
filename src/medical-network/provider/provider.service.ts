@@ -9,17 +9,23 @@ import { UpdateProviderInput } from './dto/update-provider.input';
 export class ProviderService {
   constructor(private prisma: PrismaService) {}
 
-  async listAllProvidersBySpecialityIdAndSubSpecialityIdAndAreaIdAndCategoryId(
+  async listAllProviders(
     specialityId: number[],
-    // subSpecialityId: number[],
+    subSpecialityId: number[],
     areaId: number[],
-    categoryId: number[],
+    insuranceCompanyId: number,
+    tierRank: number,
     providerTypeId: number[],
     search: string,
     page: number,
     limit: number,
   ) {
     const whereConditions: any = {
+      insuranceCompanyId: insuranceCompanyId,
+      tierRank: {
+        lte: tierRank,
+      },
+      areaId: { in: areaId },
       name: search
         ? {
             contains: search,
@@ -27,21 +33,16 @@ export class ProviderService {
           }
         : undefined,
     };
+    if (providerTypeId) {
+      whereConditions.providerTypeId = { in: providerTypeId };
+    }
 
     if (specialityId) {
       whereConditions.specialityId = { in: specialityId };
     }
 
-    if (areaId) {
-      whereConditions.areaId = { in: areaId };
-    }
-
-    if (categoryId) {
-      whereConditions.categoryId = { in: categoryId };
-    }
-
-    if (providerTypeId) {
-      whereConditions.providerTypeId = { in: providerTypeId };
+    if (subSpecialityId) {
+      whereConditions.subSpecialityId = { in: subSpecialityId };
     }
 
     console.log('whereConditions', whereConditions);
@@ -60,8 +61,8 @@ export class ProviderService {
         area: true,
         speciality: true,
         // providerType:true,
-        // subSpeciality: true,
-        category: true,
+        subSpeciality: true,
+        insuranceCompany: true,
       },
     });
 

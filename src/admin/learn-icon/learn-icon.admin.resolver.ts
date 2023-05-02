@@ -17,8 +17,11 @@ export class LearnIconAdminResolver {
   }
 
   @Query('learnIcon')
-  findAll(@Args('language') language: LanguageEnum) {
-    return this.learnIconAdminService.findAll(language);
+  findAll(
+    @Args('language') language: LanguageEnum,
+    @Args('search') search: string,
+  ) {
+    return this.learnIconAdminService.findAll(language, search);
   }
 
   @Mutation('updateLearnIcon')

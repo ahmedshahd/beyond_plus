@@ -30,6 +30,7 @@ model LearnIcon {
   id        Int          @id @default(autoincrement())
   name      String
   content   String
+  imageUrl  String
   language  LanguageEnum @default(ARABIC)
   createdAt DateTime     @default(now())
   updatedAt DateTime?    @updatedAt
@@ -179,6 +180,7 @@ model InsuranceCompany {
   language     LanguageEnum   @default(ARABIC)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime?      @updatedAt
+  Provider     Provider[]
 
   @@unique([name, language, tpaId], name: "InsuranceCompany_name_language_tpaId_unique_constraint")
 }
@@ -186,7 +188,7 @@ model InsuranceCompany {
 model Category {
   id                 Int              @id @default(autoincrement())
   tier               String
-  tierRank           String
+  tierRank           Int
   language           LanguageEnum     @default(ARABIC)
   insuranceCompanyId Int
   createdAt          DateTime         @default(now())
@@ -216,32 +218,35 @@ model ProviderType {
 }
 
 model Provider {
-  id                   Int            @id @default(autoincrement())
+  id                   Int              @id @default(autoincrement())
   name                 String
   address              String
   longitude            Float?
   latitude             Float?
   phoneNumber          String[]
   email                String?
-  fax                  String?        @default("")
+  fax                  String?          @default("")
   isOnline             Boolean?
   hasChronicMedication Boolean?
   websiteUrl           String?
   areaId               Int
-  area                 Area           @relation(fields: [areaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  categoryId           Int
-  category             Category       @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  ProviderType         ProviderType   @relation(fields: [providerTypeId], references: [id])
+  tierRank             Int
+  area                 Area             @relation(fields: [areaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  insuranceCompanyId   Int
+  insuranceCompany     InsuranceCompany @relation(fields: [insuranceCompanyId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  ProviderType         ProviderType     @relation(fields: [providerTypeId], references: [id])
   providerTypeId       Int
   specialityId         Int
-  speciality           Speciality     @relation(fields: [specialityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  speciality           Speciality       @relation(fields: [specialityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   subSpecialityId      Int?
-  subSpeciality        SubSpeciality? @relation(fields: [subSpecialityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  language             LanguageEnum   @default(ARABIC)
-  createdAt            DateTime       @default(now())
-  updatedAt            DateTime?      @updatedAt
+  subSpeciality        SubSpeciality?   @relation(fields: [subSpecialityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  language             LanguageEnum     @default(ARABIC)
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime?        @updatedAt
+  Category             Category?        @relation(fields: [categoryId], references: [id])
+  categoryId           Int?
 
-  @@unique([name, language, areaId, specialityId, categoryId, address, phoneNumber], name: "Provider_name_language_speciality_areaId_categoryId_address_phoneNumber_unique_constraint")
+  @@unique([name, language, areaId, specialityId, insuranceCompanyId, tierRank, address, phoneNumber], name: "Provider_name_language_speciality_areaId_categoryId_address_phoneNumber_unique_constraint")
 }
 
 model Speciality {

@@ -172,19 +172,19 @@ export class CsvUploaderService {
                     {
                       insuranceCompanyId: insuranceCompany.id,
                       language: language,
-                      tierRank: data.tierRank.trim(),
+                      tierRank: parseInt(data.tierRank.trim()),
                     },
                 },
                 create: {
                   insuranceCompanyId: insuranceCompany.id,
                   language: language,
-                  tierRank: data.tierRank.trim(),
+                  tierRank: parseInt(data.tierRank.trim()),
                   tier: data.tier.trim(),
                 },
                 update: {
                   insuranceCompanyId: insuranceCompany.id,
                   language: language,
-                  tierRank: data.tierRank.trim(),
+                  tierRank: parseInt(data.tierRank.trim()),
                 },
               });
 
@@ -256,41 +256,48 @@ export class CsvUploaderService {
                 update: {},
               });
 
-              const subSpeciality = await prisma.subSpeciality.upsert({
-                where: {
-                  SubSpeciality_name_language_specialityId_unique_constraint: {
+              let subSpeciality = null;
+
+              if (data.subSpeciality.trim()) {
+                subSpeciality = await prisma.subSpeciality.upsert({
+                  where: {
+                    SubSpeciality_name_language_specialityId_unique_constraint:
+                      {
+                        specialityId: speciality.id,
+                        language: language,
+                        name: data.subSpeciality.trim(),
+                      },
+                  },
+                  create: {
                     specialityId: speciality.id,
                     language: language,
                     name: data.subSpeciality.trim(),
                   },
-                },
-                create: {
-                  specialityId: speciality.id,
-                  language: language,
-                  name: data.subSpeciality.trim(),
-                },
-                update: {},
-              });
+                  update: {},
+                });
+              }
 
               const provider = await prisma.provider.upsert({
                 where: {
                   Provider_name_language_speciality_areaId_categoryId_address_phoneNumber_unique_constraint:
                     {
                       areaId: area.id,
-                      categoryId: category.id,
+                      insuranceCompanyId: insuranceCompany.id,
                       name: data.provider.trim(),
                       language: language,
                       address: data.address.trim(),
                       phoneNumber: data.phoneNumber.trim().split('|'),
                       specialityId: speciality.id,
+                      tierRank: category.tierRank,
                     },
                 },
                 create: {
                   areaId: area.id,
-                  categoryId: category.id,
+                  insuranceCompanyId: insuranceCompany.id,
                   name: data.provider,
                   language: language,
                   address: data.address.trim(),
+                  tierRank: parseInt(category.tierRank),
                   hasChronicMedication:
                     data.hasChronicMedication.trim().toLocaleLowerCase() == 'no'
                       ? false
@@ -308,7 +315,7 @@ export class CsvUploaderService {
                   specialityId: speciality.id,
                   providerTypeId: providerType.id,
 
-                  subSpecialityId: subSpeciality.id || null,
+                  subSpecialityId: subSpeciality ? subSpeciality.id : null,
                 },
                 update: {},
               });

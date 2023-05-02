@@ -2,6 +2,7 @@ type LearnIcon {
   id: Int!
   name: String!
   content: String!
+  imageUrl: String
   language: LanguageEnum!
   createdAt: DateTime!
   updatedAt: DateTime
@@ -10,16 +11,18 @@ type LearnIcon {
 input CreateLearnIconInput {
   name: String!
   content: String!
+  imageUrl: String
 }
 
 input UpdateLearnIconInput {
   id: Int!
   name: String
   content: String
+  imageUrl: String
 }
 
 type Query {
-  learnIcon(language: LanguageEnum!): [LearnIcon]!
+  learnIcon(language: LanguageEnum!, search: String): [LearnIcon]!
 }
 
 type Mutation {

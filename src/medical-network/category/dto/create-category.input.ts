@@ -1,5 +1,5 @@
 export class CreateCategoryInput {
   tier: string;
-  tierRank: string;
+  tierRank: number;
   insuranceCompanyId: number;
 }

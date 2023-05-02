@@ -1,6 +1,8 @@
 export class UpdateProviderInput {
   id: number;
   name?: string;
+  tierRank?: number;
+
   address?: string;
   longitude?: number;
   latitude?: number;
@@ -11,7 +13,7 @@ export class UpdateProviderInput {
   hasChronicMedication?: boolean;
   websiteUrl?: string;
   areaId?: number;
-  categoryId?: number;
+  insuranceCompanyId?: number;
   specialityId?: number;
   subSpecialityId?: number;
   providerTypeId?: number;

@@ -3,7 +3,7 @@ scalar DateTime
 type Category {
   id: Int!
   tier: String!
-  tierRank: String!
+  tierRank: Int!
   insuranceCompany: InsuranceCompany
   insuranceCompanyId: Int!
   language: LanguageEnum!
@@ -18,14 +18,14 @@ type CategoryByPagination {
 
 input CreateCategoryInput {
   tier: String!
-  tierRank: String!
+  tierRank: Int!
   insuranceCompanyId: Int!
 }
 
 input UpdateCategoryInput {
   id: Int!
   tier: String
-  tierRank: String
+  tierRank: Int
   insuranceCompanyId: Int
 }
 
