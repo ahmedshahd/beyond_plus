@@ -64,6 +64,9 @@ export class ProviderService {
         subSpeciality: true,
         insuranceCompany: true,
       },
+      orderBy: {
+        name: 'asc',
+      },
     });
 
     return {

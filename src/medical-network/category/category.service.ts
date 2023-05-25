@@ -40,6 +40,9 @@ export class CategoryService {
       include: {
         insuranceCompany: true,
       },
+      orderBy: {
+        tier: 'asc',
+      },
     });
 
     return {

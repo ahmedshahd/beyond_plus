@@ -15,8 +15,6 @@ import { WelcomeScreenAdminModule } from './admin/welcome-screen/welcome-screen.
 import { LineOfBusinessAdminModule } from './admin/line-of-business/line-of-business.admin.module';
 // import { UserClientModule } from './client/user/user.client.module';
 import { PrivacyPolicyModule } from './admin/privacy-policy/privacy-policy.admin.module';
-import { AddressClientModule } from './client/address/address.client.module';
-import { NotificationClientModule } from './client/notification/notification.client.module';
 import { InsuranceCompanyModule } from './medical-network/insurance-company/insurance-company.module';
 import { CountryModule } from './medical-network/country/country.module';
 import { CityModule } from './medical-network/city/city.module';
@@ -27,13 +25,14 @@ import { CategoryModule } from './medical-network/category/category.module';
 import { SpecialityModule } from './medical-network/speciality/speciality.module';
 import { SubSpecialityModule } from './medical-network/sub-speciality/sub-speciality.module';
 import { ConfigModule } from '@nestjs/config';
-import { UserAdminModule } from './admin/user/user.admin.module';
-import { AddressAdminModule } from './admin/address/address.admin.module';
 import { ApiKeyMiddleware } from './middlewares/api-key.middleware';
 import { CsvUploaderModule } from './csv-uploader/csv-uploader.module';
 import { TpaModule } from './medical-network/tpa/tpa.module';
 import { CityClientModule } from './client/city/city.client.module';
 import { AreaClientModule } from './client/area/area.client.module';
+import { UserProfileModule } from './client/user-profile/user-profile.module';
+import { UserAddressModule } from './client/user-address/user-address.module';
+import { UserInsuranceInfoModule } from './client/user-insurance-info/user-insurance-info.module';
 
 @Module({
   imports: [
@@ -70,11 +69,7 @@ import { AreaClientModule } from './client/area/area.client.module';
     TermsAndConditionsModule,
     WelcomeScreenAdminModule,
     LineOfBusinessAdminModule,
-    UserAdminModule,
-    AddressAdminModule,
-    //UserClientModule,
-    AddressClientModule,
-    NotificationClientModule,
+
     WelcomeScreenAdminModule,
     LineOfBusinessAdminModule,
     InsuranceCompanyModule,
@@ -90,6 +85,9 @@ import { AreaClientModule } from './client/area/area.client.module';
     TpaModule,
     CityClientModule,
     AreaClientModule,
+    UserProfileModule,
+    UserAddressModule,
+    UserInsuranceInfoModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

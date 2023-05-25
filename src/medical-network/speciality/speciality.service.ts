@@ -41,6 +41,9 @@ export class SpecialityService {
         subSpeciality: true,
         provider: true,
       },
+      orderBy: {
+        name: 'asc',
+      },
     });
 
     return {

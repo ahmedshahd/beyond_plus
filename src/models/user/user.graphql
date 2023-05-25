@@ -1,73 +1,72 @@
 scalar Void
 
-type User {
-  id: Int!
-  email: String
-  username: String!
-  name: String
-  insuranceCompanyName: String
-  companyWork: String
-  password: String!
-  countryCode: String!
-  mobile: String!
-  createdAt: DateTime
-  updatedAt: DateTime
-}
+# type User {
+#   id: Int!
+#   email: String
+#   username: String!
+#   name: String
+#   insuranceCompanyName: String
+#   companyWork: String
+#   password: String!
+#   countryCode: String!
+#   mobile: String!
+#   createdAt: DateTime
+#   updatedAt: DateTime
+# }
 
-input CreateUserInput {
-  email: String
-  name: String
-  insuranceCompanyName: String
-  companyWork: String
-  password: String!
-  countryCode: String!
-  mobile: String!
-}
+# input CreateUserInput {
+#   email: String
+#   name: String
+#   insuranceCompanyName: String
+#   companyWork: String
+#   password: String!
+#   countryCode: String!
+#   mobile: String!
+# }
 
-input UpdateUserInput {
-  id: Int!
-  email: String
-  username: String
-  name: String
-  insuranceCompanyName: String
-  companyWork: String
-  password: String
-  countryCode: String
-  mobile: String
-  createdAt: DateTime
-  updatedAt: DateTime
-}
+# input UpdateUserInput {
+#   id: Int!
+#   email: String
+#   username: String
+#   name: String
+#   insuranceCompanyName: String
+#   companyWork: String
+#   password: String
+#   countryCode: String
+#   mobile: String
+#   createdAt: DateTime
+#   updatedAt: DateTime
+# }
 
-input LoginUserInput {
-  username: String!
-  password: String!
-}
+# input LoginUserInput {
+#   username: String!
+#   password: String!
+# }
 
-type LoginUserOutput {
-  accessToken: String!
-  expiresIn: Int!
-  refreshToken: String!
-  refreshExpiresIn: Int!
-}
+# type LoginUserOutput {
+#   accessToken: String!
+#   expiresIn: Int!
+#   refreshToken: String!
+#   refreshExpiresIn: Int!
+# }
 
+# input ResetPasswordUserInput {
+#   newPassword: String!
+#   oldPassword: String!
+# }
 
-input ResetPasswordUserInput {
-  newPassword: String!
-  oldPassword: String!
-}
+# type Query {
+#   users: [User]!
+#   user(id: Int!): User!
+#   login(loginUserInput: LoginUserInput!): LoginUserOutput!
+#   accessTokenFromRefreshToken(refreshToken: String): LoginUserOutput!
+#   logout: Void
+# }
 
-type Query {
-  users: [User]!
-  user(id: Int!): User!
-  login(loginUserInput: LoginUserInput!): LoginUserOutput!
-  accessTokenFromRefreshToken(refreshToken: String): LoginUserOutput!
-  logout: Void
-}
-
-type Mutation {
-  register(createUserInput: CreateUserInput!): User
-  resetPassword(resetPasswordUserInput: ResetPasswordUserInput!): User
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User
-}
+# type Mutation {
+#   register(createUserInput: CreateUserInput!): User
+#   resetPassword(resetPasswordUserInput: ResetPasswordUserInput!): User
+#   createUser(createUserInput: CreateUserInput!): User!
+#   updateUser(updateUserInput: UpdateUserInput!): User!
+#   removeUser(id: Int!): User
+# }

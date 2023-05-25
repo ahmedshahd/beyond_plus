@@ -1,0 +1,45 @@
+type UserProfile {
+  uuid: String!
+  name: String!
+  email: String!
+  phoneNumber: String!
+  dateOfbirth: String
+  gender: Gender!
+  userInsuranceInfo: UserInsuranceInfo
+  address: UserAddress
+}
+enum Gender {
+  MALE
+  FEMALE
+}
+input CreateUserProfileInput {
+  uuid: String!
+  name: String!
+  email: String!
+  phoneNumber: String!
+  dateOfbirth: String
+  gender: Gender!
+}
+
+input UpdateUserProfileInput {
+  uuid: String!
+  name: String
+  email: String
+  phoneNumber: Int
+  dateOfbirth: String
+  gender: Gender
+}
+
+type Query {
+  userProfile(uuid: String!): UserProfile!
+}
+
+type Mutation {
+  createUserProfile(
+    createUserProfileInput: CreateUserProfileInput!
+  ): UserProfile!
+  updateUserProfile(
+    updateUserProfileInput: UpdateUserProfileInput!
+  ): UserProfile!
+  removeUserProfile(uuid: String!): UserProfile
+}

@@ -39,6 +39,9 @@ export class SubSpecialityService {
       include: {
         speciality: true,
       },
+      orderBy: {
+        name: 'asc',
+      },
     });
     return {
       subSpeciality: result,

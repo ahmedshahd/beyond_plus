@@ -13,37 +13,37 @@ type Address {
   updatedAt: DateTime
 }
 
-input CreateAddressInput {
-  longitude: Float
-  latitude: Float
-  streetName: String
-  buildingNumber: Int
-  floorNumber: Int
-  details: String
-  region: String
-  area: String
-}
+# input CreateAddressInput {
+#   longitude: Float
+#   latitude: Float
+#   streetName: String
+#   buildingNumber: Int
+#   floorNumber: Int
+#   details: String
+#   region: String
+#   area: String
+# }
 
-input UpdateAddressInput {
-  id: Int!
-  longitude: Float
-  latitude: Float
-  streetName: String
-  buildingNumber: Int
-  floorNumber: Int
-  details: String
-  region: String
-  area: String
-  createdAt: DateTime
-  updatedAt: DateTime
-}
+# input UpdateAddressInput {
+#   id: Int!
+#   longitude: Float
+#   latitude: Float
+#   streetName: String
+#   buildingNumber: Int
+#   floorNumber: Int
+#   details: String
+#   region: String
+#   area: String
+#   createdAt: DateTime
+#   updatedAt: DateTime
+# }
 
-type Query {
-  address: [Address]!
-}
+# type Query {
+#   address: [Address]!
+# }
 
-type Mutation {
-  createAddress(createAddressInput: CreateAddressInput!): Address!
-  updateAddress(updateAddressInput: UpdateAddressInput!): Address!
-  removeAddress(id: Int!): Address
-}
+# type Mutation {
+#   createAddress(createAddressInput: CreateAddressInput!): Address!
+#   updateAddress(updateAddressInput: UpdateAddressInput!): Address!
+#   removeAddress(id: Int!): Address
+# }

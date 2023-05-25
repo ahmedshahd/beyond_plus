@@ -36,6 +36,9 @@ export class AreaClientService {
       include: {
         ClientCity: true,
       },
+      orderBy: {
+        name: 'asc',
+      },
       ...pagination.query,
     });
 

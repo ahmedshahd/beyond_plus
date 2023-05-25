@@ -49,6 +49,9 @@ export class InsuranceCompanyService {
             }
           : undefined,
       },
+      orderBy: {
+        name: 'asc',
+      },
       ...pagination.query,
     });
 

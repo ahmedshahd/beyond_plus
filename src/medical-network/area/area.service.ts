@@ -39,6 +39,9 @@ export class AreaService {
         city: true,
         provider: true,
       },
+      orderBy: {
+        name: 'asc',
+      },
     });
 
     return {

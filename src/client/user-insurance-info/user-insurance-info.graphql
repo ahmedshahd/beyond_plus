@@ -1,0 +1,40 @@
+type UserInsuranceInfo {
+  id: Int!
+  cardNumber: Int!
+  companyAddress: String!
+  tpa: String!
+  insuranceCompany: String!
+  userProfile: UserProfile
+  userProfileUuid: String
+}
+
+input CreateUserInsuranceInfoInput {
+  cardNumber: Int!
+  companyAddress: String!
+  tpa: String!
+  insuranceCompany: String!
+  userProfileUuid: String
+}
+
+input UpdateUserInsuranceInfoInput {
+  id: Int!
+  cardNumber: Int
+  companyAddress: String
+  tpa: String
+  insuranceCompany: String
+  userProfileUuid: String
+}
+
+type Query {
+  userInsuranceInfo(uuid: String!): UserInsuranceInfo!
+}
+
+type Mutation {
+  createUserInsuranceInfo(
+    createUserInsuranceInfoInput: CreateUserInsuranceInfoInput!
+  ): UserInsuranceInfo!
+  updateUserInsuranceInfo(
+    updateUserInsuranceInfoInput: UpdateUserInsuranceInfoInput!
+  ): UserInsuranceInfo!
+  removeUserInsuranceInfo(id: Int!): UserInsuranceInfo
+}

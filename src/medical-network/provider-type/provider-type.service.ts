@@ -40,6 +40,9 @@ export class ProviderTypeService {
       include: {
         insuranceCompany: true,
       },
+      orderBy: {
+        name: 'asc',
+      },
     });
 
     return {
@@ -48,9 +51,10 @@ export class ProviderTypeService {
     };
   }
 
-
-
-  async create(createProviderTypeInput: CreateProviderTypeInput, language: LanguageEnum) {
+  async create(
+    createProviderTypeInput: CreateProviderTypeInput,
+    language: LanguageEnum,
+  ) {
     console.log('createProviderTypeInput', createProviderTypeInput);
     return await this.prisma.providerType.create({
       data: {

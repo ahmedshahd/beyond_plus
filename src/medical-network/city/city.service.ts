@@ -42,6 +42,9 @@ export class CityService {
         country: true,
         area: true,
       },
+      orderBy: {
+        name: 'asc',
+      },
     });
 
     return {
