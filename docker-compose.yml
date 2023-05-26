@@ -9,7 +9,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: postgresql://postgres:9qmOq80u8Sj@beyond-plus-db.cvm3ri1wjhhb.us-east-1.rds.amazonaws.com:5432/postgres?schema=public&connection_limit=10000&pool_timeout=0
+      DATABASE_URL:  postgresql://postgres:*PROrat666@beyond-plus.cvm3ri1wjhhb.us-east-1.rds.amazonaws.com:5432/postgres?schema=public&connection_limit=10000&pool_timeout=0
       PORT: 8000
       API_KEY: 2ab9c3d4e5f91ab7c3d4e5f6
       MULTER_MAX_FILE_SIZE: 1e+8
@@ -17,13 +17,13 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.plus.rule=Host(`plus.beyond-solution.com`)"
-      - "traefik.http.routers.plus.service=plus"
-      - "traefik.http.routers.plus.entrypoints=websecure"
-      - "traefik.http.services.plus.loadbalancer.server.port=8000"
-      - "traefik.http.routers.plus.tls=true"
-      - "traefik.http.routers.plus.tls.certresolver=letsencrypt"
-      - "traefik.http.services.plus.loadbalancer.passhostheader=true"
+      - "traefik.http.routers.plus-dev.rule=Host(`plus-dev.beyond-solution.com`)"
+      - "traefik.http.routers.plus-dev.service=plus-dev"
+      - "traefik.http.routers.plus-dev.entrypoints=websecure"
+      - "traefik.http.services.plus-dev.loadbalancer.server.port=8000"
+      - "traefik.http.routers.plus-dev.tls=true"
+      - "traefik.http.routers.plus-dev.tls.certresolver=letsencrypt"
+      - "traefik.http.services.plus-dev.loadbalancer.passhostheader=true"
   traefik:
     image: traefik:v2.7.0
     restart: unless-stopped
