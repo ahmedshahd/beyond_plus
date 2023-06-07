@@ -25,7 +25,7 @@ input UpdateUserProfileInput {
   uuid: String!
   name: String
   email: String
-  phoneNumber: Int
+  phoneNumber: String
   dateOfbirth: String
   gender: Gender
 }
