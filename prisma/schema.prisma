@@ -162,6 +162,7 @@ model UserProfile {
 model UserInsuranceInfo {
   id               Int         @id @default(autoincrement())
   cardNumber       Int
+  cardImgUrl       String?
   companyAddress   String
   tpa              String
   insuranceCompany String

@@ -7,4 +7,5 @@ export class CreateUserInsuranceInfoInput {
   tpa: string;
   insuranceCompany: string;
   userProfileUuid: string;
+  cardImgUrl: string;
 }

@@ -18,6 +18,10 @@ export class UserProfileService {
       where: {
         uuid,
       },
+      include: {
+        userInsuranceInfo: true,
+        // address: true,
+      },
     });
   }
 

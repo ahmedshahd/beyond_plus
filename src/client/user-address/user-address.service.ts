@@ -16,6 +16,9 @@ export class UserAddressService {
   async findOne(uuid: string) {
     return await this.prisma.userAddress.findMany({
       where: { userProfileUuid: uuid },
+      include: {
+        userProfile: true,
+      },
     });
   }
 

@@ -18,6 +18,9 @@ export class UserInsuranceInfoService {
       where: {
         userProfileUuid: uuid,
       },
+      include: {
+        userProfile: true,
+      },
     });
   }
 
