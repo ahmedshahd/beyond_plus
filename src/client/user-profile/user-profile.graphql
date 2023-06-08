@@ -1,10 +1,10 @@
 type UserProfile {
   uuid: String!
-  name: String!
-  email: String!
+  name: String
+  email: String
   phoneNumber: String!
   dateOfbirth: String
-  gender: Gender!
+  gender: Gender
   userInsuranceInfo: UserInsuranceInfo
   address: UserAddress
 }
@@ -14,11 +14,11 @@ enum Gender {
 }
 input CreateUserProfileInput {
   uuid: String!
-  name: String!
-  email: String!
+  name: String
+  email: String
   phoneNumber: String!
   dateOfbirth: String
-  gender: Gender!
+  gender: Gender
 }
 
 input UpdateUserProfileInput {

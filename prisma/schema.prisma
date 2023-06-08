@@ -148,11 +148,11 @@ model ClientCity {
 
 model UserProfile {
   uuid              String             @unique
-  name              String
-  email             String
+  name              String?
+  email             String?
   phoneNumber       String
-  dateOfbirth       String
-  gender            Gender
+  dateOfbirth       String?
+  gender            Gender?
   userInsuranceInfo UserInsuranceInfo?
   address           UserAddress[]
   createdAt         DateTime           @default(now())
