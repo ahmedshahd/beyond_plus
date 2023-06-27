@@ -11,7 +11,24 @@ export class UserProfileService {
     private readonly s3Service: S3Service,
   ) {}
 
-  async create(createUserProfileInput: CreateUserProfileInput, profileImg) {
+  async create(createUserProfileInput: CreateUserProfileInput, profileImg?) {
+    if (!profileImg) {
+      return await this.prisma.userProfile.create({
+        data: {
+          uuid: createUserProfileInput.uuid,
+          phoneNumber: createUserProfileInput.phoneNumber,
+          dateOfbirth: createUserProfileInput.dateOfbirth,
+          email: createUserProfileInput.email,
+          gender: createUserProfileInput.gender,
+          name: createUserProfileInput.name,
+        },
+        include: {
+          // address: true,
+          userInsuranceInfo: true,
+        },
+      });
+    }
+
     const { createReadStream, filename, mimetype } = await profileImg.promise;
     const fileStream = createReadStream();
     // Generate a unique filename for the image
@@ -28,8 +45,6 @@ export class UserProfileService {
       // Generate the S3 object URL
       const imageUrl = `https://${bucketName}.s3.amazonaws.com/user-profile-images/${uniqueFilename}`;
 
-      console.log('imageUrl', imageUrl);
-
       // Save the image URL in the Prisma database
       return await this.prisma.userProfile.create({
         data: {
@@ -40,6 +55,10 @@ export class UserProfileService {
           gender: createUserProfileInput.gender,
           name: createUserProfileInput.name,
           profileImgUrl: imageUrl,
+        },
+        include: {
+          // address: true,
+          userInsuranceInfo: true,
         },
       });
     } catch (error) {
@@ -63,8 +82,23 @@ export class UserProfileService {
   async update(
     uuid: string,
     updateUserProfileInput: UpdateUserProfileInput,
-    profileImg,
+    profileImg?,
   ) {
+    if (!profileImg) {
+      return await this.prisma.userProfile.update({
+        where: {
+          uuid,
+        },
+        data: {
+          phoneNumber: updateUserProfileInput.phoneNumber,
+          dateOfbirth: updateUserProfileInput.dateOfbirth,
+          email: updateUserProfileInput.email,
+          gender: updateUserProfileInput.gender,
+          name: updateUserProfileInput.name,
+        },
+      });
+    }
+
     const { createReadStream, filename, mimetype } = await profileImg.promise;
     const fileStream = createReadStream();
     // Generate a unique filename for the image
@@ -80,8 +114,6 @@ export class UserProfileService {
 
       // Generate the S3 object URL
       const imageUrl = `https://${bucketName}.s3.amazonaws.com/user-profile-images/${uniqueFilename}`;
-
-      console.log('imageUrl', imageUrl);
 
       // Save the image URL in the Prisma database
       return await this.prisma.userProfile.update({

@@ -13,7 +13,8 @@ export class UserInsuranceInfoResolver {
   createUserInsuranceInfo(
     @Args('createUserInsuranceInfoInput')
     createUserInsuranceInfoInput: CreateUserInsuranceInfoInput,
-    @Args('cardImage', { type: () => GraphQLUpload }) cardImage: FileUpload,
+    @Args('cardImage', { type: () => GraphQLUpload, nullable: true })
+    cardImage: FileUpload,
   ) {
     return this.userInsuranceInfoService.create(
       createUserInsuranceInfoInput,
@@ -30,8 +31,10 @@ export class UserInsuranceInfoResolver {
   updateUserInsuranceInfo(
     @Args('updateUserInsuranceInfoInput')
     updateUserInsuranceInfoInput: UpdateUserInsuranceInfoInput,
-    @Args('cardImage', { type: () => GraphQLUpload }) cardImage: FileUpload,
+    @Args('cardImage', { type: () => GraphQLUpload, nullable: true })
+    cardImage: FileUpload,
   ) {
+    console.log('cardImage from service', cardImage);
     return this.userInsuranceInfoService.update(
       updateUserInsuranceInfoInput.id,
       updateUserInsuranceInfoInput,

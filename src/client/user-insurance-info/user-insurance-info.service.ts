@@ -15,6 +15,18 @@ export class UserInsuranceInfoService {
     createUserInsuranceInfoInput: CreateUserInsuranceInfoInput,
     cardImage,
   ) {
+    if (!cardImage) {
+      return await this.prisma.userInsuranceInfo.create({
+        data: {
+          userProfileUuid: createUserInsuranceInfoInput.userProfileUuid,
+          cardNumber: createUserInsuranceInfoInput.cardNumber,
+          companyAddress: createUserInsuranceInfoInput.companyAddress,
+          insuranceCompany: createUserInsuranceInfoInput.insuranceCompany,
+          tpa: createUserInsuranceInfoInput.tpa,
+        },
+      });
+    }
+
     const { createReadStream, filename, mimetype } = await cardImage.promise;
     const fileStream = createReadStream();
     // Generate a unique filename for the image
@@ -26,8 +38,6 @@ export class UserInsuranceInfoService {
 
       // Generate the S3 object URL
       const imageUrl = `https://${bucketName}.s3.amazonaws.com/card-images/${uniqueFilename}`;
-
-      console.log('imageUrl', imageUrl);
 
       // Save the image URL in the Prisma database
       return await this.prisma.userInsuranceInfo.create({
@@ -62,6 +72,23 @@ export class UserInsuranceInfoService {
     updateUserInsuranceInfoInput: UpdateUserInsuranceInfoInput,
     cardImage,
   ) {
+    if (!cardImage) {
+      return await this.prisma.userInsuranceInfo.update({
+        where: {
+          id,
+        },
+        data: {
+          cardNumber: updateUserInsuranceInfoInput.cardNumber,
+          companyAddress: updateUserInsuranceInfoInput.companyAddress,
+          insuranceCompany: updateUserInsuranceInfoInput.insuranceCompany,
+          tpa: updateUserInsuranceInfoInput.tpa,
+        },
+        include: {
+          userProfile: true,
+        },
+      });
+    }
+
     const { createReadStream, filename, mimetype } = await cardImage.promise;
     const fileStream = createReadStream();
     // Generate a unique filename for the image
@@ -73,9 +100,6 @@ export class UserInsuranceInfoService {
 
       // Generate the S3 object URL
       const imageUrl = `https://${bucketName}.s3.amazonaws.com/card-images/${uniqueFilename}`;
-
-      console.log('imageUrl', imageUrl);
-
       // Save the image URL in the Prisma database
       return await this.prisma.userInsuranceInfo.update({
         where: {

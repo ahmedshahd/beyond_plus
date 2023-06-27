@@ -12,7 +12,8 @@ export class UserProfileResolver {
   createUserProfile(
     @Args('createUserProfileInput')
     createUserProfileInput: CreateUserProfileInput,
-    @Args('profileImg', { type: () => GraphQLUpload }) profileImg: FileUpload,
+    @Args('profileImg', { type: () => GraphQLUpload, nullable: true })
+    profileImg: FileUpload,
   ) {
     return this.userProfileService.create(createUserProfileInput, profileImg);
   }
@@ -26,7 +27,8 @@ export class UserProfileResolver {
   updateUserProfile(
     @Args('updateUserProfileInput')
     updateUserProfileInput: UpdateUserProfileInput,
-    @Args('profileImg', { type: () => GraphQLUpload }) profileImg: FileUpload,
+    @Args('profileImg', { type: () => GraphQLUpload, nullable: true })
+    profileImg: FileUpload,
   ) {
     return this.userProfileService.update(
       updateUserProfileInput.uuid,
