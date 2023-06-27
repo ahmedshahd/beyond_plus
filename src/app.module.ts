@@ -33,6 +33,7 @@ import { AreaClientModule } from './client/area/area.client.module';
 import { UserProfileModule } from './client/user-profile/user-profile.module';
 import { UserAddressModule } from './client/user-address/user-address.module';
 import { UserInsuranceInfoModule } from './client/user-insurance-info/user-insurance-info.module';
+import { S3Module } from './client/S3/uploader.module';
 
 @Module({
   imports: [
@@ -52,7 +53,7 @@ import { UserInsuranceInfoModule } from './client/user-insurance-info/user-insur
         context: ({ req }) => ({ req }),
         playground: process.env.NODE_ENV === 'production' ? true : false,
         introspection: true,
-        csrfPrevention: true,
+        csrfPrevention: false,
         cache: 'bounded',
         plugins: [
           process.env.NODE_ENV !== 'production'
@@ -88,6 +89,7 @@ import { UserInsuranceInfoModule } from './client/user-insurance-info/user-insur
     UserProfileModule,
     UserAddressModule,
     UserInsuranceInfoModule,
+    S3Module,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

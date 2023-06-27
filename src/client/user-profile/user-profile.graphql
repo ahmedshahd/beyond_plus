@@ -4,6 +4,7 @@ type UserProfile {
   email: String
   phoneNumber: String!
   dateOfbirth: String
+  profileImgUrl: String
   gender: Gender
   userInsuranceInfo: UserInsuranceInfo
   address: UserAddress
@@ -37,9 +38,11 @@ type Query {
 type Mutation {
   createUserProfile(
     createUserProfileInput: CreateUserProfileInput!
+    profileImg: Upload
   ): UserProfile!
   updateUserProfile(
     updateUserProfileInput: UpdateUserProfileInput!
+    profileImg: Upload
   ): UserProfile!
   removeUserProfile(uuid: String!): UserProfile
 }

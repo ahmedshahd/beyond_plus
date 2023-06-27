@@ -4,6 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { json, urlencoded } from 'express';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { graphqlUploadExpress } from 'graphql-upload';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -11,6 +12,8 @@ async function bootstrap() {
     logger: ['error', 'warn', 'log'],
   });
   app.use(json({ limit: '100mb' }));
+  app.use(graphqlUploadExpress());
+
   app.use(urlencoded({ limit: '100mb', extended: true }));
 
   app.enableCors();

@@ -2,6 +2,7 @@ import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { UserProfileService } from './user-profile.service';
 import { CreateUserProfileInput } from './dto/create-user-profile.input';
 import { UpdateUserProfileInput } from './dto/update-user-profile.input';
+import { GraphQLUpload, FileUpload } from 'graphql-upload';
 
 @Resolver()
 export class UserProfileResolver {
@@ -11,14 +12,10 @@ export class UserProfileResolver {
   createUserProfile(
     @Args('createUserProfileInput')
     createUserProfileInput: CreateUserProfileInput,
+    @Args('profileImg', { type: () => GraphQLUpload }) profileImg: FileUpload,
   ) {
-    return this.userProfileService.create(createUserProfileInput);
+    return this.userProfileService.create(createUserProfileInput, profileImg);
   }
-
-  // @Query()
-  // findAll() {
-  //   return this.userProfileService.findAll();
-  // }
 
   @Query('userProfile')
   findOne(@Args('uuid') uuid: string) {
@@ -29,10 +26,12 @@ export class UserProfileResolver {
   updateUserProfile(
     @Args('updateUserProfileInput')
     updateUserProfileInput: UpdateUserProfileInput,
+    @Args('profileImg', { type: () => GraphQLUpload }) profileImg: FileUpload,
   ) {
     return this.userProfileService.update(
       updateUserProfileInput.uuid,
       updateUserProfileInput,
+      profileImg,
     );
   }
 

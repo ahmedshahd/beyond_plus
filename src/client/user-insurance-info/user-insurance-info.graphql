@@ -1,31 +1,30 @@
+scalar Upload
+
 type UserInsuranceInfo {
   id: Int!
-  cardNumber: Int!
-  companyAddress: String!
-  tpa: String!
-  insuranceCompany: String!
+  cardNumber: String
+  companyAddress: String
+  tpa: String
+  insuranceCompany: String
   userProfile: UserProfile
   userProfileUuid: String
   cardImgUrl: String
 }
 
 input CreateUserInsuranceInfoInput {
-  cardNumber: Int!
-  companyAddress: String!
-  tpa: String!
-  insuranceCompany: String!
-  userProfileUuid: String
-  cardImgUrl: String
-}
-
-input UpdateUserInsuranceInfoInput {
-  id: Int!
-  cardNumber: Int
+  cardNumber: String!
   companyAddress: String
   tpa: String
   insuranceCompany: String
   userProfileUuid: String
-  cardImgUrl: String
+}
+
+input UpdateUserInsuranceInfoInput {
+  id: Int!
+  cardNumber: String
+  companyAddress: String
+  tpa: String
+  insuranceCompany: String
 }
 
 type Query {
@@ -35,9 +34,11 @@ type Query {
 type Mutation {
   createUserInsuranceInfo(
     createUserInsuranceInfoInput: CreateUserInsuranceInfoInput!
+    cardImage: Upload
   ): UserInsuranceInfo!
   updateUserInsuranceInfo(
     updateUserInsuranceInfoInput: UpdateUserInsuranceInfoInput!
+    cardImage: Upload
   ): UserInsuranceInfo!
   removeUserInsuranceInfo(id: Int!): UserInsuranceInfo
 }

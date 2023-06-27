@@ -150,6 +150,7 @@ model UserProfile {
   uuid              String             @unique
   name              String?
   email             String?
+  profileImgUrl     String?
   phoneNumber       String
   dateOfbirth       String?
   gender            Gender?
@@ -161,11 +162,11 @@ model UserProfile {
 
 model UserInsuranceInfo {
   id               Int         @id @default(autoincrement())
-  cardNumber       Int
+  cardNumber       String?
   cardImgUrl       String?
-  companyAddress   String
-  tpa              String
-  insuranceCompany String
+  companyAddress   String?
+  tpa              String?
+  insuranceCompany String?
   userProfile      UserProfile @relation(fields: [userProfileUuid], references: [uuid])
   userProfileUuid  String      @unique
   createdAt        DateTime    @default(now())
