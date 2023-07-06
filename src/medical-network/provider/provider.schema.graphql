@@ -13,7 +13,7 @@ type Provider {
   websiteUrl: String
   areaId: Int
   specialityId: Int
-  SubspecialityId: Int
+  subSpecialityId: Int
 
   tierRank: Int!
   providerTypeId: Int
