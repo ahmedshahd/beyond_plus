@@ -33,15 +33,15 @@ export class ProviderService {
           }
         : undefined,
     };
-    if (providerTypeId) {
+    if (providerTypeId && providerTypeId.length > 0) {
       whereConditions.providerTypeId = { in: providerTypeId };
     }
 
-    if (specialityId) {
+    if (specialityId && specialityId.length > 0) {
       whereConditions.specialityId = { in: specialityId };
     }
 
-    if (subSpecialityId) {
+    if (subSpecialityId && subSpecialityId.length > 0) {
       whereConditions.subSpecialityId = { in: subSpecialityId };
     }
 
