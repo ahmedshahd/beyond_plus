@@ -23,7 +23,7 @@ export class S3Service {
     const key = `${folder}/${fileName}`;
 
     const params = {
-      Bucket: 'beyond-plus-user-images',
+      Bucket: 'beyond-plus-mobile-app',
       Key: key,
       Body: file,
     };
