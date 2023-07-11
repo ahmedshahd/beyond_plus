@@ -21,7 +21,9 @@ export class UserProfileService {
           email: createUserProfileInput.email,
           gender: createUserProfileInput.gender,
           name: createUserProfileInput.name,
+        
         },
+        
         include: {
           // address: true,
           userInsuranceInfo: true,
@@ -77,6 +79,14 @@ export class UserProfileService {
         // address: true,
       },
     });
+  }
+  async findAll() {
+    return await this.prisma.userProfile.findMany({
+      include:{
+        userInsuranceInfo: true,
+        // address: true,
+      }
+    })
   }
 
   async update(
@@ -141,5 +151,14 @@ export class UserProfileService {
         uuid,
       },
     });
+  }
+  async removeAll(){
+    try {
+      await this.prisma.userProfile.deleteMany({});
+      return "All user profiles have been deleted.";
+    } catch (error) {
+      console.error(error);
+      throw new Error("Failed to delete user profiles.");
+    }
   }
 }

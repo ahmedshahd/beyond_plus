@@ -1,6 +1,0 @@
--- AlterTable
-ALTER TABLE "UserInsuranceInfo" ALTER COLUMN "cardNumber" DROP NOT NULL,
-ALTER COLUMN "cardNumber" SET DATA TYPE TEXT,
-ALTER COLUMN "tpa" DROP NOT NULL,
-ALTER COLUMN "insuranceCompany" DROP NOT NULL,
-ALTER COLUMN "companyAddress" DROP NOT NULL;

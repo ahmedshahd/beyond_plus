@@ -21,7 +21,7 @@ CREATE TABLE "LearnIcon" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "content" TEXT NOT NULL,
-    "imageUrl" TEXT NOT NULL,
+    "imageUrl" TEXT,
     "language" "LanguageEnum" NOT NULL DEFAULT 'ARABIC',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
@@ -89,50 +89,6 @@ CREATE TABLE "WelcomeScreen" (
 );
 
 -- CreateTable
-CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
-    "companyWorkName" TEXT,
-    "insuranceCompanyName" TEXT,
-    "medicalInsuranceCardNumber" TEXT,
-    "medicalInsuranceCardImageUrl" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3),
-
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Address" (
-    "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
-    "longitude" DOUBLE PRECISION NOT NULL,
-    "latitude" DOUBLE PRECISION NOT NULL,
-    "streetName" TEXT NOT NULL,
-    "buildingNumber" INTEGER NOT NULL,
-    "floorNumber" INTEGER NOT NULL,
-    "details" TEXT NOT NULL,
-    "region" TEXT NOT NULL,
-    "area" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3),
-
-    CONSTRAINT "Address_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Notification" (
-    "id" SERIAL NOT NULL,
-    "title" TEXT NOT NULL,
-    "content" TEXT NOT NULL,
-    "imageUrl" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3),
-    "userId" INTEGER,
-
-    CONSTRAINT "Notification_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "lineOfBusiness" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -160,22 +116,27 @@ CREATE TABLE "ClientCity" (
 -- CreateTable
 CREATE TABLE "UserProfile" (
     "uuid" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "phoneNumber" INTEGER NOT NULL,
-    "dateOfbirth" TIMESTAMP(3) NOT NULL,
-    "gender" "Gender" NOT NULL,
-    "userInsuranceInfoId" INTEGER NOT NULL,
-    "userAddressId" INTEGER NOT NULL
+    "name" TEXT,
+    "email" TEXT,
+    "profileImgUrl" TEXT,
+    "phoneNumber" TEXT NOT NULL,
+    "dateOfbirth" TEXT,
+    "gender" "Gender",
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3)
 );
 
 -- CreateTable
 CREATE TABLE "UserInsuranceInfo" (
     "id" SERIAL NOT NULL,
-    "cardNumber" INTEGER NOT NULL,
-    "CompanyAddress" TEXT NOT NULL,
-    "tpa" TEXT NOT NULL,
-    "insuranceCompany" TEXT NOT NULL,
+    "cardNumber" TEXT,
+    "cardImgUrl" TEXT,
+    "companyAddress" TEXT,
+    "tpa" TEXT,
+    "insuranceCompany" TEXT,
+    "userProfileUuid" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "UserInsuranceInfo_pkey" PRIMARY KEY ("id")
 );
@@ -183,13 +144,17 @@ CREATE TABLE "UserInsuranceInfo" (
 -- CreateTable
 CREATE TABLE "UserAddress" (
     "id" SERIAL NOT NULL,
-    "location" DOUBLE PRECISION,
+    "longitude" DOUBLE PRECISION,
+    "latitude" DOUBLE PRECISION,
     "city" TEXT NOT NULL,
     "area" TEXT NOT NULL,
     "buildingNumber" TEXT NOT NULL,
     "floorNumber" TEXT NOT NULL,
-    "StreetName" TEXT NOT NULL,
+    "streetName" TEXT NOT NULL,
     "description" TEXT,
+    "userProfileUuid" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "UserAddress_pkey" PRIMARY KEY ("id")
 );
@@ -354,6 +319,12 @@ CREATE UNIQUE INDEX "ClientCity_name_language_key" ON "ClientCity"("name", "lang
 CREATE UNIQUE INDEX "UserProfile_uuid_key" ON "UserProfile"("uuid");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "UserInsuranceInfo_userProfileUuid_key" ON "UserInsuranceInfo"("userProfileUuid");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "UserAddress_city_area_streetName_userProfileUuid_key" ON "UserAddress"("city", "area", "streetName", "userProfileUuid");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "ClientArea_name_language_clientCityId_key" ON "ClientArea"("name", "language", "clientCityId");
 
 -- CreateIndex
@@ -387,16 +358,10 @@ CREATE UNIQUE INDEX "City_name_language_countryId_insuranceCompanyId_key" ON "Ci
 CREATE UNIQUE INDEX "Area_name_language_cityId_key" ON "Area"("name", "language", "cityId");
 
 -- AddForeignKey
-ALTER TABLE "Address" ADD CONSTRAINT "Address_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "UserInsuranceInfo" ADD CONSTRAINT "UserInsuranceInfo_userProfileUuid_fkey" FOREIGN KEY ("userProfileUuid") REFERENCES "UserProfile"("uuid") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Notification" ADD CONSTRAINT "Notification_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "UserProfile" ADD CONSTRAINT "UserProfile_userInsuranceInfoId_fkey" FOREIGN KEY ("userInsuranceInfoId") REFERENCES "UserInsuranceInfo"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "UserProfile" ADD CONSTRAINT "UserProfile_userAddressId_fkey" FOREIGN KEY ("userAddressId") REFERENCES "UserAddress"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserAddress" ADD CONSTRAINT "UserAddress_userProfileUuid_fkey" FOREIGN KEY ("userProfileUuid") REFERENCES "UserProfile"("uuid") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ClientArea" ADD CONSTRAINT "ClientArea_clientCityId_fkey" FOREIGN KEY ("clientCityId") REFERENCES "ClientCity"("id") ON DELETE CASCADE ON UPDATE CASCADE;

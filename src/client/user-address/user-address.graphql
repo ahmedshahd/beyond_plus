@@ -1,12 +1,12 @@
 type UserAddress {
-  id: Int!
+  id: Int
   longitude: Float
   latitude: Float
-  city: String!
-  area: String!
-  buildingNumber: String!
-  floorNumber: String!
-  streetName: String!
+  city: String
+  area: String
+  buildingNumber: String
+  floorNumber: String
+  streetName: String
   description: String
   userProfile: UserProfile
   userProfileUuid: String
@@ -15,11 +15,11 @@ type UserAddress {
 input CreateUserAddressInput {
   longitude: Float
   latitude: Float
-  city: String!
-  area: String!
-  buildingNumber: String!
-  floorNumber: String!
-  streetName: String!
+  city: String
+  area: String
+  buildingNumber: String
+  floorNumber: String
+  streetName: String
   description: String
   userProfileUuid: String
 }

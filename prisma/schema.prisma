@@ -167,7 +167,7 @@ model UserInsuranceInfo {
   companyAddress   String?
   tpa              String?
   insuranceCompany String?
-  userProfile      UserProfile @relation(fields: [userProfileUuid], references: [uuid])
+  userProfile      UserProfile @relation(fields: [userProfileUuid], references: [uuid],onDelete: Cascade,onUpdate: Cascade)
   userProfileUuid  String      @unique
   createdAt        DateTime    @default(now())
   updatedAt        DateTime?   @updatedAt
@@ -183,7 +183,7 @@ model UserAddress {
   floorNumber     String
   streetName      String
   description     String?
-  userProfile     UserProfile @relation(fields: [userProfileUuid], references: [uuid])
+  userProfile     UserProfile @relation(fields: [userProfileUuid], references: [uuid],onDelete: Cascade,onUpdate: Cascade)
   userProfileUuid String
   createdAt       DateTime    @default(now())
   updatedAt       DateTime?   @updatedAt

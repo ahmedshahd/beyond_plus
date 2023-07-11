@@ -18,10 +18,16 @@ export class UserProfileResolver {
     return this.userProfileService.create(createUserProfileInput, profileImg);
   }
 
+
   @Query('userProfile')
   findOne(@Args('uuid') uuid: string) {
     return this.userProfileService.findOne(uuid);
   }
+
+  @Query('usersProfiles')
+  findAll() {
+    return this.userProfileService.findAll();
+  }  
 
   @Mutation('updateUserProfile')
   updateUserProfile(
@@ -41,4 +47,11 @@ export class UserProfileResolver {
   removeUserProfile(@Args('uuid') uuid: string) {
     return this.userProfileService.remove(uuid);
   }
+
+  @Mutation('removeAllUserProfiles')
+  removeAllUserProfiles() {
+    return this.userProfileService.removeAll();
+  }
+
+
 }
