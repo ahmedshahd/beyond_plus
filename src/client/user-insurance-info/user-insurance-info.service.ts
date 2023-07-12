@@ -21,8 +21,8 @@ export class UserInsuranceInfoService {
           userProfileUuid: createUserInsuranceInfoInput.userProfileUuid,
           cardNumber: createUserInsuranceInfoInput.cardNumber,
           companyAddress: createUserInsuranceInfoInput.companyAddress,
-          insuranceCompany: createUserInsuranceInfoInput.insuranceCompany,
-          tpa: createUserInsuranceInfoInput.tpa,
+          insuranceCompanyId: createUserInsuranceInfoInput.insuranceCompanyId,
+          tpaId: createUserInsuranceInfoInput.tpaId,
         },
       });
     }
@@ -46,8 +46,8 @@ export class UserInsuranceInfoService {
           cardImgUrl: imageUrl,
           cardNumber: createUserInsuranceInfoInput.cardNumber,
           companyAddress: createUserInsuranceInfoInput.companyAddress,
-          insuranceCompany: createUserInsuranceInfoInput.insuranceCompany,
-          tpa: createUserInsuranceInfoInput.tpa,
+          insuranceCompanyId: createUserInsuranceInfoInput.insuranceCompanyId,
+          tpaId: createUserInsuranceInfoInput.tpaId,
         },
       });
     } catch (error) {
@@ -80,8 +80,8 @@ export class UserInsuranceInfoService {
         data: {
           cardNumber: updateUserInsuranceInfoInput.cardNumber,
           companyAddress: updateUserInsuranceInfoInput.companyAddress,
-          insuranceCompany: updateUserInsuranceInfoInput.insuranceCompany,
-          tpa: updateUserInsuranceInfoInput.tpa,
+          insuranceCompanyId: updateUserInsuranceInfoInput.insuranceCompanyId,
+          tpaId: updateUserInsuranceInfoInput.tpaId,
         },
         include: {
           userProfile: true,
@@ -109,8 +109,8 @@ export class UserInsuranceInfoService {
           cardImgUrl: imageUrl,
           cardNumber: updateUserInsuranceInfoInput.cardNumber,
           companyAddress: updateUserInsuranceInfoInput.companyAddress,
-          insuranceCompany: updateUserInsuranceInfoInput.insuranceCompany,
-          tpa: updateUserInsuranceInfoInput.tpa,
+          insuranceCompanyId: updateUserInsuranceInfoInput.insuranceCompanyId,
+          tpaId: updateUserInsuranceInfoInput.tpaId,
         },
         include: {
           userProfile: true,

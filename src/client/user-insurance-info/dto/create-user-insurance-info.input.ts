@@ -4,7 +4,7 @@ import { InputType, Field } from '@nestjs/graphql';
 export class CreateUserInsuranceInfoInput {
   cardNumber: string;
   companyAddress: string;
-  tpa: string;
-  insuranceCompany: string;
+  tpaId: number;
+  insuranceCompanyId: number;
   userProfileUuid: string;
 }

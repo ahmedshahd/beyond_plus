@@ -4,8 +4,8 @@ type UserInsuranceInfo {
   id: Int!
   cardNumber: String
   companyAddress: String
-  tpa: String
-  insuranceCompany: String
+  tpaId: Int
+  insuranceCompanyId: Int
   userProfile: UserProfile
   userProfileUuid: String
   cardImgUrl: String
@@ -14,8 +14,8 @@ type UserInsuranceInfo {
 input CreateUserInsuranceInfoInput {
   cardNumber: String!
   companyAddress: String
-  tpa: String
-  insuranceCompany: String
+  tpaId: Int
+  insuranceCompanyId: Int
   userProfileUuid: String
 }
 
@@ -23,8 +23,8 @@ input UpdateUserInsuranceInfoInput {
   id: Int!
   cardNumber: String
   companyAddress: String
-  tpa: String
-  insuranceCompany: String
+  tpaId: Int
+  insuranceCompanyId: Int
 }
 
 type Query {

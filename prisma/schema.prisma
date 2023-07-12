@@ -165,8 +165,8 @@ model UserInsuranceInfo {
   cardNumber       String?
   cardImgUrl       String?
   companyAddress   String?
-  tpa              String?
-  insuranceCompany String?
+  tpaId              Int?
+  insuranceCompanyId Int?
   userProfile      UserProfile @relation(fields: [userProfileUuid], references: [uuid],onDelete: Cascade,onUpdate: Cascade)
   userProfileUuid  String      @unique
   createdAt        DateTime    @default(now())
