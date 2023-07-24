@@ -12,7 +12,7 @@ async function bootstrap() {
     logger: ['error', 'warn', 'log'],
   });
   app.use(json({ limit: '100mb' }));
-  app.use(graphqlUploadExpress());
+  app.use("/graphql",graphqlUploadExpress());
 
   app.use(urlencoded({ limit: '100mb', extended: true }));
 
