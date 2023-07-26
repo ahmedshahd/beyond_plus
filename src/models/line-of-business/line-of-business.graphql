@@ -23,7 +23,7 @@ input UpdateLineOfBusinessInput {
 }
 
 type Query {
-  lineOfBusiness(language: LanguageEnum!): [LineOfBusiness]!
+  lineOfBusiness(language: LanguageEnum!, search: String): [LineOfBusiness]!
 }
 
 type Mutation {

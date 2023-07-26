@@ -1,7 +1,7 @@
 type WelcomeScreen {
   id: Int!
-  text: String!
   title: String!
+  text: String
   imageUrl: String!
   language: LanguageEnum!
   createdAt: DateTime!
@@ -9,8 +9,8 @@ type WelcomeScreen {
 }
 
 input CreateWelcomeScreenInput {
+  title: String
   text: String!
-  title: String!
 }
 
 input UpdateWelcomeScreenInput {
@@ -20,7 +20,7 @@ input UpdateWelcomeScreenInput {
 }
 
 type Query {
-  welcomeScreen(language: LanguageEnum!): [WelcomeScreen]!
+  welcomeScreen(language: LanguageEnum!, search: String): [WelcomeScreen]!
 }
 
 type Mutation {

@@ -23,13 +23,16 @@ export class LineOfBusinessAdminResolver {
     return this.lineOfBusinessAdminService.create(
       createLineOfBusinessInput,
       language,
-      image
+      image,
     );
   }
 
   @Query('lineOfBusiness')
-  findAll(@Args('language') language: LanguageEnum) {
-    return this.lineOfBusinessAdminService.findAll(language);
+  findAll(
+    @Args('language') language: LanguageEnum,
+    @Args('search') search: string,
+  ) {
+    return this.lineOfBusinessAdminService.findAll(language, search);
   }
 
   @Mutation('updateLineOfBusiness')
@@ -39,7 +42,10 @@ export class LineOfBusinessAdminResolver {
     @Args('image', { type: () => GraphQLUpload, nullable: true })
     image: FileUpload,
   ) {
-    return this.lineOfBusinessAdminService.update(updateLineOfBusinessInput,image);
+    return this.lineOfBusinessAdminService.update(
+      updateLineOfBusinessInput,
+      image,
+    );
   }
 
   @Mutation('removeLineOfBusiness')

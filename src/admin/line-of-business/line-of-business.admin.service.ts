@@ -42,10 +42,16 @@ export class LineOfBusinessAdminService {
     }
   }
 
-  async findAll(language: LanguageEnum) {
+  async findAll(language: LanguageEnum, search: string) {
     return await this.prisma.lineOfBusiness.findMany({
       where: {
         language,
+        name: search
+          ? {
+              contains: search,
+              mode: 'insensitive',
+            }
+          : undefined,
       },
     });
   }

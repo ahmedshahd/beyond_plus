@@ -76,13 +76,56 @@ model TermsAndConditions {
 }
 
 model WelcomeScreen {
-  id        Int          @id @default(autoincrement())
-  imageUrl  String
-  title     String
-  text      String
+  id       Int     @id @default(autoincrement())
+  title    String
+  text     String?
+  imageUrl String
   language  LanguageEnum @default(ARABIC)
   createdAt DateTime     @default(now())
   updatedAt DateTime?    @updatedAt
+}
+
+model tutorialVideos {
+  id          Int       @id @default(autoincrement())
+  title       String
+  videoUrl    String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+}
+
+model lineOfBusiness {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String?
+  details     String?
+  imageUrl    String
+  language    LanguageEnum @default(ARABIC)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime?    @updatedAt
+}
+
+model ClientCity {
+  id         Int          @id @default(autoincrement())
+  name       String
+  clientArea ClientArea[]
+  language   LanguageEnum @default(ARABIC)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime?    @updatedAt
+
+  @@unique([name, language], name: "ClientCity_name_language_unique_constraint")
+}
+
+model ClientArea {
+  id           Int          @id @default(autoincrement())
+  name         String
+  clientCityId Int
+  ClientCity   ClientCity   @relation(fields: [clientCityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  language     LanguageEnum @default(ARABIC)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime?    @updatedAt
+
+  @@unique([name, language, clientCityId], name: "ClientArea_name_language_clientCityId_unique_constraint")
 }
 
 // model User {
@@ -124,28 +167,6 @@ model WelcomeScreen {
 //   userId    Int?
 // }
 
-model lineOfBusiness {
-  id          Int          @id @default(autoincrement())
-  name        String
-  description String
-  details     String
-  imageUrl    String
-  language    LanguageEnum @default(ARABIC)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime?    @updatedAt
-}
-
-model ClientCity {
-  id         Int          @id @default(autoincrement())
-  name       String
-  clientArea ClientArea[]
-  language   LanguageEnum @default(ARABIC)
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime?    @updatedAt
-
-  @@unique([name, language], name: "ClientCity_name_language_unique_constraint")
-}
-
 model UserProfile {
   uuid              String             @unique
   name              String?
@@ -161,16 +182,16 @@ model UserProfile {
 }
 
 model UserInsuranceInfo {
-  id               Int         @id @default(autoincrement())
-  cardNumber       String?
-  cardImgUrl       String?
-  companyAddress   String?
+  id                 Int         @id @default(autoincrement())
+  cardNumber         String?
+  cardImgUrl         String?
+  companyAddress     String?
   tpaId              Int?
   insuranceCompanyId Int?
-  userProfile      UserProfile @relation(fields: [userProfileUuid], references: [uuid],onDelete: Cascade,onUpdate: Cascade)
-  userProfileUuid  String      @unique
-  createdAt        DateTime    @default(now())
-  updatedAt        DateTime?   @updatedAt
+  userProfile        UserProfile @relation(fields: [userProfileUuid], references: [uuid], onDelete: Cascade, onUpdate: Cascade)
+  userProfileUuid    String      @unique
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime?   @updatedAt
 }
 
 model UserAddress {
@@ -183,24 +204,12 @@ model UserAddress {
   floorNumber     String
   streetName      String
   description     String?
-  userProfile     UserProfile @relation(fields: [userProfileUuid], references: [uuid],onDelete: Cascade,onUpdate: Cascade)
+  userProfile     UserProfile @relation(fields: [userProfileUuid], references: [uuid], onDelete: Cascade, onUpdate: Cascade)
   userProfileUuid String
   createdAt       DateTime    @default(now())
   updatedAt       DateTime?   @updatedAt
 
   @@unique([city, area, streetName, userProfileUuid], name: "City_Area_StreetName_Constraint")
-}
-
-model ClientArea {
-  id           Int          @id @default(autoincrement())
-  name         String
-  clientCityId Int
-  ClientCity   ClientCity   @relation(fields: [clientCityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  language     LanguageEnum @default(ARABIC)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime?    @updatedAt
-
-  @@unique([name, language, clientCityId], name: "ClientArea_name_language_clientCityId_unique_constraint")
 }
 
 //********* Medical Network **********//

@@ -42,10 +42,16 @@ export class WelcomeScreenAdminService {
     }
   }
 
-  async findAll(language: LanguageEnum) {
+  async findAll(language: LanguageEnum, search: string) {
     return await this.prisma.welcomeScreen.findMany({
       where: {
         language,
+        title: search
+          ? {
+              contains: search,
+              mode: 'insensitive',
+            }
+          : undefined,
       },
     });
   }

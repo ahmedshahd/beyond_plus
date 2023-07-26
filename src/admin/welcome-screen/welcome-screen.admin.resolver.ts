@@ -11,7 +11,6 @@ export class WelcomeScreenAdminResolver {
     private readonly welcomeScreenAdminService: WelcomeScreenAdminService,
   ) {}
 
-  
   @Mutation('createWelcomeScreen')
   create(
     @Args('createWelcomeScreenInput')
@@ -24,13 +23,16 @@ export class WelcomeScreenAdminResolver {
     return this.welcomeScreenAdminService.create(
       createWelcomeScreenInput,
       language,
-      image
+      image,
     );
   }
 
   @Query('welcomeScreen')
-  findAll(@Args('language') language: LanguageEnum) {
-    return this.welcomeScreenAdminService.findAll(language);
+  findAll(
+    @Args('language') language: LanguageEnum,
+    @Args('search') search: string,
+  ) {
+    return this.welcomeScreenAdminService.findAll(language, search);
   }
 
   @Mutation('updateWelcomeScreen')
@@ -40,7 +42,10 @@ export class WelcomeScreenAdminResolver {
     @Args('image', { type: () => GraphQLUpload, nullable: true })
     image: FileUpload,
   ) {
-    return this.welcomeScreenAdminService.update( updateWelcomeScreenInput, image);
+    return this.welcomeScreenAdminService.update(
+      updateWelcomeScreenInput,
+      image,
+    );
   }
 
   @Mutation('removeWelcomeScreen')
