@@ -25,7 +25,7 @@ export class UserProfileService {
       });
     }
 
-    const { createReadStream, filename, mimetype } = await profileImg.promise;
+    const { createReadStream, filename } = await profileImg.promise;
     const fileStream = createReadStream();
     // Generate a unique filename for the image
     const uniqueFilename = `${Date.now()}-${filename}`;
@@ -92,7 +92,7 @@ export class UserProfileService {
       });
     }
 
-    const { createReadStream, filename, mimetype } = await profileImg.promise;
+    const { createReadStream, filename } = await profileImg.promise;
     const fileStream = createReadStream();
     // Generate a unique filename for the image
     const uniqueFilename = `${Date.now()}-${filename}`;

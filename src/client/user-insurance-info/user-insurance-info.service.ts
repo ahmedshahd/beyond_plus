@@ -23,7 +23,7 @@ export class UserInsuranceInfoService {
       });
     }
 
-    const { createReadStream, filename, mimetype } = await cardImage.promise;
+    const { createReadStream, filename } = await cardImage.promise;
     const fileStream = createReadStream();
     // Generate a unique filename for the image
     const uniqueFilename = `${Date.now()}-${filename}`;
@@ -80,7 +80,7 @@ export class UserInsuranceInfoService {
       });
     }
 
-    const { createReadStream, filename, mimetype } = await cardImage.promise;
+    const { createReadStream, filename } = await cardImage.promise;
     const fileStream = createReadStream();
     // Generate a unique filename for the image
     const uniqueFilename = `${Date.now()}-${filename}`;

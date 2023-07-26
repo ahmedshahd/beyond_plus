@@ -1,0 +1,35 @@
+type TutorialVideo {
+  id: Int!
+  title: String!
+  videoUrl: String!
+  description: String
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+input CreateTutorialVideoInput {
+  title: String!
+  description: String
+}
+
+input UpdateTutorialVideoInput {
+  id: Int!
+  description: String
+  title: String
+}
+
+type Query {
+  tutorialVideo( search: String): [TutorialVideo]
+}
+
+type Mutation {
+  createTutorialVideo(
+    createTutorialVideoInput: CreateTutorialVideoInput!
+    video: Upload!
+  ): TutorialVideo!
+  updateTutorialVideo(
+    updateTutorialVideoInput: UpdateTutorialVideoInput!
+    vedio: Upload
+  ): TutorialVideo!
+  removeTutorialVideo(id: Int!): TutorialVideo
+}

@@ -16,7 +16,7 @@ export class WelcomeScreenAdminService {
     language: LanguageEnum,
     image,
   ) {
-    const { createReadStream, filename, mimetype } = await image.promise;
+    const { createReadStream, filename } = await image.promise;
     const fileStream = createReadStream();
     // Generate a unique filename for the image
     const uniqueFilename = `${Date.now()}-${filename}`;
@@ -68,7 +68,7 @@ export class WelcomeScreenAdminService {
       });
     }
 
-    const { createReadStream, filename, mimetype } = await image.promise;
+    const { createReadStream, filename } = await image.promise;
     const fileStream = createReadStream();
     // Generate a unique filename for the image
     const uniqueFilename = `${Date.now()}-${filename}`;

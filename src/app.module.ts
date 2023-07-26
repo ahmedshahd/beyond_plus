@@ -35,6 +35,7 @@ import { UserAddressModule } from './client/user-address/user-address.module';
 import { UserInsuranceInfoModule } from './client/user-insurance-info/user-insurance-info.module';
 import { S3Module } from './client/S3/uploader.module';
 import { SendemailModule } from './client/sendemail/sendemail.module';
+import { TutorialVideoModule } from './admin/tutorial-video/tutorial-video.module';
 
 @Module({
   imports: [
@@ -92,6 +93,7 @@ import { SendemailModule } from './client/sendemail/sendemail.module';
     UserInsuranceInfoModule,
     S3Module,
     SendemailModule,
+    TutorialVideoModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
