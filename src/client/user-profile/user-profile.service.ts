@@ -15,15 +15,9 @@ export class UserProfileService {
     if (!profileImg) {
       return await this.prisma.userProfile.create({
         data: {
-          uuid: createUserProfileInput.uuid,
-          phoneNumber: createUserProfileInput.phoneNumber,
-          dateOfbirth: createUserProfileInput.dateOfbirth,
-          email: createUserProfileInput.email,
-          gender: createUserProfileInput.gender,
-          name: createUserProfileInput.name,
-        
+          ...createUserProfileInput,
         },
-        
+
         include: {
           // address: true,
           userInsuranceInfo: true,
@@ -37,26 +31,19 @@ export class UserProfileService {
     const uniqueFilename = `${Date.now()}-${filename}`;
     try {
       // Upload the image to S3
-      const bucketName = 'beyond-plus-user-images';
-      await this.s3Service.upload(
+      const { Location: profileImgUrl } = await this.s3Service.upload(
         uniqueFilename,
         'user-profile-images',
         fileStream,
       );
 
       // Generate the S3 object URL
-      const imageUrl = `https://${bucketName}.s3.amazonaws.com/user-profile-images/${uniqueFilename}`;
 
       // Save the image URL in the Prisma database
       return await this.prisma.userProfile.create({
         data: {
-          uuid: createUserProfileInput.uuid,
-          phoneNumber: createUserProfileInput.phoneNumber,
-          dateOfbirth: createUserProfileInput.dateOfbirth,
-          email: createUserProfileInput.email,
-          gender: createUserProfileInput.gender,
-          name: createUserProfileInput.name,
-          profileImgUrl: imageUrl,
+          profileImgUrl,
+          ...createUserProfileInput,
         },
         include: {
           // address: true,
@@ -82,11 +69,11 @@ export class UserProfileService {
   }
   async findAll() {
     return await this.prisma.userProfile.findMany({
-      include:{
+      include: {
         userInsuranceInfo: true,
         // address: true,
-      }
-    })
+      },
+    });
   }
 
   async update(
@@ -100,11 +87,7 @@ export class UserProfileService {
           uuid,
         },
         data: {
-          phoneNumber: updateUserProfileInput.phoneNumber,
-          dateOfbirth: updateUserProfileInput.dateOfbirth,
-          email: updateUserProfileInput.email,
-          gender: updateUserProfileInput.gender,
-          name: updateUserProfileInput.name,
+          ...updateUserProfileInput,
         },
       });
     }
@@ -115,15 +98,13 @@ export class UserProfileService {
     const uniqueFilename = `${Date.now()}-${filename}`;
     try {
       // Upload the image to S3
-      const bucketName = 'beyond-plus-user-images';
-      await this.s3Service.upload(
+      const { Location: profileImgUrl } = await this.s3Service.upload(
         uniqueFilename,
         'user-profile-images',
         fileStream,
       );
 
       // Generate the S3 object URL
-      const imageUrl = `https://${bucketName}.s3.amazonaws.com/user-profile-images/${uniqueFilename}`;
 
       // Save the image URL in the Prisma database
       return await this.prisma.userProfile.update({
@@ -131,12 +112,8 @@ export class UserProfileService {
           uuid,
         },
         data: {
-          phoneNumber: updateUserProfileInput.phoneNumber,
-          dateOfbirth: updateUserProfileInput.dateOfbirth,
-          email: updateUserProfileInput.email,
-          gender: updateUserProfileInput.gender,
-          name: updateUserProfileInput.name,
-          profileImgUrl: imageUrl,
+          profileImgUrl,
+          ...updateUserProfileInput,
         },
       });
     } catch (error) {
@@ -152,13 +129,13 @@ export class UserProfileService {
       },
     });
   }
-  async removeAll(){
+  async removeAll() {
     try {
       await this.prisma.userProfile.deleteMany({});
-      return "All user profiles have been deleted.";
+      return 'All user profiles have been deleted.';
     } catch (error) {
       console.error(error);
-      throw new Error("Failed to delete user profiles.");
+      throw new Error('Failed to delete user profiles.');
     }
   }
 }

@@ -11,14 +11,12 @@ type WelcomeScreen {
 input CreateWelcomeScreenInput {
   text: String!
   title: String!
-  imageUrl: String!
 }
 
 input UpdateWelcomeScreenInput {
   id: Int!
   text: String
   title: String
-  imageUrl: String
 }
 
 type Query {
@@ -29,10 +27,12 @@ type Mutation {
   createWelcomeScreen(
     createWelcomeScreenInput: CreateWelcomeScreenInput!
     language: LanguageEnum!
+    image: Upload!
   ): WelcomeScreen!
   updateWelcomeScreen(
     updateWelcomeScreenInput: UpdateWelcomeScreenInput!
-    language: LanguageEnum!
+    language: LanguageEnum
+    image: Upload
   ): WelcomeScreen!
   removeWelcomeScreen(id: Int!): WelcomeScreen
 }

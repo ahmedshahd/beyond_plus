@@ -3,6 +3,7 @@ import { LanguageEnum } from '@prisma/client';
 import { CreateLineOfBusinessInput } from './dto/create-line-of-business.input';
 import { UpdateLineOfBusinessInput } from './dto/update-line-of-business.input';
 import { LineOfBusinessAdminService } from './line-of-business.admin.service';
+import { GraphQLUpload, FileUpload } from 'graphql-upload';
 
 @Resolver('Admin/LineOfBusiness')
 export class LineOfBusinessAdminResolver {
@@ -16,10 +17,13 @@ export class LineOfBusinessAdminResolver {
     createLineOfBusinessInput: CreateLineOfBusinessInput,
     @Args('language')
     language: LanguageEnum,
+    @Args('image', { type: () => GraphQLUpload, nullable: true })
+    image: FileUpload,
   ) {
     return this.lineOfBusinessAdminService.create(
       createLineOfBusinessInput,
       language,
+      image
     );
   }
 
@@ -32,8 +36,10 @@ export class LineOfBusinessAdminResolver {
   update(
     @Args('updateLineOfBusinessInput')
     updateLineOfBusinessInput: UpdateLineOfBusinessInput,
+    @Args('image', { type: () => GraphQLUpload, nullable: true })
+    image: FileUpload,
   ) {
-    return this.lineOfBusinessAdminService.update(updateLineOfBusinessInput);
+    return this.lineOfBusinessAdminService.update(updateLineOfBusinessInput,image);
   }
 
   @Mutation('removeLineOfBusiness')

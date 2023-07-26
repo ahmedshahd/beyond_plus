@@ -13,7 +13,6 @@ input CreateLineOfBusinessInput {
   name: String!
   description: String!
   details: String!
-  imageUrl: String!
 }
 
 input UpdateLineOfBusinessInput {
@@ -21,7 +20,6 @@ input UpdateLineOfBusinessInput {
   name: String
   description: String
   details: String
-  imageUrl: String
 }
 
 type Query {
@@ -32,10 +30,12 @@ type Mutation {
   createLineOfBusiness(
     createLineOfBusinessInput: CreateLineOfBusinessInput!
     language: LanguageEnum!
+    image: Upload!
   ): LineOfBusiness!
   updateLineOfBusiness(
     updateLineOfBusinessInput: UpdateLineOfBusinessInput!
-    language: LanguageEnum!
+    language: LanguageEnum
+    image: Upload
   ): LineOfBusiness!
   removeLineOfBusiness(id: Int!): LineOfBusiness
 }

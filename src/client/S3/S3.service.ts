@@ -10,24 +10,13 @@ export class S3Service {
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   });
   constructor(private readonly configService: ConfigService) {}
-  async upload(fileName: string, folder: string, file: Buffer) {
-    // const key = `${folder}/${fileName}`;
-    // await this.s3Client.send(
-    //   new PutObjectCommand({
-    //     Bucket: 'beyond-plus-user-images',
-    //     Key: key,
-    //     Body: file,
-    //   }),
-    // );
-
-    const key = `${folder}/${fileName}`;
-
+  async upload(fileName: string, folder: string, file: Buffer) { 
+   const key = `${folder}/${fileName}`;
     const params = {
       Bucket: 'beyond-plus-mobile-app',
       Key: key,
       Body: file,
     };
-
-    await this.s3Client.upload(params).promise();
+    return await this.s3Client.upload(params).promise();
   }
 }

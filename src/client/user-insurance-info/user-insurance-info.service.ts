@@ -18,11 +18,7 @@ export class UserInsuranceInfoService {
     if (!cardImage) {
       return await this.prisma.userInsuranceInfo.create({
         data: {
-          userProfileUuid: createUserInsuranceInfoInput.userProfileUuid,
-          cardNumber: createUserInsuranceInfoInput.cardNumber,
-          companyAddress: createUserInsuranceInfoInput.companyAddress,
-          insuranceCompanyId: createUserInsuranceInfoInput.insuranceCompanyId,
-          tpaId: createUserInsuranceInfoInput.tpaId,
+          ...createUserInsuranceInfoInput,
         },
       });
     }
@@ -33,21 +29,19 @@ export class UserInsuranceInfoService {
     const uniqueFilename = `${Date.now()}-${filename}`;
     try {
       // Upload the image to S3
-      const bucketName = 'beyond-plus-user-images';
-      await this.s3Service.upload(uniqueFilename, 'card-images', fileStream);
+      const { Location: cardImgUrl } = await this.s3Service.upload(
+        uniqueFilename,
+        'card-images',
+        fileStream,
+      );
 
       // Generate the S3 object URL
-      const imageUrl = `https://${bucketName}.s3.amazonaws.com/card-images/${uniqueFilename}`;
 
       // Save the image URL in the Prisma database
       return await this.prisma.userInsuranceInfo.create({
         data: {
-          userProfileUuid: createUserInsuranceInfoInput.userProfileUuid,
-          cardImgUrl: imageUrl,
-          cardNumber: createUserInsuranceInfoInput.cardNumber,
-          companyAddress: createUserInsuranceInfoInput.companyAddress,
-          insuranceCompanyId: createUserInsuranceInfoInput.insuranceCompanyId,
-          tpaId: createUserInsuranceInfoInput.tpaId,
+          cardImgUrl,
+          ...createUserInsuranceInfoInput,
         },
       });
     } catch (error) {
@@ -78,10 +72,7 @@ export class UserInsuranceInfoService {
           id,
         },
         data: {
-          cardNumber: updateUserInsuranceInfoInput.cardNumber,
-          companyAddress: updateUserInsuranceInfoInput.companyAddress,
-          insuranceCompanyId: updateUserInsuranceInfoInput.insuranceCompanyId,
-          tpaId: updateUserInsuranceInfoInput.tpaId,
+          ...updateUserInsuranceInfoInput,
         },
         include: {
           userProfile: true,
@@ -95,22 +86,21 @@ export class UserInsuranceInfoService {
     const uniqueFilename = `${Date.now()}-${filename}`;
     try {
       // Upload the image to S3
-      const bucketName = 'beyond-plus-user-images';
-      await this.s3Service.upload(uniqueFilename, 'card-images', fileStream);
+      const { Location: cardImgUrl } = await this.s3Service.upload(
+        uniqueFilename,
+        'card-images',
+        fileStream,
+      );
 
       // Generate the S3 object URL
-      const imageUrl = `https://${bucketName}.s3.amazonaws.com/card-images/${uniqueFilename}`;
       // Save the image URL in the Prisma database
       return await this.prisma.userInsuranceInfo.update({
         where: {
           id,
         },
         data: {
-          cardImgUrl: imageUrl,
-          cardNumber: updateUserInsuranceInfoInput.cardNumber,
-          companyAddress: updateUserInsuranceInfoInput.companyAddress,
-          insuranceCompanyId: updateUserInsuranceInfoInput.insuranceCompanyId,
-          tpaId: updateUserInsuranceInfoInput.tpaId,
+          cardImgUrl,
+          ...updateUserInsuranceInfoInput,
         },
         include: {
           userProfile: true,
