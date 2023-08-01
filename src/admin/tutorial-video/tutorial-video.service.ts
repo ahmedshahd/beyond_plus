@@ -11,7 +11,7 @@ export class TutorialVideoService {
     private readonly s3Service: S3Service,
   ) {}
 
-  async create(createTutorialVideoInput: CreateTutorialVideoInput, video) {
+  async create(createTutorialVideoInput: CreateTutorialVideoInput, video,language) {
     const { createReadStream, filename } = await video.promise;
     const fileStream = createReadStream();
     // Generate a unique filename for the video
@@ -28,6 +28,7 @@ export class TutorialVideoService {
       return await this.prisma.tutorialVideos.create({
         data: {
           videoUrl,
+          language,
           ...createTutorialVideoInput,
         },
       });
@@ -37,9 +38,10 @@ export class TutorialVideoService {
     }
   }
 
-  async findAll(search: string) {
+  async findAll(language,search: string) {
     return await this.prisma.tutorialVideos.findMany({
       where: {
+        language,
         title: search
           ? {
               contains: search,
@@ -50,13 +52,14 @@ export class TutorialVideoService {
     });
   }
 
-  async update(updateTutorialVideoInput: UpdateTutorialVideoInput, video?) {
+  async update(updateTutorialVideoInput: UpdateTutorialVideoInput, video?, language?) {
     if (!video) {
       return await this.prisma.tutorialVideos.update({
         where: {
           id: updateTutorialVideoInput.id,
         },
         data: {
+          language,
           ...updateTutorialVideoInput,
         },
       });
@@ -78,6 +81,7 @@ export class TutorialVideoService {
         id: updateTutorialVideoInput.id,
       },
       data: {
+        language,
         videoUrl,
         ...updateTutorialVideoInput,
       },

@@ -3,6 +3,7 @@ import { TutorialVideoService } from './tutorial-video.service';
 import { GraphQLUpload, FileUpload } from 'graphql-upload';
 import { CreateTutorialVideoInput } from './dto/create-tutorial-video';
 import { UpdateTutorialVideoInput } from './dto/update-tutorial-video';
+import { LanguageEnum } from '@prisma/client';
 
 @Resolver()
 export class TutorialVideoResolver {
@@ -18,18 +19,23 @@ export class TutorialVideoResolver {
     createTutorialVideoInput: CreateTutorialVideoInput,
     @Args('video', { type: () => GraphQLUpload, nullable: true })
     video: FileUpload,
+    @Args('language')
+    language: LanguageEnum
   ) {
     return this.tutorialVideoService.create(
       createTutorialVideoInput,
       video,
+      language
     );
   }
 
   @Query('tutorialVideo')
   findAll(
     @Args('search') search: string,
+    @Args('language')
+    language: LanguageEnum
   ) {
-    return this.tutorialVideoService.findAll(search);
+    return this.tutorialVideoService.findAll(language,search);
   }
 
   @Mutation('updateTutorialVideo')
@@ -38,9 +44,12 @@ export class TutorialVideoResolver {
     updateTutorialVideoInput: UpdateTutorialVideoInput,
     @Args('video', { type: () => GraphQLUpload, nullable: true })
     video: FileUpload,
+    @Args('language')
+    language: LanguageEnum
   ) {
     return this.tutorialVideoService.update(
       updateTutorialVideoInput,
+      language,
       video,
     );
   }

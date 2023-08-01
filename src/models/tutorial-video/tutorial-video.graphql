@@ -3,6 +3,7 @@ type TutorialVideo {
   title: String!
   videoUrl: String!
   description: String
+  language: LanguageEnum!
   createdAt: DateTime!
   updatedAt: DateTime
 }
@@ -19,17 +20,19 @@ input UpdateTutorialVideoInput {
 }
 
 type Query {
-  tutorialVideo( search: String): [TutorialVideo]
+  tutorialVideo(language: LanguageEnum!, search: String): [TutorialVideo]
 }
 
 type Mutation {
   createTutorialVideo(
     createTutorialVideoInput: CreateTutorialVideoInput!
     video: Upload!
+    language: LanguageEnum!
   ): TutorialVideo!
   updateTutorialVideo(
     updateTutorialVideoInput: UpdateTutorialVideoInput!
     vedio: Upload
+    language: LanguageEnum
   ): TutorialVideo!
   removeTutorialVideo(id: Int!): TutorialVideo
 }
