@@ -29,10 +29,11 @@ type Mutation {
   createLearnIcon(
     createLearnIconInput: CreateLearnIconInput!
     language: LanguageEnum!
+    image: Upload
   ): LearnIcon!
   updateLearnIcon(
     updateLearnIconInput: UpdateLearnIconInput!
-    language: LanguageEnum!
+    image: Upload
   ): LearnIcon!
   removeLearnIcon(id: Int!): LearnIcon
 }
