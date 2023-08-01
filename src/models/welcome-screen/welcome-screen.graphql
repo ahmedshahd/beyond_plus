@@ -2,7 +2,7 @@ type WelcomeScreen {
   id: Int!
   title: String!
   text: String
-  imageUrl: String!
+  imageUrls: [String!]!
   language: LanguageEnum!
   createdAt: DateTime!
   updatedAt: DateTime
@@ -27,12 +27,11 @@ type Mutation {
   createWelcomeScreen(
     createWelcomeScreenInput: CreateWelcomeScreenInput!
     language: LanguageEnum!
-    image: Upload!
+    images: [Upload!]!
   ): WelcomeScreen!
   updateWelcomeScreen(
     updateWelcomeScreenInput: UpdateWelcomeScreenInput!
-    language: LanguageEnum
-    image: Upload
+    images: [Upload]
   ): WelcomeScreen!
   removeWelcomeScreen(id: Int!): WelcomeScreen
 }

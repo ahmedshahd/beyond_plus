@@ -17,13 +17,12 @@ export class WelcomeScreenAdminResolver {
     createWelcomeScreenInput: CreateWelcomeScreenInput,
     @Args('language')
     language: LanguageEnum,
-    @Args('image', { type: () => GraphQLUpload, nullable: true })
-    image: FileUpload,
+    @Args('images', { type: () => [GraphQLUpload] }) images: FileUpload[],
   ) {
     return this.welcomeScreenAdminService.create(
       createWelcomeScreenInput,
       language,
-      image,
+      images,
     );
   }
 
@@ -39,12 +38,11 @@ export class WelcomeScreenAdminResolver {
   update(
     @Args('updateWelcomeScreenInput')
     updateWelcomeScreenInput: UpdateWelcomeScreenInput,
-    @Args('image', { type: () => GraphQLUpload, nullable: true })
-    image: FileUpload,
+    @Args('images', { type: () => [GraphQLUpload] }) images?: FileUpload[],
   ) {
     return this.welcomeScreenAdminService.update(
       updateWelcomeScreenInput,
-      image,
+      images,
     );
   }
 
