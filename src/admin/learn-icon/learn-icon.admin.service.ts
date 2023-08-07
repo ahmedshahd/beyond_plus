@@ -15,14 +15,22 @@ export class LearnIconAdminService {
   async create(
     createLearnIconInput: CreateLearnIconInput,
     language: LanguageEnum,
-    image,
+    image?,
   ) {
-    const { createReadStream, filename } = await image.promise;
-    const fileStream = createReadStream();
-    // Generate a unique filename for the image
-    const uniqueFilename = `${Date.now()}-${filename}`;
+    if (!image) {
+      return await this.prisma.learnIcon.create({
+        data: {
+          language,
+          ...createLearnIconInput,
+        },
+      });
+    }
 
     try {
+      const { createReadStream, filename } = await image.promise;
+      const fileStream = createReadStream();
+      // Generate a unique filename for the image
+      const uniqueFilename = `${Date.now()}-${filename}`;
       // Upload the image to S3
       const { Location: imageUrl } = await this.s3Service.upload(
         uniqueFilename,

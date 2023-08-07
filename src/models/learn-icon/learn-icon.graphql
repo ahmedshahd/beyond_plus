@@ -11,14 +11,12 @@ type LearnIcon {
 input CreateLearnIconInput {
   name: String!
   content: String!
-  imageUrl: String
 }
 
 input UpdateLearnIconInput {
   id: Int!
   name: String
   content: String
-  imageUrl: String
 }
 
 type Query {
