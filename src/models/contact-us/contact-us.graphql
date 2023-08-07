@@ -5,6 +5,8 @@ type ContactUs {
   id: Int!
   phoneNumber: String!
   email: String!
+  telegramChannel: String!
+  whatsappNumber: String!
   websiteUrl: String!
   createdAt: DateTime!
   updatedAt: DateTime
@@ -13,6 +15,8 @@ type ContactUs {
 input CreateContactUsInput {
   phoneNumber: String!
   email: String!
+  telegramChannel: String!
+  whatsappNumber: String!
   websiteUrl: String!
 }
 
@@ -20,6 +24,8 @@ input UpdateContactUsInput {
   id: Int!
   phoneNumber: String
   email: String
+  telegramChannel: String
+  whatsappNumber: String
   websiteUrl: String
 }
 
