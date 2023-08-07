@@ -23,12 +23,13 @@ export const multerOptions: MulterOptions = {
     //   file.mimetype.startsWith(
     //     'application/vnd.openxmlformats-officedocument.spreadsheetml',
     //   ))
-    if (file.mimetype.match(/\/(csv)$/)) {
+    if (file.mimetype.match(/\/(csv|xlsm)$/)) {
       // Allow storage of file
       cb(null, true);
     } else {
       console.log('file', file);
       // Reject file
+      console.log('mimetype', file.mimetype);
 
       return cb(
         new HttpException(
@@ -56,6 +57,7 @@ export const multerOptions: MulterOptions = {
     },
     // File modification details
     filename: (req: any, file: any, cb: any) => {
+      console.log("`${uuid()}${'.csv'}`", `${uuid()}${'.csv'}`);
       // Calling the callback passing the random name generated with the original extension name
       // cb(null, `${uuid()}${'.csv'}`);
       cb(null, `${uuid()}${extname(file.originalname)}`);

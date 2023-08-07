@@ -7,19 +7,24 @@ import {
   HttpException,
   HttpStatus,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CsvUploaderService } from './csv-uploader.service';
 import { Response } from 'express';
-import { ApiBody, ApiConsumes, ApiHeader, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiHeader,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { LanguageEnum } from '@prisma/client';
 import { multerOptions } from './uploader.options';
-import { fork } from 'child_process';
-import { join } from 'path';
-import { unlink } from 'fs';
 
 @Controller('csv-uploader')
 export class CsvUploaderController {
-  constructor() {}
+  constructor(private readonly csvUploaderService: CsvUploaderService) {}
 
   @ApiHeader({
     name: 'api-key',
@@ -68,49 +73,25 @@ export class CsvUploaderController {
     @Query('insuranceCompanyName') insuranceCompanyName: string,
     @Res() res: Response,
   ) {
-    const deleteFileAndRespond = () => {
-      unlink(file.path, (err) => {
-        if (err) {
-          console.error('Error deleting the file:', err);
-        }
-        console.log(file.path + ' was deleted');
-      });
-    };
-
     try {
       if (!file) {
         throw new HttpException(`File must be send`, HttpStatus.BAD_REQUEST);
       }
-      // Spawn a new child process to handle Uploader processing
-      const csvUploader = fork(
-        join(__dirname, './uploader-script/csv-uploader'),
-        [file.path, language, tpaName, insuranceCompanyName],
-      );
-      csvUploader.on('message', (message) => {
-        if (message === 'success') {
-          // File processing completed successfully
-          res.json({
-            statusCode: 201,
-            message: 'File Uploaded Successfully',
-          });
-          deleteFileAndRespond();
-          csvUploader.kill()
-        } 
-      });
 
-      csvUploader.on('error', (err) => {
-        csvUploader.kill()
-        deleteFileAndRespond();
-        console.error('Child process error:', err);
-        throw new HttpException(
-          { reason: 'Error occurred during file upload' },
-          HttpStatus.BAD_REQUEST,
-        );
+      await this.csvUploaderService.parseUploadedFile(
+        file.path,
+        language,
+        tpaName,
+        insuranceCompanyName,
+      );
+      res.json({
+        statusCode: 201,
+        message: 'File Uploaded Successfully',
       });
-    } catch (error) { 
+    } catch (error) {
       console.log(error);
       throw new HttpException(
-        { reason: 'Error occurred during file upload' },
+        { reason: 'error in try catch block of uploader controller' },
         HttpStatus.BAD_REQUEST,
       );
     }
