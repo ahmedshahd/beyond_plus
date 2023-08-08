@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserProfileInput } from './dto/create-user-profile.input';
 import { UpdateUserProfileInput } from './dto/update-user-profile.input';
 import { PrismaService } from 'src/prisma.service';
 import { S3Service } from '../S3/S3.service';
+import * as sharp from 'sharp';
+import { parse, extname } from 'path';
 
 @Injectable()
 export class UserProfileService {
@@ -12,29 +14,35 @@ export class UserProfileService {
   ) {}
 
   async create(createUserProfileInput: CreateUserProfileInput, profileImg?) {
-    if (!profileImg) {
-      return await this.prisma.userProfile.create({
-        data: {
-          ...createUserProfileInput,
-        },
+    const { uuid } = createUserProfileInput;
 
-        include: {
-          // address: true,
-          userInsuranceInfo: true,
-        },
-      });
-    }
-
-    const { createReadStream, filename } = await profileImg.promise;
-    const fileStream = createReadStream();
-    // Generate a unique filename for the image
-    const uniqueFilename = `${Date.now()}-${filename}`;
     try {
+      if (!profileImg) {
+        return await this.prisma.userProfile.create({
+          data: {
+            ...createUserProfileInput,
+          },
+          include: {
+            // address: true,
+            userInsuranceInfo: true,
+          },
+        });
+      }
+      const { createReadStream, filename } = await profileImg.promise;
+      const resizedImageStream = createReadStream().pipe(
+        sharp()
+          .resize({ width: 200, height: 200 })
+          .toFormat('jpeg', { mozjpeg: true })
+          .jpeg(),
+      );
+      // Generate a unique filename for the image
+      const uniqueFilename = `${Date.now()}-${parse(filename).name}.jpeg`;
+
       // Upload the image to S3
       const { Location: profileImgUrl } = await this.s3Service.upload(
         uniqueFilename,
-        'user-profile-images',
-        fileStream,
+        `users/${uuid}/profile-picture`,
+        resizedImageStream,
       );
 
       // Generate the S3 object URL
@@ -51,8 +59,13 @@ export class UserProfileService {
         },
       });
     } catch (error) {
-      console.error('Error creating user:', error);
-      return false;
+      // Check if the error code indicates a duplicate UUID
+      if (error.code === 'P2002' && error.meta?.target?.includes('uuid')) {
+        throw new HttpException('The user already exists', HttpStatus.CONFLICT);
+      } else {
+        console.error('Error creating user:', error);
+        return false;
+      }
     }
   }
 
@@ -81,27 +94,31 @@ export class UserProfileService {
     updateUserProfileInput: UpdateUserProfileInput,
     profileImg?,
   ) {
-    if (!profileImg) {
-      return await this.prisma.userProfile.update({
-        where: {
-          uuid,
-        },
-        data: {
-          ...updateUserProfileInput,
-        },
-      });
-    }
-
-    const { createReadStream, filename } = await profileImg.promise;
-    const fileStream = createReadStream();
-    // Generate a unique filename for the image
-    const uniqueFilename = `${Date.now()}-${filename}`;
     try {
+      if (!profileImg) {
+        return await this.prisma.userProfile.update({
+          where: {
+            uuid,
+          },
+          data: {
+            ...updateUserProfileInput,
+          },
+        });
+      }
+      const { createReadStream, filename } = await profileImg.promise;
+      const resizedImageStream = createReadStream().pipe(
+        sharp()
+          .resize({ width: 200, height: 200 })
+          .toFormat('jpeg', { mozjpeg: true })
+          .jpeg(),
+      );
+      // Generate a unique filename for the image
+      const uniqueFilename = `${Date.now()}-${parse(filename).name}.jpeg`;
       // Upload the image to S3
       const { Location: profileImgUrl } = await this.s3Service.upload(
         uniqueFilename,
-        'user-profile-images',
-        fileStream,
+        `users/${uuid}/profile-picture`,
+        resizedImageStream,
       );
 
       // Generate the S3 object URL
@@ -117,7 +134,7 @@ export class UserProfileService {
         },
       });
     } catch (error) {
-      console.error('Error creating user:', error);
+      console.error('Error updating user:', error);
       return false;
     }
   }
