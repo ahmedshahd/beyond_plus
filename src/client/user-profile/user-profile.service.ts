@@ -17,38 +17,31 @@ export class UserProfileService {
     const { uuid } = createUserProfileInput;
 
     try {
-      if (!profileImg) {
-        return await this.prisma.userProfile.create({
-          data: {
-            ...createUserProfileInput,
-          },
-          include: {
-            // address: true,
-            userInsuranceInfo: true,
-          },
-        });
+      let profileImgUrl = null;
+
+      if (profileImg) {
+        const { createReadStream, filename } = await profileImg.promise;
+        const resizedImageStream = createReadStream().pipe(
+          sharp()
+            .resize({ width: 200, height: 200 })
+            .toFormat('jpeg', { mozjpeg: true })
+            .jpeg(),
+        );
+        // Generate a unique filename for the image
+        const uniqueFilename = `${Date.now()}-${parse(filename).name}.jpeg`;
+
+        // Upload the image to S3
+        const { Location } = await this.s3Service.upload(
+          uniqueFilename,
+          `users/${uuid}/profile-picture`,
+          resizedImageStream,
+        );
+
+        profileImgUrl = Location;
       }
-      const { createReadStream, filename } = await profileImg.promise;
-      const resizedImageStream = createReadStream().pipe(
-        sharp()
-          .resize({ width: 200, height: 200 })
-          .toFormat('jpeg', { mozjpeg: true })
-          .jpeg(),
-      );
-      // Generate a unique filename for the image
-      const uniqueFilename = `${Date.now()}-${parse(filename).name}.jpeg`;
 
-      // Upload the image to S3
-      const { Location: profileImgUrl } = await this.s3Service.upload(
-        uniqueFilename,
-        `users/${uuid}/profile-picture`,
-        resizedImageStream,
-      );
-
-      // Generate the S3 object URL
-
-      // Save the image URL in the Prisma database
-      return await this.prisma.userProfile.create({
+      // Create the user profile in the Prisma database
+      const userProfile = await this.prisma.userProfile.create({
         data: {
           profileImgUrl,
           ...createUserProfileInput,
@@ -58,6 +51,8 @@ export class UserProfileService {
           userInsuranceInfo: true,
         },
       });
+
+      return userProfile;
     } catch (error) {
       // Check if the error code indicates a duplicate UUID
       if (error.code === 'P2002' && error.meta?.target?.includes('uuid')) {
@@ -88,43 +83,36 @@ export class UserProfileService {
       },
     });
   }
-
   async update(
     uuid: string,
     updateUserProfileInput: UpdateUserProfileInput,
     profileImg?,
   ) {
     try {
-      if (!profileImg) {
-        return await this.prisma.userProfile.update({
-          where: {
-            uuid,
-          },
-          data: {
-            ...updateUserProfileInput,
-          },
-        });
+      let profileImgUrl = null;
+
+      if (profileImg) {
+        const { createReadStream, filename } = await profileImg.promise;
+        const resizedImageStream = createReadStream().pipe(
+          sharp()
+            .resize({ width: 200, height: 200 })
+            .toFormat('jpeg', { mozjpeg: true })
+            .jpeg(),
+        );
+        // Generate a unique filename for the image
+        const uniqueFilename = `${Date.now()}-${parse(filename).name}.jpeg`;
+        // Upload the image to S3
+        const { Location } = await this.s3Service.upload(
+          uniqueFilename,
+          `users/${uuid}/user-profile/profile-picture`,
+          resizedImageStream,
+        );
+
+        profileImgUrl = Location;
       }
-      const { createReadStream, filename } = await profileImg.promise;
-      const resizedImageStream = createReadStream().pipe(
-        sharp()
-          .resize({ width: 200, height: 200 })
-          .toFormat('jpeg', { mozjpeg: true })
-          .jpeg(),
-      );
-      // Generate a unique filename for the image
-      const uniqueFilename = `${Date.now()}-${parse(filename).name}.jpeg`;
-      // Upload the image to S3
-      const { Location: profileImgUrl } = await this.s3Service.upload(
-        uniqueFilename,
-        `users/${uuid}/profile-picture`,
-        resizedImageStream,
-      );
 
-      // Generate the S3 object URL
-
-      // Save the image URL in the Prisma database
-      return await this.prisma.userProfile.update({
+      // Update the user profile in the Prisma database
+      const updatedUserProfile = await this.prisma.userProfile.update({
         where: {
           uuid,
         },
@@ -133,6 +121,8 @@ export class UserProfileService {
           ...updateUserProfileInput,
         },
       });
+
+      return updatedUserProfile;
     } catch (error) {
       console.error('Error updating user:', error);
       return false;
