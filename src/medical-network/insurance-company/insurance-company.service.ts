@@ -8,10 +8,10 @@ import { CreateInsuranceCompanyInput } from './dto/create-insurance-company.inpu
 export class InsuranceCompanyService {
   constructor(private prisma: PrismaService) {}
 
-  async getInsuranceCompanyId(name: string) {
+  async getInsuranceCompany(id: number) {
     return await this.prisma.insuranceCompany.findFirst({
       where: {
-        name,
+        id,
       },
     });
   }

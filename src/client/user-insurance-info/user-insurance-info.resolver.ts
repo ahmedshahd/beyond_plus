@@ -1,13 +1,24 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Parent,
+  ResolveField,
+} from '@nestjs/graphql';
 import { UserInsuranceInfoService } from './user-insurance-info.service';
 import { CreateUserInsuranceInfoInput } from './dto/create-user-insurance-info.input';
 import { UpdateUserInsuranceInfoInput } from './dto/update-user-insurance-info.input';
 import { GraphQLUpload, FileUpload } from 'graphql-upload';
+import { TpaService } from 'src/medical-network/tpa/tpa.service';
+import { InsuranceCompanyService } from 'src/medical-network/insurance-company/insurance-company.service';
 
-@Resolver()
+@Resolver('UserInsuranceInfo')
 export class UserInsuranceInfoResolver {
   constructor(
     private readonly userInsuranceInfoService: UserInsuranceInfoService,
+    private readonly tpaService: TpaService,
+    private readonly insuranceCompanyService: InsuranceCompanyService,
   ) {}
   @Mutation('createUserInsuranceInfo')
   createUserInsuranceInfo(
@@ -25,6 +36,25 @@ export class UserInsuranceInfoResolver {
   @Query('userInsuranceInfo')
   findOne(@Args('uuid') uuid: string) {
     return this.userInsuranceInfoService.findOne(uuid);
+  }
+
+  @ResolveField('insuranceCompanyName')
+  async getInsuranceCompanyName(@Parent() userInsuranceInfo: any) {
+    const insuranceCompanyId = userInsuranceInfo.insuranceCompanyId;
+    const insuranceCompany =
+      await this.insuranceCompanyService.getInsuranceCompany(
+        insuranceCompanyId,
+      );
+    const { name } = insuranceCompany;
+    return name;
+  }
+
+  @ResolveField('tpaName')
+  async getTpa(@Parent() userInsuranceInfo: any) {
+    const tpaId = userInsuranceInfo.tpaId;
+    const tpa = await this.tpaService.getTpa(tpaId);
+    const { name } = tpa;
+    return name;
   }
 
   @Mutation('updateUserInsuranceInfo')

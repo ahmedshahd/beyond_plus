@@ -29,7 +29,7 @@ type Query {
     page: Int
     limit: Int
   ): TpaByPagination!
-  getTpaId(name: String!): Tpa!
+  getTpa(id: Int!): Tpa!
 }
 
 type Mutation {

@@ -4,6 +4,11 @@ import { InsuranceCompanyResolver } from './insurance-company.resolver';
 import { InsuranceCompanyService } from './insurance-company.service';
 
 @Module({
-  providers: [InsuranceCompanyResolver, InsuranceCompanyService, PrismaService],
+  providers: [
+    InsuranceCompanyResolver,
+    InsuranceCompanyService,
+    PrismaService,
+ 
+  ],
 })
 export class InsuranceCompanyModule {}

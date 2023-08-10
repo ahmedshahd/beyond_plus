@@ -21,9 +21,9 @@ export class TpaResolver {
       args.limit,
     );
   }
-  @Query('getTpaId')
-  async getTpaId(@Args('name') name: string) {
-    return this.tpaService.getTpaId(name);
+  @Query('getTpa')
+  async getTpaId(@Args('id') id: number) {
+    return this.tpaService.getTpa(id);
   }
 
   @Mutation('createTpa')
