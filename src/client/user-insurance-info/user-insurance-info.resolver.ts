@@ -41,20 +41,26 @@ export class UserInsuranceInfoResolver {
   @ResolveField('insuranceCompanyName')
   async getInsuranceCompanyName(@Parent() userInsuranceInfo: any) {
     const insuranceCompanyId = userInsuranceInfo.insuranceCompanyId;
-    const insuranceCompany =
-      await this.insuranceCompanyService.getInsuranceCompany(
-        insuranceCompanyId,
-      );
-    const { name } = insuranceCompany;
-    return name;
+    if (insuranceCompanyId) {
+      const insuranceCompany =
+        await this.insuranceCompanyService.getInsuranceCompany(
+          insuranceCompanyId,
+        );
+      const { name } = insuranceCompany;
+      return name;
+    }
+    return '';
   }
 
   @ResolveField('tpaName')
   async getTpa(@Parent() userInsuranceInfo: any) {
     const tpaId = userInsuranceInfo.tpaId;
-    const tpa = await this.tpaService.getTpa(tpaId);
-    const { name } = tpa;
-    return name;
+    if (tpaId) {
+      const tpa = await this.tpaService.getTpa(tpaId);
+      const { name } = tpa;
+      return name;
+    }
+    return '';
   }
 
   @Mutation('updateUserInsuranceInfo')
