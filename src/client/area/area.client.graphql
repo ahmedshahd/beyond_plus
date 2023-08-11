@@ -24,6 +24,7 @@ input UpdateClientAreaInput {
 }
 
 type Query {
+  clientArea(id: Int!): ClientArea
   listAllClientAreasByClientCityId(
     clientCityId: [Int!]!
     search: String

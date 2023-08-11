@@ -29,6 +29,14 @@ export class AreaClientResolver {
       args.limit,
     );
   }
+  @Query('clientArea')
+  async clientArea(
+    @Args('id') id: number,
+  ) {
+    return this.areaClientService.clientArea(
+      id
+    );
+  }
 
   @Mutation('updateClientArea')
   update(

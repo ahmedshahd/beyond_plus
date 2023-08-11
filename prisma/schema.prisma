@@ -109,24 +109,26 @@ model lineOfBusiness {
 }
 
 model ClientCity {
-  id         Int          @id @default(autoincrement())
-  name       String
-  clientArea ClientArea[]
-  language   LanguageEnum @default(ARABIC)
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime?    @updatedAt
+  id          Int           @id @default(autoincrement())
+  name        String
+  clientArea  ClientArea[]
+  language    LanguageEnum  @default(ARABIC)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime?     @updatedAt
+  UserAddress UserAddress[]
 
   @@unique([name, language], name: "ClientCity_name_language_unique_constraint")
 }
 
 model ClientArea {
-  id           Int          @id @default(autoincrement())
+  id           Int           @id @default(autoincrement())
   name         String
   clientCityId Int
-  ClientCity   ClientCity   @relation(fields: [clientCityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  language     LanguageEnum @default(ARABIC)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime?    @updatedAt
+  ClientCity   ClientCity    @relation(fields: [clientCityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  language     LanguageEnum  @default(ARABIC)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime?     @updatedAt
+  UserAddress  UserAddress[]
 
   @@unique([name, language, clientCityId], name: "ClientArea_name_language_clientCityId_unique_constraint")
 }
@@ -199,10 +201,13 @@ model UserInsuranceInfo {
 
 model UserAddress {
   id              Int         @id @default(autoincrement())
+  name            String      @default("")
   longitude       Float?
   latitude        Float?
-  city            String
-  area            String
+  clientCityId    Int
+  clientCity      ClientCity  @relation(fields: [clientCityId], references: [id])
+  clientAreaId    Int
+  clientArea      ClientArea  @relation(fields: [clientAreaId], references: [id])
   buildingNumber  String
   floorNumber     String
   streetName      String
@@ -212,7 +217,7 @@ model UserAddress {
   createdAt       DateTime    @default(now())
   updatedAt       DateTime?   @updatedAt
 
-  @@unique([city, area, streetName, userProfileUuid], name: "City_Area_StreetName_Constraint")
+  @@unique([clientCityId, clientAreaId, name, userProfileUuid], name: "City_Area_StreetName_Constraint")
 }
 
 //********* Medical Network **********//

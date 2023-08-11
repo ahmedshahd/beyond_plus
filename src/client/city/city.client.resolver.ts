@@ -21,6 +21,12 @@ export class CityClientResolver {
       args.limit,
     );
   }
+
+  @Query('clientCity')
+  async clientCity(@Args('id') id: number) {
+    return this.cityClientService.clientCity(id);
+  }
+
   @Mutation('createClientCity')
   create(
     @Args('createClientCityInput') createClientCityInput: CreateClientCityInput,

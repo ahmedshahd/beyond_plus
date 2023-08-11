@@ -22,6 +22,7 @@ input UpdateClientCityInput {
 }
 
 type Query {
+  clientCity(id: Int!): ClientCity
   listAllClientCities(
     language: LanguageEnum!
     search: String

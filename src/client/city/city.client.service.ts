@@ -45,6 +45,14 @@ export class CityClientService {
       pagination: pagination.response,
     };
   }
+  async clientCity(id: number) {
+    return await this.prisma.clientCity.findFirst({
+      where: { id },
+      include: {
+        clientArea: true,
+      },
+    });
+  }
 
   async create(
     createClientCityInput: CreateClientCityInput,

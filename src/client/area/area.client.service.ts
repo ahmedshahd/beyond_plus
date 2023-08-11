@@ -48,6 +48,15 @@ export class AreaClientService {
     };
   }
 
+  async clientArea(id: number) {
+    return await this.prisma.clientArea.findFirst({
+      where: { id },
+      include: {
+        ClientCity: true,
+      },
+    });
+  }
+
   async create(
     createClientAreaInput: CreateClientAreaInput,
     language: LanguageEnum,

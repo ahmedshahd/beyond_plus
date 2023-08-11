@@ -4,8 +4,9 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 export class CreateUserAddressInput {
   longitude?: number | null;
   latitude?: number | null;
-  city: string;
-  area: string;
+  name: string;
+  clientCityId: number;
+  clientAreaId: number;
   buildingNumber: string;
   floorNumber: string;
   streetName: string;

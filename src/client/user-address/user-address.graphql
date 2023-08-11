@@ -1,9 +1,12 @@
 type UserAddress {
   id: Int
+  name: String
   longitude: Float
   latitude: Float
-  city: String
-  area: String
+  clientCityId: Int
+  clientAreaId: Int
+  cityName: String
+  areaName: String
   buildingNumber: String
   floorNumber: String
   streetName: String
@@ -13,10 +16,11 @@ type UserAddress {
 }
 
 input CreateUserAddressInput {
+  name: String
   longitude: Float
   latitude: Float
-  city: String
-  area: String
+  clientCityId: Int
+  clientAreaId: Int
   buildingNumber: String
   floorNumber: String
   streetName: String
@@ -26,10 +30,11 @@ input CreateUserAddressInput {
 
 input UpdateUserAddressInput {
   id: Int!
+  name: String
   longitude: Float
   latitude: Float
-  city: String
-  area: String
+  clientCityId: Int
+  clientAreaId: Int
   buildingNumber: String
   floorNumber: String
   streetName: String
@@ -39,6 +44,7 @@ input UpdateUserAddressInput {
 
 type Query {
   userAddresses(uuid: String!): [UserAddress!]!
+  userAddress(id: Int!): UserAddress!
 }
 
 type Mutation {
