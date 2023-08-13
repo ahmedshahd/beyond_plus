@@ -65,15 +65,27 @@ export class UserProfileService {
   }
 
   async findOne(uuid: string) {
-    return await this.prisma.userProfile.findFirst({
-      where: {
-        uuid,
-      },
-      include: {
-        userInsuranceInfo: true,
-        // address: true,
-      },
-    });
+    try {
+      console.log('here', uuid);
+      const user = await this.prisma.userProfile.findFirst({
+        where: {
+          uuid,
+        },
+        include: {
+          userInsuranceInfo: true,
+          // address: true,
+        },
+      });
+      if (!user) {
+        // Handle the case where no user is found
+        return null; // You can return null or any other value that makes sense
+      }
+
+      return user;
+    } catch (error) {
+      console.log('error finding user', error);
+      throw new Error('Error finding user');
+    }
   }
   async findAll() {
     return await this.prisma.userProfile.findMany({

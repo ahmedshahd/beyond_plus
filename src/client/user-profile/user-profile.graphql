@@ -32,7 +32,7 @@ input UpdateUserProfileInput {
 }
 
 type Query {
-  userProfile(uuid: String!): UserProfile!
+  userProfile(uuid: String!): UserProfile
   usersProfiles: [UserProfile!]!
 
 }
