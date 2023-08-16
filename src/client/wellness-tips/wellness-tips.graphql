@@ -7,8 +7,8 @@ type WellnessTip {
   attachment: [String]
   userProfile: UserProfile
   userProfileUuid: String
-  createdAt: String
-  updatedAt: String
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 input CreateWellnessTipInput {

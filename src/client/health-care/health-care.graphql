@@ -7,8 +7,8 @@ type HealthCare {
   attachment: [String]
   userProfile: UserProfile
   userProfileUuid: String
-  createdAt: String
-  updatedAt: String
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 input CreateHealthCareInput {
