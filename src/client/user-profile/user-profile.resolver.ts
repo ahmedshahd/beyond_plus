@@ -25,8 +25,8 @@ export class UserProfileResolver {
   }
 
   @Query('usersProfiles')
-  findAll() {
-    return this.userProfileService.findAll();
+  findAll(@Args('phoneNumber') phoneNumber?: string) {
+    return this.userProfileService.findAll(phoneNumber);
   }  
 
   @Mutation('updateUserProfile')

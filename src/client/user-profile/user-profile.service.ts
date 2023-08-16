@@ -87,14 +87,30 @@ export class UserProfileService {
       throw new Error('Error finding user');
     }
   }
-  async findAll() {
-    return await this.prisma.userProfile.findMany({
+
+  async findAll(phoneNumber?: string) {
+    if (!phoneNumber) {
+      return this.prisma.userProfile.findMany({
+        include: {
+          userInsuranceInfo: true,
+          // address: true,
+        },
+      });
+    }
+    return this.prisma.userProfile.findMany({
+      where: {
+        phoneNumber: {
+          contains: phoneNumber,
+          mode: 'insensitive',
+        },
+      },
       include: {
         userInsuranceInfo: true,
         // address: true,
       },
     });
   }
+
   async update(
     uuid: string,
     updateUserProfileInput: UpdateUserProfileInput,
