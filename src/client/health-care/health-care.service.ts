@@ -4,56 +4,36 @@ import { UpdateHealthCareInput } from './dto/update-health-care.input';
 import { S3Service } from 'src/client/S3/S3.service';
 import { PrismaService } from 'src/prisma.service';
 import { FileUpload } from 'graphql-upload';
+import { ProcessAttachmentsService } from 'src/services/process-attachment.service';
 
 @Injectable()
 export class HealthCareService {
   constructor(
     private prisma: PrismaService,
     private readonly s3Service: S3Service,
+    private readonly processAttachmentsService: ProcessAttachmentsService,
   ) {}
 
   async create(
     createHealthCareInput: CreateHealthCareInput,
-    attachment?: FileUpload[],
+    attachments?: FileUpload[],
     // image?: FileUpload,
   ) {
     const { userProfileUuid } = createHealthCareInput;
-    // console.log('image', image);
-    console.log('attachment', attachment);
-    // Process the main image
-    // const { createReadStream, filename } = await image.promise;
-    // const fileStream = createReadStream();
-    // const uniqueFilename = `${Date.now()}-${filename}`;
-    // const { Location: imageUrl } = await this.s3Service.upload(
-    //   uniqueFilename,
-    //   `users/${userProfileUuid}/health-care/images`,
-    //   fileStream,
-    // );
 
-    // Process attachments if available
-    let attachmentUrls = [];
-    if (attachment) {
-      attachmentUrls = await Promise.all(
-        attachment.map(async (attachment) => {
-          const { createReadStream, filename } = await attachment.promise;
-          const fileStream = createReadStream();
-          const uniqueFilename = `${Date.now()}-${filename}`;
-          const { Location: attachmentUrl } = await this.s3Service.upload(
-            uniqueFilename,
-            `users/${userProfileUuid}/health-care/attachment`,
-            fileStream,
-          );
-          return attachmentUrl;
-        }),
+    const { attachmentUrls, imageUrls } =
+      await this.processAttachmentsService.processAttachments(
+        attachments,
+        userProfileUuid,
       );
-    }
     const attachmentArray = attachmentUrls.length === 0 ? [''] : attachmentUrls;
+    const imageArray = imageUrls.length === 0 ? [''] : imageUrls;
 
     // Create health care  using Prisma
     return await this.prisma.healthCare.create({
       data: {
-        attachment: attachmentArray,
-        // imageUrl,
+        attachments: attachmentArray,
+        images: imageArray,
         ...createHealthCareInput,
       },
     });
@@ -81,11 +61,11 @@ export class HealthCareService {
   async update(
     id: number,
     updateHealthCareInput: UpdateHealthCareInput,
-    attachment?: FileUpload[],
+    attachments?: FileUpload[],
   ) {
     const { userProfileUuid } = updateHealthCareInput;
 
-    if (!attachment || attachment.length === 0) {
+    if (!attachments || attachments.length === 0) {
       return await this.prisma.healthCare.update({
         where: {
           id,
@@ -96,33 +76,21 @@ export class HealthCareService {
       });
     }
     try {
-      const uploadPromises = attachment.map(async (attachment) => {
-        try {
-          const { createReadStream, filename } = await attachment.promise;
-          const fileStream = createReadStream();
-          // Generate a unique filename for the image
-          const uniqueFilename = `${Date.now()}-${filename}`;
-          // Upload the image to S3
-          const { Location: attachmentUrl } = await this.s3Service.upload(
-            uniqueFilename,
-            `users/${userProfileUuid}/health-care/attachment`,
-            fileStream,
-          );
-          return attachmentUrl;
-        } catch (error) {
-          console.error('Error uploading attachment:', error);
-          throw new Error('attachment upload failed');
-        }
-      });
-
-      // Wait for all image uploads to complete
-      const attachmentUrls = await Promise.all(uploadPromises);
+      const { attachmentUrls, imageUrls } =
+        await this.processAttachmentsService.processAttachments(
+          attachments,
+          userProfileUuid,
+        );
+      const attachmentArray =
+        attachmentUrls.length === 0 ? [''] : attachmentUrls;
+      const imageArray = imageUrls.length === 0 ? [''] : imageUrls;
 
       // Save the image URLs in the Prisma database as an array of strings
       return await this.prisma.healthCare.update({
         where: { id },
         data: {
-          attachment: attachmentUrls,
+          attachments: attachmentArray,
+          images: imageArray,
           ...updateHealthCareInput,
         },
       });

@@ -3,8 +3,8 @@ type HealthCare {
   name: String
   description: String
   details: String
-  # imageUrl: String
-  attachment: [String]
+  images: [String]
+  attachments: [String]
   userProfile: UserProfile
   userProfileUuid: String
   createdAt: DateTime
@@ -35,11 +35,11 @@ type Query {
 type Mutation {
   createHealthCare(
     createHealthCareInput: CreateHealthCareInput!
-    attachment: [Upload] # image: Upload
+    attachments: [Upload] # image: Upload
   ): HealthCare!
   updateHealthCare(
     updateHealthCareInput: UpdateHealthCareInput!
-    attachment: [Upload]
+    attachments: [Upload]
   ): HealthCare!
   removeHealthCare(id: Int!): HealthCare
 }

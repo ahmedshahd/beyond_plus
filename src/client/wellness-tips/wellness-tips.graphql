@@ -3,8 +3,8 @@ type WellnessTip {
   name: String
   description: String
   details: String
-  # imageUrl: String
-  attachment: [String]
+  images: [String]
+  attachments: [String]
   userProfile: UserProfile
   userProfileUuid: String
   createdAt: DateTime
@@ -35,11 +35,11 @@ type Query {
 type Mutation {
   createWellnessTip(
     createWellnessTipInput: CreateWellnessTipInput!
-    attachment: [Upload] # image: Upload
+    attachments: [Upload] # image: Upload
   ): WellnessTip!
   updateWellnessTip(
     updateWellnessTipInput: UpdateWellnessTipInput!
-    attachment: [Upload]
+    attachments: [Upload]
   ): WellnessTip!
   removeWellnessTip(id: Int!): WellnessTip
 }

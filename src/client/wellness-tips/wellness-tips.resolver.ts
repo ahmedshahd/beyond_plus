@@ -12,18 +12,10 @@ export class WellnessTipsResolver {
   create(
     @Args('createWellnessTipInput')
     createWellnessTipInput: CreateWellnessTipInput,
-    @Args('attachment', { type: () => [GraphQLUpload] })
-    attachment?: FileUpload[],
-    // @Args('image', { type: () => GraphQLUpload })
-    // image?: FileUpload,
+    @Args('attachments', { type: () => [GraphQLUpload] })
+    attachments?: FileUpload[],
   ) {
-    // console.log('image from resolver', image);
-    console.log('attachment from resolver', attachment);
-    return this.wellnessTipsService.create(
-      createWellnessTipInput,
-      attachment,
-      // image
-    );
+    return this.wellnessTipsService.create(createWellnessTipInput, attachments);
   }
 
   @Query('wellnessTips')
@@ -48,13 +40,13 @@ export class WellnessTipsResolver {
   update(
     @Args('updateWellnessTipInput')
     updateWellnessTipInput: UpdateWellnessTipInput,
-    @Args('attachment', { type: () => [GraphQLUpload] })
+    @Args('attachments', { type: () => [GraphQLUpload] })
     attachment?: FileUpload[],
   ) {
     return this.wellnessTipsService.update(
       updateWellnessTipInput.id,
       updateWellnessTipInput,
-      attachment
+      attachment,
     );
   }
 

@@ -12,16 +12,12 @@ export class HealthCareResolver {
   create(
     @Args('createHealthCareInput')
     createHealthCareInput: CreateHealthCareInput,
-    @Args('attachment', { type: () => [GraphQLUpload] })
-    attachment?: FileUpload[],
-    // @Args('image', { type: () => GraphQLUpload })
-    // image?: FileUpload,
+    @Args('attachments', { type: () => [GraphQLUpload] })
+    attachments?: FileUpload[],
   ) {
-    // console.log('image from resolver', image);
-    console.log('attachment from resolver', attachment);
     return this.healthCareService.create(
       createHealthCareInput,
-      attachment,
+      attachments,
       // image
     );
   }
@@ -48,13 +44,13 @@ export class HealthCareResolver {
   update(
     @Args('updateHealthCareInput')
     updateHealthCareInput: UpdateHealthCareInput,
-    @Args('attachment', { type: () => [GraphQLUpload] })
-    attachment?: FileUpload[],
+    @Args('attachments', { type: () => [GraphQLUpload] })
+    attachments?: FileUpload[],
   ) {
     return this.healthCareService.update(
       updateHealthCareInput.id,
       updateHealthCareInput,
-      attachment
+      attachments,
     );
   }
 

@@ -227,8 +227,8 @@ model WellnessTips {
   name            String
   description     String?
   details         String?
-  // imageUrl        String?
-  attachment      String[]    @default([""])
+  images          String[]    @default([""])
+  attachments      String[]    @default([""])
   userProfile     UserProfile @relation(fields: [userProfileUuid], references: [uuid], onDelete: Cascade, onUpdate: Cascade)
   userProfileUuid String
   createdAt       DateTime    @default(now())
@@ -240,8 +240,8 @@ model HealthCare {
   name            String
   description     String?
   details         String?
-  // imageUrl        String?
-  attachment      String[]    @default([""])
+  images          String[]
+  attachments     String[]    @default([""])
   userProfile     UserProfile @relation(fields: [userProfileUuid], references: [uuid], onDelete: Cascade, onUpdate: Cascade)
   userProfileUuid String
   createdAt       DateTime    @default(now())
