@@ -36,7 +36,8 @@ import { UserInsuranceInfoModule } from './client/user-insurance-info/user-insur
 import { S3Module } from './client/S3/uploader.module';
 import { SendemailModule } from './client/sendemail/sendemail.module';
 import { TutorialVideoModule } from './admin/tutorial-video/tutorial-video.module';
-import { WellnessTipsModule } from './wellness-tips/wellness-tips.module';
+import { WellnessTipsModule } from './client/wellness-tips/wellness-tips.module';
+import { HealthCaresModule } from './client/health-care/health-care.module';
 
 @Module({
   imports: [
@@ -96,6 +97,7 @@ import { WellnessTipsModule } from './wellness-tips/wellness-tips.module';
     SendemailModule,
     TutorialVideoModule,
     WellnessTipsModule,
+    HealthCaresModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

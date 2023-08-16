@@ -1,0 +1,45 @@
+type HealthCare {
+  id: Int
+  name: String
+  description: String
+  details: String
+  # imageUrl: String
+  attachment: [String]
+  userProfile: UserProfile
+  userProfileUuid: String
+  createdAt: String
+  updatedAt: String
+}
+
+input CreateHealthCareInput {
+  name: String
+  description: String
+  details: String
+  userProfileUuid: String
+}
+
+input UpdateHealthCareInput {
+  id: Int!
+  name: String
+  description: String
+  details: String
+  userProfileUuid: String!
+}
+
+type Query {
+  healthCares: [HealthCare]!
+  healthCareOfUser(userProfileUuid: String): [HealthCare]
+  healthCare(id: Int!): HealthCare
+}
+
+type Mutation {
+  createHealthCare(
+    createHealthCareInput: CreateHealthCareInput!
+    attachment: [Upload] # image: Upload
+  ): HealthCare!
+  updateHealthCare(
+    updateHealthCareInput: UpdateHealthCareInput!
+    attachment: [Upload]
+  ): HealthCare!
+  removeHealthCare(id: Int!): HealthCare
+}
