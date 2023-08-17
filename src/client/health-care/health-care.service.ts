@@ -25,6 +25,7 @@ export class HealthCareService {
       await this.processAttachmentsService.processAttachments(
         attachments,
         userProfileUuid,
+        'health-care',
       );
     const attachmentArray = attachmentUrls.length === 0 ? [''] : attachmentUrls;
     const imageArray = imageUrls.length === 0 ? [''] : imageUrls;
@@ -80,6 +81,7 @@ export class HealthCareService {
         await this.processAttachmentsService.processAttachments(
           attachments,
           userProfileUuid,
+          'health-care',
         );
       const attachmentArray =
         attachmentUrls.length === 0 ? [''] : attachmentUrls;

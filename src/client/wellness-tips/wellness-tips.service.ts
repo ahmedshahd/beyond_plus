@@ -24,6 +24,7 @@ export class WellnessTipsService {
       await this.processAttachmentsService.processAttachments(
         attachments,
         userProfileUuid,
+        'wellness-tips'
       );
     const attachmentArray = attachmentUrls.length === 0 ? [''] : attachmentUrls;
     const imageArray = imageUrls.length === 0 ? [''] : imageUrls;
@@ -80,6 +81,8 @@ export class WellnessTipsService {
         await this.processAttachmentsService.processAttachments(
           attachments,
           userProfileUuid,
+          'wellness-tips'
+
         );
       const attachmentArray =
         attachmentUrls.length === 0 ? [''] : attachmentUrls;

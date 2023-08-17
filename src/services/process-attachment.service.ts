@@ -6,37 +6,51 @@ import { S3Service } from 'src/client/S3/S3.service';
 export class ProcessAttachmentsService {
   constructor(private readonly s3Service: S3Service) {}
 
-  async processAttachments(attachments: FileUpload[], userProfileUuid: string) {
+  private async uploadAttachment(
+    attachment: FileUpload,
+    userProfileUuid: string,
+    serviceName: string,
+  ) {
+    const { createReadStream, filename, mimetype } = await attachment.promise;
+    const fileStream = createReadStream();
+    const uniqueFilename = `${Date.now()}-${filename}`;
+    const s3Folder = mimetype.startsWith('image/') ? 'images' : 'attachments';
+
+    const { Location } = await this.s3Service.upload(
+      uniqueFilename,
+      `users/${userProfileUuid}/${serviceName}/${s3Folder}`,
+      fileStream,
+    );
+
+    return { location: Location, isImage: s3Folder === 'images' };
+  }
+
+  async processAttachments(
+    attachments: FileUpload[],
+    userProfileUuid: string,
+    serviceName: string,
+  ) {
     const attachmentUrls = [];
     const imageUrls = [];
 
     if (attachments) {
-      await Promise.all(
-        attachments.map(async (attachment) => {
-          const { createReadStream, filename, mimetype } =
-            await attachment.promise;
-
-          console.log('mimetype', mimetype);
-          const fileStream = createReadStream();
-          const uniqueFilename = `${Date.now()}-${filename}`;
-          const s3Folder =
-            mimetype !== 'image/png' && mimetype !== 'image/jpeg'
-              ? 'attachments'
-              : 'images';
-
-          const { Location } = await this.s3Service.upload(
-            uniqueFilename,
-            `users/${userProfileUuid}/wellness-tips/${s3Folder}`,
-            fileStream,
-          );
-
-          if (s3Folder === 'attachments') {
-            attachmentUrls.push(Location);
-          } else {
-            imageUrls.push(Location);
-          }
-        }),
+      const attachmentsToUpload = attachments.map((attachment) =>
+        this.uploadAttachment(attachment, userProfileUuid, serviceName),
       );
+
+      try {
+        const uploadedAttachments = await Promise.all(attachmentsToUpload);
+
+        for (const attachment of uploadedAttachments) {
+          if (attachment.isImage) {
+            imageUrls.push(attachment.location);
+          } else {
+            attachmentUrls.push(attachment.location);
+          }
+        }
+      } catch (error) {
+        throw new Error('Error uploading attachments: ' + error.message);
+      }
     }
 
     return { attachmentUrls, imageUrls };
