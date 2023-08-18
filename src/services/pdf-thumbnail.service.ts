@@ -31,9 +31,10 @@ export class PdfThumbnailService {
       quality: 100, // Output image quality percentage
       // savePath: './public/files',
     };
+    console.log('after options');
+
     const thumbnailFileBuffer = await this.streamToBuffer(fileStream);
     const { path } = await fromBuffer(thumbnailFileBuffer, options)(1);
-    console.log('path', path);
     const pdfThumbnailstream = fs.createReadStream(path);
 
     return { pdfThumbnailstream, path };
@@ -56,13 +57,13 @@ export class PdfThumbnailService {
     );
     const thumbnailLocation = thumbnailUploadResponse.Location;
 
-    // fs.unlink(path, (err) => {
-    //   if (err) {
-    //     console.error('Error deleting file:', err);
-    //     return;
-    //   }
-    //   console.log('File deleted successfully');
-    // });
+    fs.unlink(path, (err) => {
+      if (err) {
+        console.error('Error deleting file:', err);
+        return;
+      }
+      console.log('File deleted successfully');
+    });
 
     return thumbnailLocation;
   }
