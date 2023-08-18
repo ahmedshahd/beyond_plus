@@ -4,7 +4,9 @@ type HealthCare {
   description: String
   details: String
   images: [String]
-  attachments: [String]
+  pdfs: [String]
+  pdfsThumbnails: [String]
+  imagesThumbnails: [String]
   userProfile: UserProfile
   userProfileUuid: String
   createdAt: DateTime

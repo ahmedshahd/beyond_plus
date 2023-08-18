@@ -223,29 +223,33 @@ model UserAddress {
 }
 
 model WellnessTips {
-  id              Int         @id @default(autoincrement())
-  name            String
-  description     String?
-  details         String?
-  images          String[]    @default([""])
-  attachments      String[]    @default([""])
-  userProfile     UserProfile @relation(fields: [userProfileUuid], references: [uuid], onDelete: Cascade, onUpdate: Cascade)
-  userProfileUuid String
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime?   @updatedAt
+  id               Int         @id @default(autoincrement())
+  name             String
+  description      String?
+  details          String?
+  images           String[]    @default([""])
+  pdfs             String[]    @default([""])
+  imagesThumbnails String[]    @default([""])
+  pdfsThumbnails   String[]    @default([""])
+  userProfile      UserProfile @relation(fields: [userProfileUuid], references: [uuid], onDelete: Cascade, onUpdate: Cascade)
+  userProfileUuid  String
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime?   @updatedAt
 }
 
 model HealthCare {
-  id              Int         @id @default(autoincrement())
-  name            String
-  description     String?
-  details         String?
-  images          String[]
-  attachments     String[]    @default([""])
-  userProfile     UserProfile @relation(fields: [userProfileUuid], references: [uuid], onDelete: Cascade, onUpdate: Cascade)
-  userProfileUuid String
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime?   @updatedAt
+  id               Int         @id @default(autoincrement())
+  name             String
+  description      String?
+  details          String?
+  images           String[]    @default([""])
+  pdfs             String[]    @default([""])
+  imagesThumbnails String[]    @default([""])
+  pdfsThumbnails   String[]    @default([""])
+  userProfile      UserProfile @relation(fields: [userProfileUuid], references: [uuid], onDelete: Cascade, onUpdate: Cascade)
+  userProfileUuid  String
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime?   @updatedAt
 }
 
 //********* Medical Network **********//

@@ -1,25 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { FileUpload } from 'graphql-upload';
 import { S3Service } from 'src/client/S3/S3.service';
-import * as pdfThumbnail from 'pdf-thumbnail';
-import { ReadStream } from 'fs';
-import { parse } from 'path';
 import { ImageThumbnailService } from './image-thumbnail.service';
+import { PdfThumbnailService } from './pdf-thumbnail.service';
 
 @Injectable()
 export class ProcessAttachmentsService {
   constructor(
     private readonly s3Service: S3Service,
     private readonly imageThumbnailService: ImageThumbnailService,
+    private readonly pdfThumbnailService: PdfThumbnailService,
   ) {}
-
-  // private async generateImageThumbnail(fileStream) {
-  //   return await fileStream.pipe(
-  //     sharp()
-  //       .resize({ width: 100, height: 100 })
-
-  //   );
-  // }
 
   private async uploadAttachment(
     attachment: FileUpload,
@@ -31,32 +22,39 @@ export class ProcessAttachmentsService {
     const thumbnailFileStream = createReadStream();
     const uniqueFilename = `${Date.now()}-${filename}`;
     const s3Folder = mimetype.startsWith('image/') ? 'images' : 'attachments';
-    let thumbnailLocation = null;
+    let imageThumbnailLocation = null;
+    let pdfThumbnailLocation = null;
 
-    if (s3Folder === 'images') {
-      thumbnailLocation = await this.imageThumbnailService.uploadThumbnail(
+    if (s3Folder === 'attachments') {
+      pdfThumbnailLocation = await this.pdfThumbnailService.uploadPdfThumbnail(
         thumbnailFileStream,
         uniqueFilename,
         userProfileUuid,
         serviceName,
       );
-      console.log('imageThumbnail from if', thumbnailLocation);
     }
 
-    console.log('before');
+    if (s3Folder === 'images') {
+      imageThumbnailLocation =
+        await this.imageThumbnailService.uploadImageThumbnail(
+          thumbnailFileStream,
+          uniqueFilename,
+          userProfileUuid,
+          serviceName,
+        );
+    }
 
     const { Location: originalLocation } = await this.s3Service.upload(
       uniqueFilename,
       `users/${userProfileUuid}/${serviceName}/${s3Folder}`,
       fileStream,
     );
-    console.log('location', Location);
 
-    console.log('after');
     return {
       originalLocation,
       isImage: s3Folder === 'images',
-      thumbnailLocation,
+      imageThumbnailLocation,
+      pdfThumbnailLocation,
     };
   }
 
@@ -68,6 +66,7 @@ export class ProcessAttachmentsService {
     const attachmentUrls = [];
     const imageUrls = [];
     const imageThumbnailUrls = [];
+    const pdfThumbnailUrls = [];
 
     if (attachments) {
       const attachmentsToUpload = attachments.map((attachment) =>
@@ -80,9 +79,11 @@ export class ProcessAttachmentsService {
         for (const attachment of uploadedAttachments) {
           if (attachment.isImage) {
             imageUrls.push(attachment.originalLocation);
-            imageThumbnailUrls.push(attachment.thumbnailLocation);
+            imageThumbnailUrls.push(attachment.imageThumbnailLocation);
           } else {
             attachmentUrls.push(attachment.originalLocation);
+            pdfThumbnailUrls.push(attachment.pdfThumbnailLocation);
+
           }
         }
       } catch (error) {
@@ -90,6 +91,6 @@ export class ProcessAttachmentsService {
       }
     }
 
-    return { attachmentUrls, imageUrls, imageThumbnailUrls };
+    return { attachmentUrls, imageUrls, imageThumbnailUrls, pdfThumbnailUrls };
   }
 }

@@ -13,11 +13,11 @@ export class ImageThumbnailService {
     .jpeg(),);
   }
 
-  async uploadThumbnail(fileStream, filename, userProfileUuid, serviceName) {
+  async uploadImageThumbnail(fileStream, filename, userProfileUuid, serviceName) {
     const imageThumbnailStream = await this.generateImageThumbnail(fileStream);
     const uniqueFilename = `${Date.now()}-${parse(filename).name}.jpeg`;
     const thumbnailFilename = `thumbnail-${uniqueFilename}`;
-    const thumbnailPath = `users/${userProfileUuid}/${serviceName}`;
+    const thumbnailPath = `users/${userProfileUuid}/${serviceName}/images`;
     const thumbnailUploadResponse = await this.s3Service.upload(
       thumbnailFilename,
       thumbnailPath,

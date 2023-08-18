@@ -20,7 +20,7 @@ export class WellnessTipsService {
   ) {
     const { userProfileUuid } = createWellnessTipInput;
     // Process attachments if available
-    const { attachmentUrls, imageUrls } =
+    const { attachmentUrls, imageUrls, imageThumbnailUrls, pdfThumbnailUrls } =
       await this.processAttachmentsService.processAttachments(
         attachments,
         userProfileUuid,
@@ -28,12 +28,17 @@ export class WellnessTipsService {
       );
     const attachmentArray = attachmentUrls.length === 0 ? [''] : attachmentUrls;
     const imageArray = imageUrls.length === 0 ? [''] : imageUrls;
-
+    const imageThumbnailArray =
+      imageThumbnailUrls.length === 0 ? [''] : imageThumbnailUrls;
+    const pdfThumbnailArray =
+      pdfThumbnailUrls.length === 0 ? [''] : pdfThumbnailUrls;
     // Create wellness tip using Prisma
     return await this.prisma.wellnessTips.create({
       data: {
-        attachments: attachmentArray,
+        pdfs: attachmentArray,
         images: imageArray,
+        imagesThumbnails: imageThumbnailArray,
+        pdfsThumbnails: pdfThumbnailArray,
         ...createWellnessTipInput,
       },
     });
@@ -77,24 +82,32 @@ export class WellnessTipsService {
     }
     try {
       // Process attachments if available
-      const { attachmentUrls, imageUrls, imageThumbnailUrls } =
-        await this.processAttachmentsService.processAttachments(
-          attachments,
-          userProfileUuid,
-          'wellness-tips',
-        );
+      const {
+        attachmentUrls,
+        imageUrls,
+        imageThumbnailUrls,
+        pdfThumbnailUrls,
+      } = await this.processAttachmentsService.processAttachments(
+        attachments,
+        userProfileUuid,
+        'wellness-tips',
+      );
       const attachmentArray =
         attachmentUrls.length === 0 ? [''] : attachmentUrls;
       const imageArray = imageUrls.length === 0 ? [''] : imageUrls;
       const imageThumbnailArray =
         imageThumbnailUrls.length === 0 ? [''] : imageThumbnailUrls;
+      const pdfThumbnailArray =
+        pdfThumbnailUrls.length === 0 ? [''] : pdfThumbnailUrls;
 
       // Save the image URLs in the Prisma database as an array of strings
       return await this.prisma.wellnessTips.update({
         where: { id },
         data: {
-          attachments: attachmentArray,
+          pdfs: attachmentArray,
           images: imageArray,
+          imagesThumbnails: imageThumbnailArray,
+          pdfsThumbnails: pdfThumbnailArray,
           ...updateWellnessTipInput,
         },
       });
