@@ -1,6 +1,5 @@
 FROM node:16.17.1-alpine As production
 
-
 ENV PORT=8000
 ENV DATABASE_URL= postgresql://postgres:*PROrat666@beyond-plus.cvm3ri1wjhhb.us-east-1.rds.amazonaws.com:5432/postgres?schema=public&connection_limit=10000&pool_timeout=0
 ENV API_KEY=2ab9c3d4e5f91ab7c3d4e5f6
