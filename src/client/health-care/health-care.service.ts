@@ -21,7 +21,7 @@ export class HealthCareService {
   ) {
     const { userProfileUuid } = createHealthCareInput;
 
-    const { attachmentUrls, imageUrls,  imageThumbnailUrls, pdfThumbnailUrls  } =
+    const { attachmentUrls, imageUrls,  imageThumbnailUrls  } =
       await this.processAttachmentsService.processAttachments(
         attachments,
         userProfileUuid,
@@ -32,16 +32,13 @@ export class HealthCareService {
     const imageArray = imageUrls.length === 0 ? [''] : imageUrls;
     const imageThumbnailArray =
       imageThumbnailUrls.length === 0 ? [''] : imageThumbnailUrls;
-      const pdfThumbnailArray =
-      pdfThumbnailUrls.length === 0 ? [''] : pdfThumbnailUrls;
-
+     
     // Create health care  using Prisma
     return await this.prisma.healthCare.create({
       data: {
         pdfs: attachmentArray,
         images: imageArray,
-        imagesThumbnails:imageThumbnailArray,
-        pdfsThumbnails:pdfThumbnailArray,
+        thumbnails:imageThumbnailArray,
         ...createHealthCareInput,
       },
     });
@@ -84,7 +81,7 @@ export class HealthCareService {
       });
     }
     try {
-      const { attachmentUrls, imageUrls, imageThumbnailUrls, pdfThumbnailUrls } =
+      const { attachmentUrls, imageUrls, imageThumbnailUrls } =
         await this.processAttachmentsService.processAttachments(
           attachments,
           userProfileUuid,
@@ -95,8 +92,7 @@ export class HealthCareService {
       const imageArray = imageUrls.length === 0 ? [''] : imageUrls;
       const imageThumbnailArray =
         imageThumbnailUrls.length === 0 ? [''] : imageThumbnailUrls;
-        const pdfThumbnailArray =
-        pdfThumbnailUrls.length === 0 ? [''] : pdfThumbnailUrls;
+        
 
       // Save the image URLs in the Prisma database as an array of strings
       return await this.prisma.healthCare.update({
@@ -104,8 +100,7 @@ export class HealthCareService {
         data: {
           pdfs: attachmentArray,
           images: imageArray,
-          imagesThumbnails:imageThumbnailArray,
-          pdfsThumbnails:pdfThumbnailArray,
+          thumbnails:imageThumbnailArray,
           ...updateHealthCareInput,
         },
       });

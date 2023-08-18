@@ -2,14 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { FileUpload } from 'graphql-upload';
 import { S3Service } from 'src/client/S3/S3.service';
 import { ImageThumbnailService } from './image-thumbnail.service';
-import { PdfThumbnailService } from './pdf-thumbnail.service';
 
 @Injectable()
 export class ProcessAttachmentsService {
   constructor(
     private readonly s3Service: S3Service,
     private readonly imageThumbnailService: ImageThumbnailService,
-    private readonly pdfThumbnailService: PdfThumbnailService,
   ) {}
 
   private async uploadAttachment(
@@ -26,12 +24,12 @@ export class ProcessAttachmentsService {
     let pdfThumbnailLocation = null;
 
     if (s3Folder === 'attachments') {
-      pdfThumbnailLocation = await this.pdfThumbnailService.uploadPdfThumbnail(
-        thumbnailFileStream,
-        uniqueFilename,
-        userProfileUuid,
-        serviceName,
-      );
+      // pdfThumbnailLocation = await this.pdfThumbnailService.uploadPdfThumbnail(
+      //   thumbnailFileStream,
+      //   uniqueFilename,
+      //   userProfileUuid,
+      //   serviceName,
+      // );
     }
 
     if (s3Folder === 'images') {
@@ -66,7 +64,6 @@ export class ProcessAttachmentsService {
     const attachmentUrls = [];
     const imageUrls = [];
     const imageThumbnailUrls = [];
-    const pdfThumbnailUrls = [];
 
     if (attachments) {
       const attachmentsToUpload = attachments.map((attachment) =>
@@ -82,7 +79,7 @@ export class ProcessAttachmentsService {
             imageThumbnailUrls.push(attachment.imageThumbnailLocation);
           } else {
             attachmentUrls.push(attachment.originalLocation);
-            pdfThumbnailUrls.push(attachment.pdfThumbnailLocation);
+            // pdfThumbnailUrls.push(attachment.pdfThumbnailLocation);
 
           }
         }
@@ -91,6 +88,6 @@ export class ProcessAttachmentsService {
       }
     }
 
-    return { attachmentUrls, imageUrls, imageThumbnailUrls, pdfThumbnailUrls };
+    return { attachmentUrls, imageUrls, imageThumbnailUrls };
   }
 }

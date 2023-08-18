@@ -1,7 +1,5 @@
 FROM node:16.17.1-alpine As production
 
-# Install system-level dependencies: ghostscript and graphicsmagick
-RUN apk --no-cache add ghostscript graphicsmagick
 
 ENV PORT=8000
 ENV DATABASE_URL= postgresql://postgres:*PROrat666@beyond-plus.cvm3ri1wjhhb.us-east-1.rds.amazonaws.com:5432/postgres?schema=public&connection_limit=10000&pool_timeout=0

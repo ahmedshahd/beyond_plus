@@ -5,8 +5,7 @@ type HealthCare {
   details: String
   images: [String]
   pdfs: [String]
-  pdfsThumbnails: [String]
-  imagesThumbnails: [String]
+  thumbnails: [String]
   userProfile: UserProfile
   userProfileUuid: String
   createdAt: DateTime

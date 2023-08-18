@@ -9,7 +9,7 @@ export class ImageThumbnailService {
   constructor(private readonly s3Service: S3Service) {}
 
   async generateImageThumbnail(fileStream) {
-    return await fileStream.pipe(sharp().resize({ width: 100, height: 100 }).toFormat('jpeg', { mozjpeg: true })
+    return await fileStream.pipe(sharp().resize({ width: 400, height: 300 }).toFormat('jpeg', { mozjpeg: true })
     .jpeg(),);
   }
 

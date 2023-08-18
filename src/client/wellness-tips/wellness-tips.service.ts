@@ -20,7 +20,7 @@ export class WellnessTipsService {
   ) {
     const { userProfileUuid } = createWellnessTipInput;
     // Process attachments if available
-    const { attachmentUrls, imageUrls, imageThumbnailUrls, pdfThumbnailUrls } =
+    const { attachmentUrls, imageUrls, imageThumbnailUrls } =
       await this.processAttachmentsService.processAttachments(
         attachments,
         userProfileUuid,
@@ -30,15 +30,13 @@ export class WellnessTipsService {
     const imageArray = imageUrls.length === 0 ? [''] : imageUrls;
     const imageThumbnailArray =
       imageThumbnailUrls.length === 0 ? [''] : imageThumbnailUrls;
-    const pdfThumbnailArray =
-      pdfThumbnailUrls.length === 0 ? [''] : pdfThumbnailUrls;
+   
     // Create wellness tip using Prisma
     return await this.prisma.wellnessTips.create({
       data: {
         pdfs: attachmentArray,
         images: imageArray,
-        imagesThumbnails: imageThumbnailArray,
-        pdfsThumbnails: pdfThumbnailArray,
+        thumbnails:imageThumbnailArray,
         ...createWellnessTipInput,
       },
     });
@@ -86,7 +84,6 @@ export class WellnessTipsService {
         attachmentUrls,
         imageUrls,
         imageThumbnailUrls,
-        pdfThumbnailUrls,
       } = await this.processAttachmentsService.processAttachments(
         attachments,
         userProfileUuid,
@@ -97,8 +94,7 @@ export class WellnessTipsService {
       const imageArray = imageUrls.length === 0 ? [''] : imageUrls;
       const imageThumbnailArray =
         imageThumbnailUrls.length === 0 ? [''] : imageThumbnailUrls;
-      const pdfThumbnailArray =
-        pdfThumbnailUrls.length === 0 ? [''] : pdfThumbnailUrls;
+     
 
       // Save the image URLs in the Prisma database as an array of strings
       return await this.prisma.wellnessTips.update({
@@ -106,8 +102,7 @@ export class WellnessTipsService {
         data: {
           pdfs: attachmentArray,
           images: imageArray,
-          imagesThumbnails: imageThumbnailArray,
-          pdfsThumbnails: pdfThumbnailArray,
+          thumbnails:imageThumbnailArray,
           ...updateWellnessTipInput,
         },
       });
