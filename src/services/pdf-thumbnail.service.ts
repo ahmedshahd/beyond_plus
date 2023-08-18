@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { FileUpload } from 'graphql-upload';
 import { S3Service } from 'src/client/S3/S3.service';
 import { fromBuffer } from 'pdf2pic';
 import * as fs from 'fs';
@@ -25,11 +24,11 @@ export class PdfThumbnailService {
     const thumbnailFilename = `thumbnail-${uniqueFilename}`;
     const options = {
       density: 100, // DPI (dots per inch) of the output image
-      saveFilename: thumbnailFilename,
+      // saveFilename: thumbnailFilename,
       format: 'jpeg', // Output image format
       size: '300x400', // Output image dimensions
       quality: 100, // Output image quality percentage
-      savePath: './public/files',
+      // savePath: './public/files',
     };
     const thumbnailFileBuffer = await this.streamToBuffer(fileStream);
     const { path } = await fromBuffer(thumbnailFileBuffer, options)(1);
@@ -57,13 +56,13 @@ export class PdfThumbnailService {
     const thumbnailLocation = thumbnailUploadResponse.Location;
 
 
-    fs.unlink(path, (err) => {
-      if (err) {
-        console.error('Error deleting file:', err);
-        return;
-      }
-      console.log('File deleted successfully');
-    });
+    // fs.unlink(path, (err) => {
+    //   if (err) {
+    //     console.error('Error deleting file:', err);
+    //     return;
+    //   }
+    //   console.log('File deleted successfully');
+    // });
 
     return thumbnailLocation;
   }
