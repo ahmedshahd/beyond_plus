@@ -77,7 +77,7 @@ export class HealthCareService {
       });
     }
     try {
-      const { attachmentUrls, imageUrls } =
+      const { attachmentUrls, imageUrls, imageThumbnailUrls } =
         await this.processAttachmentsService.processAttachments(
           attachments,
           userProfileUuid,
@@ -86,6 +86,8 @@ export class HealthCareService {
       const attachmentArray =
         attachmentUrls.length === 0 ? [''] : attachmentUrls;
       const imageArray = imageUrls.length === 0 ? [''] : imageUrls;
+      const imageThumbnailArray =
+        imageThumbnailUrls.length === 0 ? [''] : imageThumbnailUrls;
 
       // Save the image URLs in the Prisma database as an array of strings
       return await this.prisma.healthCare.update({

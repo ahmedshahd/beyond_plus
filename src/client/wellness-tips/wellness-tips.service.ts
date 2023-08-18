@@ -24,7 +24,7 @@ export class WellnessTipsService {
       await this.processAttachmentsService.processAttachments(
         attachments,
         userProfileUuid,
-        'wellness-tips'
+        'wellness-tips',
       );
     const attachmentArray = attachmentUrls.length === 0 ? [''] : attachmentUrls;
     const imageArray = imageUrls.length === 0 ? [''] : imageUrls;
@@ -77,16 +77,17 @@ export class WellnessTipsService {
     }
     try {
       // Process attachments if available
-      const { attachmentUrls, imageUrls } =
+      const { attachmentUrls, imageUrls, imageThumbnailUrls } =
         await this.processAttachmentsService.processAttachments(
           attachments,
           userProfileUuid,
-          'wellness-tips'
-
+          'wellness-tips',
         );
       const attachmentArray =
         attachmentUrls.length === 0 ? [''] : attachmentUrls;
       const imageArray = imageUrls.length === 0 ? [''] : imageUrls;
+      const imageThumbnailArray =
+        imageThumbnailUrls.length === 0 ? [''] : imageThumbnailUrls;
 
       // Save the image URLs in the Prisma database as an array of strings
       return await this.prisma.wellnessTips.update({
