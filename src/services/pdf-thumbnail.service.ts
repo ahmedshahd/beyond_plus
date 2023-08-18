@@ -22,9 +22,10 @@ export class PdfThumbnailService {
   async generatePdfThumbnail(fileStream, filename): Promise<any> {
     const uniqueFilename = `${Date.now()}-${parse(filename).name}`;
     const thumbnailFilename = `thumbnail-${uniqueFilename}`;
+    console.log('before options');
     const options = {
       density: 100, // DPI (dots per inch) of the output image
-      // saveFilename: thumbnailFilename,
+      saveFilename: thumbnailFilename,
       format: 'jpeg', // Output image format
       size: '300x400', // Output image dimensions
       quality: 100, // Output image quality percentage
@@ -32,7 +33,7 @@ export class PdfThumbnailService {
     };
     const thumbnailFileBuffer = await this.streamToBuffer(fileStream);
     const { path } = await fromBuffer(thumbnailFileBuffer, options)(1);
-
+    console.log('path', path);
     const pdfThumbnailstream = fs.createReadStream(path);
 
     return { pdfThumbnailstream, path };
@@ -54,7 +55,6 @@ export class PdfThumbnailService {
       pdfThumbnailstream,
     );
     const thumbnailLocation = thumbnailUploadResponse.Location;
-
 
     // fs.unlink(path, (err) => {
     //   if (err) {
