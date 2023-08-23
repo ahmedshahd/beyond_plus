@@ -5,6 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Prisma, PrismaClient } from '@prisma/client';
+import { ModuleRef} from '@nestjs/core';
 
 @Injectable()
 // 1.

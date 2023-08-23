@@ -6,6 +6,7 @@ import { S3Service } from 'src/client/S3/S3.service';
 import { ProcessAttachmentsService } from 'src/services/process-attachment.service';
 import { ImageThumbnailService } from 'src/services/image-thumbnail.service';
 // import { PdfThumbnailService } from 'src/services/pdf-thumbnail.service';
+import { UserProfileService } from '../user-profile/user-profile.service';
 
 
 @Module({
@@ -16,6 +17,7 @@ import { ImageThumbnailService } from 'src/services/image-thumbnail.service';
     S3Service,
     ProcessAttachmentsService,
     ImageThumbnailService,
+    UserProfileService
   ],
 })
 export class WellnessTipsModule {}

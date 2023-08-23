@@ -26,4 +26,18 @@ export class ImageThumbnailService {
     const thumbnailLocation = thumbnailUploadResponse.Location;
     return thumbnailLocation;
   }
+
+  async uploadGlobalImageThumbnail(fileStream, filename, serviceName) {
+    const imageThumbnailStream = await this.generateImageThumbnail(fileStream);
+    const uniqueFilename = `${Date.now()}-${parse(filename).name}.jpeg`;
+    const thumbnailFilename = `thumbnail-${uniqueFilename}`;
+    const thumbnailPath = `${serviceName}/images`;
+    const thumbnailUploadResponse = await this.s3Service.upload(
+      thumbnailFilename,
+      thumbnailPath,
+      imageThumbnailStream,
+    );
+    const thumbnailLocation = thumbnailUploadResponse.Location;
+    return thumbnailLocation;
+  }
 }

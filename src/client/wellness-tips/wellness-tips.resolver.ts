@@ -3,10 +3,15 @@ import { WellnessTipsService } from './wellness-tips.service';
 import { CreateWellnessTipInput } from './dto/create-wellness-tip.input';
 import { UpdateWellnessTipInput } from './dto/update-wellness-tip.input';
 import { GraphQLUpload, FileUpload } from 'graphql-upload';
+import { CreateGlobalWellnessTipInput } from './dto/create-global-wellness-tip.input';
+import { UserProfileService } from '../user-profile/user-profile.service';
 
 @Resolver('WellnessTip')
 export class WellnessTipsResolver {
-  constructor(private readonly wellnessTipsService: WellnessTipsService) {}
+  constructor(
+    private readonly wellnessTipsService: WellnessTipsService,
+    private readonly userProfileService: UserProfileService,
+  ) {}
 
   @Mutation('createWellnessTip')
   create(
@@ -16,6 +21,19 @@ export class WellnessTipsResolver {
     attachments?: FileUpload[],
   ) {
     return this.wellnessTipsService.create(createWellnessTipInput, attachments);
+  }
+
+  @Mutation('createGlobalWellnessTip')
+  createGlobal(
+    @Args('createGlobalWellnessTipInput')
+    createGlobalWellnessTipInput: CreateGlobalWellnessTipInput,
+    @Args('attachments', { type: () => [GraphQLUpload] })
+    attachments?: FileUpload[],
+  ) {
+    return this.wellnessTipsService.createGlobal(
+      createGlobalWellnessTipInput,
+      attachments,
+    );
   }
 
   @Query('wellnessTips')

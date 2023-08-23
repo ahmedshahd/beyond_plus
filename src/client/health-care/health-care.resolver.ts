@@ -2,6 +2,8 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { HealthCareService } from './health-care.service';
 import { CreateHealthCareInput } from './dto/create-health-care.input';
 import { UpdateHealthCareInput } from './dto/update-health-care.input';
+import { CreateGlobalHealthCareInput } from './dto/create-global-health-care.input';
+
 import { GraphQLUpload, FileUpload } from 'graphql-upload';
 
 @Resolver('HealthCare')
@@ -17,6 +19,19 @@ export class HealthCareResolver {
   ) {
     return this.healthCareService.create(
       createHealthCareInput,
+      attachments,
+      // image
+    );
+  }
+  @Mutation('createGlobalHealthCare')
+  createGlobal(
+    @Args('createGlobalHealthCareInput')
+    createGlobalHealthCareInput: CreateGlobalHealthCareInput,
+    @Args('attachments', { type: () => [GraphQLUpload] })
+    attachments?: FileUpload[],
+  ) {
+    return this.healthCareService.createGlobal(
+      createGlobalHealthCareInput,
       attachments,
       // image
     );

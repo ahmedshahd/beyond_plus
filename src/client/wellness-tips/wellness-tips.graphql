@@ -19,6 +19,13 @@ input CreateWellnessTipInput {
   userProfileUuid: String
 }
 
+
+input CreateGlobalWellnessTipCareInput {
+  name: String
+  description: String
+  details: String
+}
+
 input UpdateWellnessTipInput {
   id: Int!
   name: String
@@ -38,6 +45,10 @@ type Mutation {
     createWellnessTipInput: CreateWellnessTipInput!
     attachments: [Upload] # image: Upload
   ): WellnessTip!
+  createGlobalWellnessTip(
+    createGlobalWellnessTipInput: CreateGlobalWellnessTipCareInput!
+    attachments: [Upload] # image: Upload
+  ): [WellnessTip]!
   updateWellnessTip(
     updateWellnessTipInput: UpdateWellnessTipInput!
     attachments: [Upload]

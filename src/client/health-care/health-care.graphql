@@ -19,6 +19,12 @@ input CreateHealthCareInput {
   userProfileUuid: String
 }
 
+input CreateGlobalHealthCareInput {
+  name: String
+  description: String
+  details: String
+}
+
 input UpdateHealthCareInput {
   id: Int!
   name: String
@@ -38,6 +44,10 @@ type Mutation {
     createHealthCareInput: CreateHealthCareInput!
     attachments: [Upload] # image: Upload
   ): HealthCare!
+   createGlobalHealthCare(
+    createGlobalHealthCareInput: CreateGlobalHealthCareInput!
+    attachments: [Upload] # image: Upload
+  ): [HealthCare]!
   updateHealthCare(
     updateHealthCareInput: UpdateHealthCareInput!
     attachments: [Upload]

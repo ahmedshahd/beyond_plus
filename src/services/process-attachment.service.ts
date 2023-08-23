@@ -90,4 +90,77 @@ export class ProcessAttachmentsService {
 
     return { attachmentUrls, imageUrls, imageThumbnailUrls };
   }
+
+
+  private async uploadGlobalAttachment(
+    attachment: FileUpload,
+    serviceName: string,
+  ) {
+    const { createReadStream, filename, mimetype } = await attachment.promise;
+    const fileStream = createReadStream();
+    const thumbnailFileStream = createReadStream();
+    const uniqueFilename = `${Date.now()}-${filename}`;
+    const s3Folder = mimetype.startsWith('image/') ? 'images' : 'attachments';
+    let imageThumbnailLocation = null;
+    let pdfThumbnailLocation = null;
+
+    if (s3Folder === 'attachments') {
+     
+    }
+
+    if (s3Folder === 'images') {
+      imageThumbnailLocation =
+        await this.imageThumbnailService.uploadGlobalImageThumbnail(
+          thumbnailFileStream,
+          uniqueFilename,
+          serviceName,
+        );
+    }
+
+    const { Location: originalLocation } = await this.s3Service.upload(
+      uniqueFilename,
+      `${serviceName}/${s3Folder}`,
+      fileStream,
+    );
+
+    return {
+      originalLocation,
+      isImage: s3Folder === 'images',
+      imageThumbnailLocation,
+      pdfThumbnailLocation,
+    };
+  }
+
+  async processGlobalAttachments(
+    attachments: FileUpload[],
+    serviceName: string,
+  ) {
+    const attachmentUrls = [];
+    const imageUrls = [];
+    const imageThumbnailUrls = [];
+
+    if (attachments) {
+      const attachmentsToUpload = attachments.map((attachment) =>
+        this.uploadGlobalAttachment(attachment, serviceName),
+      );
+
+      try {
+        const uploadedAttachments = await Promise.all(attachmentsToUpload);
+        console.log('uploadedAttachments', uploadedAttachments);
+        for (const attachment of uploadedAttachments) {
+          if (attachment.isImage) {
+            imageUrls.push(attachment.originalLocation);
+            imageThumbnailUrls.push(attachment.imageThumbnailLocation);
+          } else {
+            attachmentUrls.push(attachment.originalLocation);
+          }
+        }
+      } catch (error) {
+        throw new Error('Error uploading attachments: ' + error.message);
+      }
+    }
+
+    return { attachmentUrls, imageUrls, imageThumbnailUrls };
+  }
+
 }
