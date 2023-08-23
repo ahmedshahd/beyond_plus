@@ -26,7 +26,7 @@ export class WellnessTipsService {
       const { attachmentUrls, imageUrls, imageThumbnailUrls } =
         await this.processAttachmentsService.processGlobalAttachments(
           attachments,
-          'health-care',
+          'wellness-tips',
         );
 
       const attachmentArray =
@@ -50,7 +50,6 @@ export class WellnessTipsService {
       });
 
       const createdWellnessTipRecords = await Promise.all(wellnessTipPromises);
-      console.log('createdWellnessTipRecords', createdWellnessTipRecords);
       return createdWellnessTipRecords;
     } catch (error) {
       // Handle the error here
