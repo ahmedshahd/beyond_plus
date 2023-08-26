@@ -6,6 +6,7 @@ type UserProfile {
   dateOfbirth: String
   profileImgUrl: String
   gender: Gender
+  registrationToken: String
   userInsuranceInfo: UserInsuranceInfo
   address: UserAddress
 }
@@ -20,6 +21,7 @@ input CreateUserProfileInput {
   phoneNumber: String!
   dateOfbirth: String
   gender: Gender
+  registrationToken: String
 }
 
 input UpdateUserProfileInput {
@@ -28,6 +30,7 @@ input UpdateUserProfileInput {
   email: String
   phoneNumber: String
   dateOfbirth: String
+  registrationToken: String
   gender: Gender
 }
 

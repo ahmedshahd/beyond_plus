@@ -38,6 +38,7 @@ import { SendemailModule } from './client/sendemail/sendemail.module';
 import { TutorialVideoModule } from './admin/tutorial-video/tutorial-video.module';
 import { WellnessTipsModule } from './client/wellness-tips/wellness-tips.module';
 import { HealthCaresModule } from './client/health-care/health-care.module';
+import { UserRegistrationTokenModule } from './client/user-registration-token/user-registration-token.module';
 
 @Module({
   imports: [
@@ -98,6 +99,7 @@ import { HealthCaresModule } from './client/health-care/health-care.module';
     TutorialVideoModule,
     WellnessTipsModule,
     HealthCaresModule,
+    UserRegistrationTokenModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

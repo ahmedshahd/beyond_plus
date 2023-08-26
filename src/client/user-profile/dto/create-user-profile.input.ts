@@ -10,4 +10,5 @@ export class CreateUserProfileInput {
   phoneNumber: string;
   dateOfbirth: string;
   gender: Gender;
+  registrationToken: string
 }

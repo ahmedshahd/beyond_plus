@@ -1,0 +1,20 @@
+type UserRegistrationToken {
+  registrationToken: String
+  uuid: String
+  userProfile: UserProfile
+}
+
+input UpsertUserRegistrationTokenInput {
+  uuid: String
+  registrationToken: String
+}
+
+type Query {
+  userRegistrationToken(uuid: String!): UserRegistrationToken
+}
+
+type Mutation {
+  upsertUserRegistrationToken(
+    upsertUserRegistrationTokenInput: UpsertUserRegistrationTokenInput!
+  ): UserRegistrationToken
+}
