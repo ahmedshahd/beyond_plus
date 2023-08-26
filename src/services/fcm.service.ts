@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { BatchResponse } from 'firebase-admin/lib/messaging/messaging-api';
 import { FirebaseAdmin, InjectFirebaseAdmin } from 'nestjs-firebase';
 
 @Injectable()
@@ -32,7 +33,7 @@ export class FcmService {
     title: string,
     body: string,
     image?: string,
-  ) {
+  ):Promise<BatchResponse> {
     const imageUrl = image == '' ? undefined : image;
 
     const message = {

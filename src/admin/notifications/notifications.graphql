@@ -1,0 +1,27 @@
+type NotificationToMultipleDevicesResponse {
+  successCount: Int
+  failureCount: Int
+}
+
+input SendNotificationToDeviceInput {
+  title: String!
+  body: String!
+  uuid: String!
+}
+
+input SendNotificationToMultipleDevicesInput {
+  title: String!
+  body: String!
+}
+
+type Mutation {
+  sendNotificationToDevice(
+    sendNotificationToDeviceInput: SendNotificationToDeviceInput
+    image: Upload
+  ): String
+
+  sendNotificationToMultipleDevices(
+    sendNotificationToMultipleDevicesInput: SendNotificationToMultipleDevicesInput
+    image: Upload
+  ): NotificationToMultipleDevicesResponse
+}

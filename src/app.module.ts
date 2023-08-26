@@ -40,6 +40,7 @@ import { WellnessTipsModule } from './client/wellness-tips/wellness-tips.module'
 import { HealthCaresModule } from './client/health-care/health-care.module';
 import { UserRegistrationTokenModule } from './client/user-registration-token/user-registration-token.module';
 import {FirebaseModule} from 'nestjs-firebase';
+import { NotificationsModule } from './admin/notifications/notifications.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -102,6 +103,7 @@ import {FirebaseModule} from 'nestjs-firebase';
     WellnessTipsModule,
     HealthCaresModule,
     UserRegistrationTokenModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
