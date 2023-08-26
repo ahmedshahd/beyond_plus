@@ -39,14 +39,16 @@ import { TutorialVideoModule } from './admin/tutorial-video/tutorial-video.modul
 import { WellnessTipsModule } from './client/wellness-tips/wellness-tips.module';
 import { HealthCaresModule } from './client/health-care/health-care.module';
 import { UserRegistrationTokenModule } from './client/user-registration-token/user-registration-token.module';
-
+import {FirebaseModule} from 'nestjs-firebase';
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
     }),
-
+    FirebaseModule.forRoot({
+      googleApplicationCredential: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+    }),
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
       useFactory: () => ({

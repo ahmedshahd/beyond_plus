@@ -7,6 +7,7 @@ import { ProcessAttachmentsService } from 'src/services/process-attachment.servi
 import { ImageThumbnailService } from 'src/services/image-thumbnail.service';
 // import { PdfThumbnailService } from 'src/services/pdf-thumbnail.service';
 import { UserProfileService } from '../user-profile/user-profile.service';
+import { FcmService } from 'src/services/fcm.service';
 
 
 @Module({
@@ -17,7 +18,8 @@ import { UserProfileService } from '../user-profile/user-profile.service';
     S3Service,
     ProcessAttachmentsService,
     ImageThumbnailService,
-    UserProfileService
+    UserProfileService,
+    FcmService
   ],
 })
 export class WellnessTipsModule {}

@@ -6,6 +6,7 @@ import { PrismaService } from 'src/prisma.service';
 import { FileUpload } from 'graphql-upload';
 import { CreateGlobalWellnessTipInput } from './dto/create-global-wellness-tip.input';
 import { UserProfileService } from '../user-profile/user-profile.service';
+import { FcmService } from 'src/services/fcm.service';
 
 @Injectable()
 export class WellnessTipsService {
@@ -13,6 +14,7 @@ export class WellnessTipsService {
     private prisma: PrismaService,
     private readonly processAttachmentsService: ProcessAttachmentsService,
     private readonly userProfileService: UserProfileService,
+    private readonly fcmService: FcmService,
   ) {}
 
   async createGlobal(
@@ -22,7 +24,11 @@ export class WellnessTipsService {
     try {
       const allUsers = await this.userProfileService.findAll();
       const allUsersUuid = allUsers.map((user) => user.uuid);
+      const registrationTokens = allUsers
+        .map((user) => user.registrationToken)
+        .filter(Boolean);
 
+      console.log('registrationTokens', registrationTokens);
       const { attachmentUrls, imageUrls, imageThumbnailUrls } =
         await this.processAttachmentsService.processGlobalAttachments(
           attachments,
@@ -50,6 +56,19 @@ export class WellnessTipsService {
       });
 
       const createdWellnessTipRecords = await Promise.all(wellnessTipPromises);
+
+      const { name } = createGlobalWellnessTipInput;
+      const { details } = createGlobalWellnessTipInput;
+      const thumbnail = imageThumbnailArray[0];
+
+      const notifiyUsers =
+        await this.fcmService.sendNotificationToMultipleDevices(
+          registrationTokens,
+          name,
+          details,
+          thumbnail,
+        );
+      console.log('notifiyUsers', notifiyUsers);
       return createdWellnessTipRecords;
     } catch (error) {
       // Handle the error here
@@ -79,7 +98,7 @@ export class WellnessTipsService {
       imageThumbnailUrls.length === 0 ? [''] : imageThumbnailUrls;
 
     // Create wellness tip using Prisma
-    return await this.prisma.wellnessTips.create({
+    const createdWellnessTip = await this.prisma.wellnessTips.create({
       data: {
         pdfs: attachmentArray,
         images: imageArray,
@@ -87,6 +106,19 @@ export class WellnessTipsService {
         ...createWellnessTipInput,
       },
     });
+    const { registrationToken } = await this.userProfileService.findOne(
+      userProfileUuid,
+    );
+    const { name, details, thumbnails } = createdWellnessTip;
+    const notifiyUser = await this.fcmService.sendNotificationToDevice(
+      registrationToken,
+      name,
+      details,
+      thumbnails[0],
+    );
+    console.log('notifiyUser', notifiyUser);
+
+    return createdWellnessTip;
   }
 
   async findAll() {

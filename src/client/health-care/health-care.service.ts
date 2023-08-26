@@ -6,6 +6,7 @@ import { FileUpload } from 'graphql-upload';
 import { ProcessAttachmentsService } from 'src/services/process-attachment.service';
 import { UserProfileService } from './../user-profile/user-profile.service';
 import { CreateGlobalHealthCareInput } from './dto/create-global-health-care.input';
+import { FcmService } from 'src/services/fcm.service';
 
 @Injectable()
 export class HealthCareService {
@@ -13,6 +14,7 @@ export class HealthCareService {
     private prisma: PrismaService,
     private readonly processAttachmentsService: ProcessAttachmentsService,
     private readonly userProfileService: UserProfileService,
+    private readonly fcmService: FcmService,
   ) {}
 
   async createGlobal(
@@ -22,6 +24,9 @@ export class HealthCareService {
     try {
       const allUsers = await this.userProfileService.findAll();
       const allUsersUuid = allUsers.map((user) => user.uuid);
+      const registrationTokens = allUsers
+        .map((user) => user.registrationToken)
+        .filter(Boolean);
 
       const { attachmentUrls, imageUrls, imageThumbnailUrls } =
         await this.processAttachmentsService.processGlobalAttachments(
@@ -50,7 +55,20 @@ export class HealthCareService {
       });
 
       const createdHealthCareRecords = await Promise.all(healthCarePromises);
-      console.log("createdHealthCareRecords", createdHealthCareRecords);
+      console.log('createdHealthCareRecords', createdHealthCareRecords);
+      const { name } = createGlobalHealthCareInput;
+      const { details } = createGlobalHealthCareInput;
+      const thumbnail = imageThumbnailArray[0];
+
+      const notifiyUsers =
+        await this.fcmService.sendNotificationToMultipleDevices(
+          registrationTokens,
+          name,
+          details,
+          thumbnail,
+        );
+      console.log('notifiyUsers', notifiyUsers);
+
       return createdHealthCareRecords;
     } catch (error) {
       // Handle the error here
@@ -81,7 +99,7 @@ export class HealthCareService {
       imageThumbnailUrls.length === 0 ? [''] : imageThumbnailUrls;
 
     // Create health care  using Prisma
-    return await this.prisma.healthCare.create({
+    const createdHealthCare = await this.prisma.healthCare.create({
       data: {
         pdfs: attachmentArray,
         images: imageArray,
@@ -89,6 +107,20 @@ export class HealthCareService {
         ...createHealthCareInput,
       },
     });
+    const { registrationToken } = await this.userProfileService.findOne(
+      userProfileUuid,
+    );
+    const { name, details, thumbnails } = createdHealthCare;
+
+    const notifiyUser = await this.fcmService.sendNotificationToDevice(
+      registrationToken,
+      name,
+      details,
+      thumbnails[0],
+    );
+    console.log('notifiyUser', notifiyUser);
+
+    return createdHealthCare;
   }
 
   async findAll() {
