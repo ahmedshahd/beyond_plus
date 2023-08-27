@@ -8,6 +8,7 @@ import { ImageThumbnailService } from 'src/services/image-thumbnail.service';
 // import { PdfThumbnailService } from 'src/services/pdf-thumbnail.service';
 import { UserProfileService } from '../user-profile/user-profile.service';
 import { FcmService } from 'src/services/fcm.service';
+import { ImageResizeService } from 'src/services/image-resize.service';
 
 
 @Module({
@@ -19,7 +20,8 @@ import { FcmService } from 'src/services/fcm.service';
     ProcessAttachmentsService,
     ImageThumbnailService,
     UserProfileService,
-    FcmService
+    FcmService,
+    ImageResizeService
   ],
 })
 export class WellnessTipsModule {}

@@ -4,6 +4,7 @@ import { UserRegistrationTokenResolver } from './user-registration-token.resolve
 import { UserProfileService } from '../user-profile/user-profile.service';
 import { PrismaService } from 'src/prisma.service';
 import { S3Service } from '../S3/S3.service';
+import { ImageResizeService } from 'src/services/image-resize.service';
 
 @Module({
   providers: [
@@ -11,7 +12,9 @@ import { S3Service } from '../S3/S3.service';
     UserRegistrationTokenService,
     UserProfileService,
     PrismaService,
-    S3Service
+    S3Service,
+    ImageResizeService
+
   ],
 })
 export class UserRegistrationTokenModule {}

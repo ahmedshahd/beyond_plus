@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { S3Service } from 'src/client/S3/S3.service';
 import { UserProfileService } from 'src/client/user-profile/user-profile.service';
 import { FcmService } from 'src/services/fcm.service';
+import { ImageResizeService } from 'src/services/image-resize.service';
 import { FileUpload } from 'graphql-upload';
-import * as sharp from 'sharp';
+
 
 @Injectable()
 export class NotificationsService {
@@ -11,6 +12,7 @@ export class NotificationsService {
     private readonly userProfileService: UserProfileService,
     private readonly fcmService: FcmService,
     private readonly s3Service: S3Service,
+    private readonly imageResizeService: ImageResizeService,
   ) {}
   async sendNotificationToMultipleDevices(
     title: string,
@@ -78,11 +80,8 @@ export class NotificationsService {
   private async uploadAndProcessImage(image: FileUpload): Promise<string> {
     const { createReadStream, filename } = await image.promise;
 
-    const resizedImageStream = createReadStream().pipe(
-      sharp()
-        .resize({ width: 200, height: 200 })
-        .toFormat('jpeg', { mozjpeg: true })
-        .jpeg(),
+    const thumbnailStream =await this.imageResizeService.thumbnail(
+      createReadStream(),
     );
 
     const uniqueFilename = `${Date.now()}-${filename}.jpeg`;
@@ -90,7 +89,7 @@ export class NotificationsService {
     const { Location } = await this.s3Service.upload(
       uniqueFilename,
       'notifications/images',
-      resizedImageStream,
+      thumbnailStream,
     );
 
     return Location;

@@ -5,6 +5,7 @@ import { FcmService } from 'src/services/fcm.service';
 import { S3Service } from 'src/client/S3/S3.service';
 import { UserProfileService } from 'src/client/user-profile/user-profile.service';
 import { PrismaService } from 'src/prisma.service';
+import { ImageResizeService } from 'src/services/image-resize.service';
 
 @Module({
   providers: [
@@ -13,7 +14,8 @@ import { PrismaService } from 'src/prisma.service';
     FcmService,
     S3Service,
     UserProfileService,
-    PrismaService
+    PrismaService,
+    ImageResizeService
   ],
 })
 export class NotificationsModule {}

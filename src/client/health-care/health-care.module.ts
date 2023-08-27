@@ -7,6 +7,7 @@ import { ProcessAttachmentsService } from 'src/services/process-attachment.servi
 import { ImageThumbnailService } from 'src/services/image-thumbnail.service';
 import { UserProfileService } from './../user-profile/user-profile.service';
 import { FcmService } from 'src/services/fcm.service';
+import { ImageResizeService } from 'src/services/image-resize.service';
 
 @Module({
   providers: [
@@ -17,7 +18,8 @@ import { FcmService } from 'src/services/fcm.service';
     ProcessAttachmentsService,
     ImageThumbnailService,
     UserProfileService,
-    FcmService
+    FcmService,
+    ImageResizeService
   ],
 })
 export class HealthCaresModule {}

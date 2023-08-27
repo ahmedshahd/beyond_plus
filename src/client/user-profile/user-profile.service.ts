@@ -5,12 +5,14 @@ import { PrismaService } from 'src/prisma.service';
 import { S3Service } from '../S3/S3.service';
 import * as sharp from 'sharp';
 import { parse, extname } from 'path';
+import { ImageResizeService } from 'src/services/image-resize.service';
 
 @Injectable()
 export class UserProfileService {
   constructor(
     private prisma: PrismaService,
     private readonly s3Service: S3Service,
+    private readonly imageResizeService: ImageResizeService,
   ) {}
 
   async create(createUserProfileInput: CreateUserProfileInput, profileImg?) {
@@ -21,12 +23,8 @@ export class UserProfileService {
 
       if (profileImg) {
         const { createReadStream, filename } = await profileImg.promise;
-        const resizedImageStream = createReadStream().pipe(
-          sharp()
-            .resize({ width: 200, height: 200 })
-            .toFormat('jpeg', { mozjpeg: true })
-            .jpeg(),
-        );
+        const resizedImageStream =
+          await this.imageResizeService.mobileProfilePic(createReadStream());
         // Generate a unique filename for the image
         const uniqueFilename = `${Date.now()}-${parse(filename).name}.jpeg`;
 
@@ -120,12 +118,9 @@ export class UserProfileService {
 
       if (profileImg) {
         const { createReadStream, filename } = await profileImg.promise;
-        const resizedImageStream = createReadStream().pipe(
-          sharp()
-            .resize({ width: 200, height: 200 })
-            .toFormat('jpeg', { mozjpeg: true })
-            .jpeg(),
-        );
+        const resizedImageStream =
+          await this.imageResizeService.mobileProfilePic(createReadStream());
+
         // Generate a unique filename for the image
         const uniqueFilename = `${Date.now()}-${parse(filename).name}.jpeg`;
         // Upload the image to S3
