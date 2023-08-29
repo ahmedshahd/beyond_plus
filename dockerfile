@@ -8,6 +8,8 @@ ENV MULTER_DESTINATION=/public/files
 ENV AWS_ACCESS_KEY_ID=AKIAV46YI2NZJWNMTAS2
 ENV AWS_SECRET_ACCESS_KEY=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
 ENV AWS_S3_REGION=us-east-1
+ENV GOOGLE_APPLICATION_CREDENTIALS=./firebase-secret/beyondchatapp-d7ef0-firebase-adminsdk-8cbmk-415a7b0775.json
+
 
 WORKDIR /usr/src/service
 
