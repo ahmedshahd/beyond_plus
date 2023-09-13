@@ -7,6 +7,7 @@ import { ProcessAttachmentsService } from 'src/services/process-attachment.servi
 import { UserProfileService } from './../user-profile/user-profile.service';
 import { CreateGlobalHealthCareInput } from './dto/create-global-health-care.input';
 import { FcmService } from 'src/services/fcm.service';
+import { UserRegistrationTokenService } from '../user-registration-token/user-registration-token.service';
 
 @Injectable()
 export class HealthCareService {
@@ -14,6 +15,7 @@ export class HealthCareService {
     private prisma: PrismaService,
     private readonly processAttachmentsService: ProcessAttachmentsService,
     private readonly userProfileService: UserProfileService,
+    private readonly userRegistrationTokenService: UserRegistrationTokenService,
     private readonly fcmService: FcmService,
   ) {}
 
@@ -27,7 +29,10 @@ export class HealthCareService {
       const registrationTokens = allUsers
         .map((user) => user.registrationToken)
         .filter(Boolean);
-
+      console.log(
+        'registrationTokens from health care service',
+        registrationTokens,
+      );
       const { attachmentUrls, imageUrls, imageThumbnailUrls } =
         await this.processAttachmentsService.processGlobalAttachments(
           attachments,
@@ -55,19 +60,24 @@ export class HealthCareService {
       });
 
       const createdHealthCareRecords = await Promise.all(healthCarePromises);
-      console.log('createdHealthCareRecords', createdHealthCareRecords);
       const { name } = createGlobalHealthCareInput;
       const { details } = createGlobalHealthCareInput;
       const thumbnail = imageThumbnailArray[0];
 
-      const notifiyUsers =
-        await this.fcmService.sendNotificationToMultipleDevices(
-          registrationTokens,
-          name,
-          details,
-          thumbnail,
-        );
-      console.log('notifiyUsers', notifiyUsers);
+      if (registrationTokens) {
+        try {
+          const notifiyUsers =
+            await this.fcmService.sendNotificationToMultipleDevices(
+              registrationTokens,
+              name,
+              details,
+              thumbnail,
+            );
+          console.log('notifiyUsers', notifiyUsers);
+        } catch (error) {
+          console.log('error', error);
+        }
+      }
 
       return createdHealthCareRecords;
     } catch (error) {
@@ -111,14 +121,28 @@ export class HealthCareService {
       userProfileUuid,
     );
     const { name, details, thumbnails } = createdHealthCare;
+    if (registrationToken) {
+      try {
+        const notifiyUser = await this.fcmService.sendNotificationToDevice(
+          registrationToken,
+          name,
+          details,
+          thumbnails[0],
+        );
+        console.log('notifiyUser', notifiyUser);
+      } catch (error) {
+        if (
+          error.message ===
+            'The registration token is not a valid FCM registration token' ||
+          error.code === 'messaging/registration-token-not-registered'
+        ) {
+          const removeRegistrationToken =
+            await this.userRegistrationTokenService.remove(userProfileUuid);
+        }
 
-    const notifiyUser = await this.fcmService.sendNotificationToDevice(
-      registrationToken,
-      name,
-      details,
-      thumbnails[0],
-    );
-    console.log('notifiyUser', notifiyUser);
+        console.log('error', error);
+      }
+    }
 
     return createdHealthCare;
   }

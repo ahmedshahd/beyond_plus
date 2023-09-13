@@ -28,4 +28,11 @@ export class UserRegistrationTokenService {
       uuid,
     };
   }
+
+  async remove(uuid: string) {
+    const removeRegistrationToken = await this.userProfileService.update(uuid, {
+      registrationToken: null,
+    });
+    return removeRegistrationToken
+  }
 }

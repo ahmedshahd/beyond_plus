@@ -6,6 +6,7 @@ import { S3Service } from 'src/client/S3/S3.service';
 import { UserProfileService } from 'src/client/user-profile/user-profile.service';
 import { PrismaService } from 'src/prisma.service';
 import { ImageResizeService } from 'src/services/image-resize.service';
+import { UserRegistrationTokenService } from 'src/client/user-registration-token/user-registration-token.service';
 
 @Module({
   providers: [
@@ -15,7 +16,8 @@ import { ImageResizeService } from 'src/services/image-resize.service';
     S3Service,
     UserProfileService,
     PrismaService,
-    ImageResizeService
+    ImageResizeService,
+    UserRegistrationTokenService,
   ],
 })
 export class NotificationsModule {}

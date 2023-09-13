@@ -8,6 +8,7 @@ import { ImageThumbnailService } from 'src/services/image-thumbnail.service';
 import { UserProfileService } from './../user-profile/user-profile.service';
 import { FcmService } from 'src/services/fcm.service';
 import { ImageResizeService } from 'src/services/image-resize.service';
+import { UserRegistrationTokenService } from '../user-registration-token/user-registration-token.service';
 
 @Module({
   providers: [
@@ -19,7 +20,8 @@ import { ImageResizeService } from 'src/services/image-resize.service';
     ImageThumbnailService,
     UserProfileService,
     FcmService,
-    ImageResizeService
+    ImageResizeService,
+    UserRegistrationTokenService,
   ],
 })
 export class HealthCaresModule {}

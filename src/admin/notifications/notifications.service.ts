@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { S3Service } from 'src/client/S3/S3.service';
 import { UserProfileService } from 'src/client/user-profile/user-profile.service';
 import { FcmService } from 'src/services/fcm.service';
 import { ImageResizeService } from 'src/services/image-resize.service';
 import { FileUpload } from 'graphql-upload';
-
+import { UserRegistrationTokenService } from 'src/client/user-registration-token/user-registration-token.service';
 
 @Injectable()
 export class NotificationsService {
@@ -13,6 +13,7 @@ export class NotificationsService {
     private readonly fcmService: FcmService,
     private readonly s3Service: S3Service,
     private readonly imageResizeService: ImageResizeService,
+    private readonly userRegistrationTokenService: UserRegistrationTokenService,
   ) {}
   async sendNotificationToMultipleDevices(
     title: string,
@@ -32,20 +33,27 @@ export class NotificationsService {
         throw error;
       }
     }
-
-    const notifiyUsers =
-      await this.fcmService.sendNotificationToMultipleDevices(
-        registrationTokens,
-        title,
-        body,
-        imageUrl,
+    try {
+      const notifiyUsers =
+        await this.fcmService.sendNotificationToMultipleDevices(
+          registrationTokens,
+          title,
+          body,
+          imageUrl,
+        );
+      console.log(
+        'notifiyUsers',
+        notifiyUsers.responses.filter((response) => {
+          return response.success !== true;
+        }),
       );
-    console.log('notifiyUsers', notifiyUsers);
-
-    return {
-      successCount: notifiyUsers.successCount,
-      failureCount: notifiyUsers.failureCount,
-    };
+      return {
+        successCount: notifiyUsers.successCount,
+        failureCount: notifiyUsers.failureCount,
+      };
+    } catch (error) {
+      console.log('error', error);
+    }
   }
 
   async sendNotificationToDevice(
@@ -54,7 +62,17 @@ export class NotificationsService {
     body: string,
     image?: FileUpload,
   ) {
-    const { registrationToken } = await this.userProfileService.findOne(uuid);
+    const userProfile = await this.userProfileService.findOne(uuid);
+
+    if (!userProfile) {
+      throw new NotFoundException('User not found');
+    }
+
+    const { registrationToken } = userProfile;
+
+    if (!registrationToken) {
+      throw new Error("This user doesn't have a registration token");
+    }
 
     let imageUrl: string | undefined;
 
@@ -67,20 +85,33 @@ export class NotificationsService {
       }
     }
 
-    const notifiyUser = await this.fcmService.sendNotificationToDevice(
-      registrationToken,
-      title,
-      body,
-      imageUrl,
-    );
+    try {
+      const notifiyUser = await this.fcmService.sendNotificationToDevice(
+        registrationToken,
+        title,
+        body,
+        imageUrl,
+      );
 
-    return notifiyUser;
+      return notifiyUser;
+    } catch (error) {
+      if (
+        error.message ===
+          'The registration token is not a valid FCM registration token' ||
+        error.code === 'messaging/registration-token-not-registered'
+      ) {
+        await this.userRegistrationTokenService.remove(uuid);
+        throw Error(
+          'This user had an invalid registration token, and it has been deleted',
+        );
+      }
+    }
   }
 
   private async uploadAndProcessImage(image: FileUpload): Promise<string> {
     const { createReadStream, filename } = await image.promise;
 
-    const thumbnailStream =await this.imageResizeService.thumbnail(
+    const thumbnailStream = await this.imageResizeService.thumbnail(
       createReadStream(),
     );
 

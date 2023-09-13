@@ -1,3 +1,5 @@
+import { UserRegistrationTokenService } from './../user-registration-token/user-registration-token.service';
+import { UserProfile } from './../../graphql';
 import { ProcessAttachmentsService } from './../../services/process-attachment.service';
 import { Injectable } from '@nestjs/common';
 import { CreateWellnessTipInput } from './dto/create-wellness-tip.input';
@@ -14,6 +16,7 @@ export class WellnessTipsService {
     private prisma: PrismaService,
     private readonly processAttachmentsService: ProcessAttachmentsService,
     private readonly userProfileService: UserProfileService,
+    private readonly userRegistrationTokenService: UserRegistrationTokenService,
     private readonly fcmService: FcmService,
   ) {}
 
@@ -61,14 +64,21 @@ export class WellnessTipsService {
       const { details } = createGlobalWellnessTipInput;
       const thumbnail = imageThumbnailArray[0];
 
-      const notifiyUsers =
-        await this.fcmService.sendNotificationToMultipleDevices(
-          registrationTokens,
-          name,
-          details,
-          thumbnail,
-        );
-      console.log('notifiyUsers', notifiyUsers);
+      if (registrationTokens) {
+        try {
+          const notifiyUsers =
+            await this.fcmService.sendNotificationToMultipleDevices(
+              registrationTokens,
+              name,
+              details,
+              thumbnail,
+            );
+          console.log('notifiyUsers', notifiyUsers);
+        } catch (error) {
+          console.log('error', error);
+        }
+      }
+
       return createdWellnessTipRecords;
     } catch (error) {
       // Handle the error here
@@ -110,13 +120,27 @@ export class WellnessTipsService {
       userProfileUuid,
     );
     const { name, details, thumbnails } = createdWellnessTip;
-    const notifiyUser = await this.fcmService.sendNotificationToDevice(
-      registrationToken,
-      name,
-      details,
-      thumbnails[0],
-    );
-    console.log('notifiyUser', notifiyUser);
+
+    if (registrationToken) {
+      try {
+        const notifiyUser = await this.fcmService.sendNotificationToDevice(
+          registrationToken,
+          name,
+          details,
+          thumbnails[0],
+        );
+        console.log('notifiyUser', notifiyUser);
+      } catch (error) {
+        if (
+          error.message ===
+            'The registration token is not a valid FCM registration token' ||
+          error.code === 'messaging/registration-token-not-registered'
+        ) {
+          const removeRegistrationToken =
+            await this.userRegistrationTokenService.remove(userProfileUuid);
+        }
+      }
+    }
 
     return createdWellnessTip;
   }

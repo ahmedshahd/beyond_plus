@@ -12,7 +12,7 @@ export class SendemailService {
       to: 'ahmed.shahd@beyond-solution.com',
       from: 'ahmedshahd350@gmail.com', // Replace with your email address
       subject,
-      text: `${content} \n This email is sent from ${name} whose mobile number is ${mobileNumber}.`,
+      text: `${content} \n This email is sent from beyond plus user whose mobile number is ${mobileNumber}.`,
     };
     console.log('message', message);
 
