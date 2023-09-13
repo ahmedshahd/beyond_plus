@@ -1,5 +1,4 @@
 import { UserRegistrationTokenService } from './../user-registration-token/user-registration-token.service';
-import { UserProfile } from './../../graphql';
 import { ProcessAttachmentsService } from './../../services/process-attachment.service';
 import { Injectable } from '@nestjs/common';
 import { CreateWellnessTipInput } from './dto/create-wellness-tip.input';
