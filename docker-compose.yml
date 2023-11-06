@@ -9,7 +9,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: postgresql://postgres:9qmOq80u8Sj@beyond-plus-db.cvm3ri1wjhhb.us-east-1.rds.amazonaws.com:5432/postgres?schema=public&connection_limit=10000&pool_timeout=0
+      DATABASE_URL: postgresql://postgres:*PROrat666@beyond-plus-v-1.cvm3ri1wjhhb.us-east-1.rds.amazonaws.com:5432/postgres?schema=public&connection_limit=10000&pool_timeout=0
       PORT: 8000
       API_KEY: 2ab9c3d4e5f91ab7c3d4e5f6
       MULTER_MAX_FILE_SIZE: 1e+8
