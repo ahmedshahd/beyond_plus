@@ -1,0 +1,14 @@
+scalar DateTime
+
+type Country {
+  id: Int!
+  name: String!
+  language: LanguageEnum!
+  createdAt: DateTime
+  updatedAt: DateTime
+  city: [City]
+}
+
+type Query {
+  getCountryByLanguage(language: LanguageEnum): [Country]!
+}

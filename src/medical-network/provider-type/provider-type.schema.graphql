@@ -1,0 +1,47 @@
+scalar DateTime
+
+type ProviderType {
+  id: Int!
+  name: String!
+  language: LanguageEnum!
+  insuranceCompanyId: Int!
+  insuranceCompany: InsuranceCompany
+  provider: [Provider]
+}
+
+type ProviderTypeByPagination {
+  providerType: [ProviderType]
+  pagination: Pagination
+}
+
+input CreateProviderTypeInput {
+  name: String!
+  insuranceCompanyId: Int!
+}
+
+input UpdateProviderTypeInput {
+  id: Int!
+  name: String
+  insuranceCompanyId: Int
+}
+
+type Query {
+  listAllProviderTypesByInsuranceCompanyId(
+    insuranceCompanyId: Int!
+    language: LanguageEnum!
+    search: String
+    page: Int
+    limit: Int
+  ): ProviderTypeByPagination!
+}
+
+type Mutation {
+  createProviderType(
+    createProviderTypeInput: CreateProviderTypeInput!
+    language: LanguageEnum!
+  ): ProviderType!
+  updateProviderType(
+    updateProviderTypeInput: UpdateProviderTypeInput!
+  ): ProviderType!
+  removeProviderType(id: Int!): ProviderType
+}

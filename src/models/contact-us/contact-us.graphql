@@ -1,0 +1,40 @@
+scalar DateTime
+scalar Void
+
+type ContactUs {
+  id: Int!
+  phoneNumber: String!
+  email: String!
+  telegramChannel: String!
+  whatsappNumber: String!
+  websiteUrl: String!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+input CreateContactUsInput {
+  phoneNumber: String!
+  email: String!
+  telegramChannel: String!
+  whatsappNumber: String!
+  websiteUrl: String!
+}
+
+input UpdateContactUsInput {
+  id: Int!
+  phoneNumber: String
+  email: String
+  telegramChannel: String
+  whatsappNumber: String
+  websiteUrl: String
+}
+
+type Query {
+  contactUs: [ContactUs]!
+}
+
+type Mutation {
+  createContactUs(createContactUsInput: CreateContactUsInput!): ContactUs!
+  updateContactUs(updateContactUsInput: UpdateContactUsInput!): ContactUs!
+  removeContactUs(id: Int!): ContactUs
+}

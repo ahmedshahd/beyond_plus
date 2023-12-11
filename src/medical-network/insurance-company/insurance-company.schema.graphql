@@ -1,0 +1,58 @@
+scalar DateTime
+
+enum LanguageEnum {
+  ARABIC
+  ENGLISH
+}
+
+type InsuranceCompany {
+  id: Int!
+  name: String!
+  language: LanguageEnum!
+  createdAt: DateTime
+  updatedAt: DateTime
+  tpaId: Int
+}
+
+type Pagination {
+  totalItemsCount: Int
+  pagesCount: Int
+  page: Int
+}
+
+type InsuranceCompanyByPagination {
+  insuranceCompany: [InsuranceCompany]!
+  pagination: Pagination
+}
+
+input CreateInsuranceCompanyInput {
+  name: String!
+  tpaId: Int
+}
+
+input UpdateInsuranceCompanyInput {
+  id: Int!
+  name: String
+  tpaId: Int
+}
+
+type Query {
+  listAllInsuranceCompaniesByTpaId(
+    tpaId: Int!
+    search: String
+    page: Int
+    limit: Int
+  ): InsuranceCompanyByPagination!
+  getInsuranceCompany(id: Int!): InsuranceCompany!
+}
+
+type Mutation {
+  createInsuranceCompany(
+    createInsuranceCompanyInput: CreateInsuranceCompanyInput!
+    language: LanguageEnum!
+  ): InsuranceCompany!
+  updateInsuranceCompany(
+    updateInsuranceCompanyInput: UpdateInsuranceCompanyInput!
+  ): InsuranceCompany!
+  removeInsuranceCompany(id: Int!): InsuranceCompany
+}

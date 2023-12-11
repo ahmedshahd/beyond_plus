@@ -1,0 +1,43 @@
+scalar DateTime
+
+type Area {
+  id: Int!
+  name: String!
+  cityId: Int!
+  city: City
+  provider: [Provider]
+  language: LanguageEnum!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+type AreaByPagination {
+  area: [Area]!
+  pagination: Pagination
+}
+
+input CreateAreaInput {
+  name: String!
+  cityId: Int!
+}
+
+input UpdateAreaInput {
+  id: Int!
+  name: String
+  cityId: Int
+}
+
+type Query {
+  listAllAreasByCityId(
+    cityId: [Int!]!
+    language: LanguageEnum!
+    search: String
+    page: Int
+    limit: Int
+  ): AreaByPagination!
+}
+
+type Mutation {
+  createArea(createAreaInput: CreateAreaInput!, language: LanguageEnum!): Area!
+  updateArea(updateAreaInput: UpdateAreaInput!): Area!
+  removeArea(id: Int!): Area
+}

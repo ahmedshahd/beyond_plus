@@ -1,0 +1,57 @@
+type WellnessTip {
+  id: Int
+  name: String
+  description: String
+  details: String
+  images: [String]
+  pdfs: [String]
+  thumbnails: [String]
+  userProfile: UserProfile
+  userProfileUuid: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input CreateWellnessTipInput {
+  name: String
+  description: String
+  details: String
+  userProfileUuid: String
+}
+
+
+input CreateGlobalWellnessTipCareInput {
+  name: String
+  description: String
+  details: String
+}
+
+input UpdateWellnessTipInput {
+  id: Int!
+  name: String
+  description: String
+  details: String
+  userProfileUuid: String!
+}
+
+type Query {
+  wellnessTips: [WellnessTip]!
+  wellnessTipsOfUser(userProfileUuid: String): [WellnessTip]
+  wellnessTip(id: Int!): WellnessTip
+}
+
+type Mutation {
+  createWellnessTip(
+    createWellnessTipInput: CreateWellnessTipInput!
+    attachments: [Upload] # image: Upload
+  ): WellnessTip!
+  createGlobalWellnessTip(
+    createGlobalWellnessTipInput: CreateGlobalWellnessTipCareInput!
+    attachments: [Upload] # image: Upload
+  ): [WellnessTip]!
+  updateWellnessTip(
+    updateWellnessTipInput: UpdateWellnessTipInput!
+    attachments: [Upload]
+  ): WellnessTip!
+  removeWellnessTip(id: Int!): WellnessTip
+}

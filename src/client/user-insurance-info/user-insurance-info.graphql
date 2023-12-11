@@ -1,0 +1,46 @@
+scalar Upload
+
+type UserInsuranceInfo {
+  id: Int!
+  cardNumber: String
+  companyAddress: String
+  tpaId: Int
+  insuranceCompanyId: Int
+  tpaName: String
+  insuranceCompanyName: String
+  userProfile: UserProfile
+  userProfileUuid: String
+  cardImgUrl: String
+}
+
+input CreateUserInsuranceInfoInput {
+  cardNumber: String!
+  companyAddress: String
+  tpaId: Int
+  insuranceCompanyId: Int
+  userProfileUuid: String
+}
+
+input UpdateUserInsuranceInfoInput {
+  id: Int!
+  cardNumber: String
+  companyAddress: String
+  tpaId: Int
+  insuranceCompanyId: Int
+}
+
+type Query {
+  userInsuranceInfo(uuid: String!): UserInsuranceInfo!
+}
+
+type Mutation {
+  createUserInsuranceInfo(
+    createUserInsuranceInfoInput: CreateUserInsuranceInfoInput!
+    cardImage: Upload
+  ): UserInsuranceInfo!
+  updateUserInsuranceInfo(
+    updateUserInsuranceInfoInput: UpdateUserInsuranceInfoInput!
+    cardImage: Upload
+  ): UserInsuranceInfo!
+  removeUserInsuranceInfo(id: Int!): UserInsuranceInfo
+}

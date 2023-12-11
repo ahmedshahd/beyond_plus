@@ -1,0 +1,43 @@
+type ClientArea {
+  id: Int!
+  name: String!
+  clientCityId: Int!
+  clientCity: ClientCity
+  language: LanguageEnum!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+type ClientAreaByPagination {
+  clientArea: [ClientArea]!
+  pagination: Pagination
+}
+
+input CreateClientAreaInput {
+  name: String!
+  clientCityId: Int!
+}
+
+input UpdateClientAreaInput {
+  id: Int!
+  name: String
+  clientCityId: Int
+}
+
+type Query {
+  clientArea(id: Int!): ClientArea
+  listAllClientAreasByClientCityId(
+    clientCityId: [Int!]!
+    search: String
+    page: Int
+    limit: Int
+  ): ClientAreaByPagination!
+}
+
+type Mutation {
+  createClientArea(
+    createClientAreaInput: CreateClientAreaInput!
+    language: LanguageEnum!
+  ): ClientArea!
+  updateClientArea(updateClientAreaInput: UpdateClientAreaInput!): ClientArea!
+  removeClientArea(id: Int!): ClientArea
+}

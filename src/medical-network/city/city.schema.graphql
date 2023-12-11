@@ -1,0 +1,47 @@
+scalar DateTime
+
+type City {
+  id: Int!
+  name: String!
+  insuranceCompanyId: Int!
+  area: [Area]
+  country: Country
+  insuranceCompany: InsuranceCompany
+  language: LanguageEnum!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type CityByPagination {
+  city: [City]!
+  pagination: Pagination
+}
+
+input CreateCityInput {
+  name: String!
+  insuranceCompanyId: Int!
+  countryId: Int!
+}
+
+input UpdateCityInput {
+  id: Int!
+  name: String
+  insuranceCompanyId: Int
+  countryId: Int
+}
+
+type Query {
+  listAllCitiesByInsuranceCompanyId(
+    insuranceCompanyId: Int!
+    language: LanguageEnum!
+    search: String
+    page: Int
+    limit: Int
+  ): CityByPagination!
+}
+
+type Mutation {
+  createCity(createCityInput: CreateCityInput!, language: LanguageEnum!): City!
+  updateCity(updateCityInput: UpdateCityInput!): City!
+  removeCity(id: Int!): City
+}

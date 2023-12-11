@@ -1,0 +1,49 @@
+scalar DateTime
+
+type Category {
+  id: Int!
+  tier: String!
+  tierRank: Int!
+  insuranceCompany: InsuranceCompany
+  insuranceCompanyId: Int!
+  language: LanguageEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+type CategoryByPagination {
+  category: [Category]!
+  pagination: Pagination
+}
+
+input CreateCategoryInput {
+  tier: String!
+  tierRank: Int!
+  insuranceCompanyId: Int!
+}
+
+input UpdateCategoryInput {
+  id: Int!
+  tier: String
+  tierRank: Int
+  insuranceCompanyId: Int
+}
+
+type Query {
+  listAllCategoriesByInsuranceCompanyId(
+    insuranceCompanyId: Int!
+    language: LanguageEnum!
+    search: String
+    page: Int
+    limit: Int
+  ): CategoryByPagination!
+}
+
+type Mutation {
+  createCategory(
+    createCategoryInput: CreateCategoryInput!
+    language: LanguageEnum!
+  ): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  removeCategory(id: Int!): Category
+}

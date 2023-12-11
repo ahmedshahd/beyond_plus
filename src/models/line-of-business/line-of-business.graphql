@@ -1,0 +1,41 @@
+type LineOfBusiness {
+  id: Int!
+  name: String!
+  description: String!
+  details: String!
+  imageUrl: String!
+  language: LanguageEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+input CreateLineOfBusinessInput {
+  name: String!
+  description: String!
+  details: String!
+}
+
+input UpdateLineOfBusinessInput {
+  id: Int!
+  name: String
+  description: String
+  details: String
+}
+
+type Query {
+  lineOfBusiness(language: LanguageEnum!, search: String): [LineOfBusiness]!
+}
+
+type Mutation {
+  createLineOfBusiness(
+    createLineOfBusinessInput: CreateLineOfBusinessInput!
+    language: LanguageEnum!
+    image: Upload!
+  ): LineOfBusiness!
+  updateLineOfBusiness(
+    updateLineOfBusinessInput: UpdateLineOfBusinessInput!
+    language: LanguageEnum
+    image: Upload
+  ): LineOfBusiness!
+  removeLineOfBusiness(id: Int!): LineOfBusiness
+}

@@ -1,0 +1,90 @@
+scalar DateTime
+
+type Provider {
+  id: Int!
+  name: String!
+  address: String
+  longitude: Float
+  latitude: Float
+  phoneNumber: [String]
+  email: String
+  isOnline: Boolean
+  hasChronicMedication: Boolean
+  websiteUrl: String
+  areaId: Int
+  specialityId: Int
+  subSpecialityId: Int
+
+  tierRank: Int!
+  providerTypeId: Int
+  insuranceCompanyId: Int
+  # insuranceCompany: InsuranceCompany
+  language: LanguageEnum!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type ProviderByPagination {
+  provider: [Provider]!
+  pagination: Pagination
+}
+
+input CreateProviderInput {
+  name: String!
+  address: String!
+  longitude: Float
+  latitude: Float
+  tierRank: Int!
+  phoneNumber: [String]!
+  email: String
+  isOnline: Boolean
+  hasChronicMedication: Boolean
+  websiteUrl: String
+  insuranceCompanyId: Int!
+  areaId: Int!
+  specialityId: Int!
+  providerTypeId: Int!
+  subSpecialityId: Int
+}
+
+input UpdateProviderInput {
+  id: Int!
+  name: String
+  address: String
+  tierRank: Int
+  longitude: Float
+  latitude: Float
+  phoneNumber: [String]
+  email: String
+  isOnline: Boolean
+  hasChronicMedication: Boolean
+  websiteUrl: String
+  insuranceCompanyId: Int
+  areaId: Int
+  specialityId: Int
+  providerTypeId: Int
+  subSpecialityId: Int
+}
+
+type Query {
+  listAllProviders(
+    insuranceCompanyId: Int!
+    tierRank: Int!
+    areaId: [Int!]!
+    specialityId: [Int]
+    providerTypeId: [Int]
+    subSpecialityId: [Int]
+    search: String
+    page: Int
+    limit: Int
+  ): ProviderByPagination!
+}
+
+type Mutation {
+  createProvider(
+    createProviderInput: CreateProviderInput!
+    language: LanguageEnum!
+  ): Provider!
+  updateProvider(updateProviderInput: UpdateProviderInput!): Provider!
+  removeProvider(id: Int!): Provider
+}

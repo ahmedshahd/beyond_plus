@@ -1,0 +1,48 @@
+scalar DateTime
+
+type SubSpeciality {
+  id: Int!
+  name: String!
+  language: LanguageEnum!
+  specialityId: Int!
+  speciality: Speciality
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+type SubSpecialityByPagination {
+  subSpeciality: [SubSpeciality]!
+  pagination: Pagination
+}
+
+input CreateSubSpecialityInput {
+  name: String!
+  specialityId: Int!
+}
+
+input UpdateSubSpecialityInput {
+  id: Int!
+  name: String
+  specialityId: Int
+}
+
+type Query {
+  listAllSubSpecialityBySpecialityId(
+    specialityId: [Int!]!
+    language: LanguageEnum!
+    search: String
+    page: Int
+    limit: Int
+  ): SubSpecialityByPagination!
+}
+
+type Mutation {
+  createSubSpeciality(
+    createSubSpecialityInput: CreateSubSpecialityInput!
+    language: LanguageEnum!
+  ): SubSpeciality!
+  updateSubSpeciality(
+    updateSubSpecialityInput: UpdateSubSpecialityInput!
+  ): SubSpeciality!
+  removeSubSpeciality(id: Int!): SubSpeciality
+}

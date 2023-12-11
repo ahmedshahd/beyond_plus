@@ -1,0 +1,47 @@
+scalar DateTime
+
+type Speciality {
+  id: Int!
+  name: String!
+  providerTypeId: Int
+  providerType: ProviderType
+  subSpeciality: [SubSpeciality]
+  language: LanguageEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+type SpecialityByPagination {
+  speciality: [Speciality]
+  pagination: Pagination
+}
+
+input CreateSpecialityInput {
+  name: String!
+  providerTypeId: Int
+}
+
+input UpdateSpecialityInput {
+  id: Int!
+  name: String
+  providerTypeId: Int
+}
+
+type Query {
+  listAllSpecialityByProviderTypeId(
+    providerTypeId: [Int!]!
+    language: LanguageEnum!
+    search: String
+    page: Int
+    limit: Int
+  ): SpecialityByPagination!
+}
+
+type Mutation {
+  createSpeciality(
+    createSpecialityInput: CreateSpecialityInput!
+    language: LanguageEnum!
+  ): Speciality!
+  updateSpeciality(updateSpecialityInput: UpdateSpecialityInput!): Speciality!
+  removeSpeciality(id: Int!): Speciality
+}

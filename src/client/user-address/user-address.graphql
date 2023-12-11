@@ -1,0 +1,59 @@
+type UserAddress {
+  id: Int
+  name: String
+  longitude: Float
+  latitude: Float
+  clientCityId: Int
+  clientAreaId: Int
+  cityName: String
+  areaName: String
+  buildingNumber: String
+  floorNumber: String
+  streetName: String
+  description: String
+  userProfile: UserProfile
+  userProfileUuid: String
+}
+
+input CreateUserAddressInput {
+  name: String
+  longitude: Float
+  latitude: Float
+  clientCityId: Int
+  clientAreaId: Int
+  buildingNumber: String
+  floorNumber: String
+  streetName: String
+  description: String
+  userProfileUuid: String
+}
+
+input UpdateUserAddressInput {
+  id: Int!
+  name: String
+  longitude: Float
+  latitude: Float
+  clientCityId: Int
+  clientAreaId: Int
+  buildingNumber: String
+  floorNumber: String
+  streetName: String
+  description: String
+  userProfileUuid: String
+}
+
+type Query {
+  userAddresses(uuid: String!): [UserAddress!]!
+  userAddress(id: Int!): UserAddress!
+}
+
+type Mutation {
+  updateUserAddress(
+    updateUserAddressInput: UpdateUserAddressInput!
+  ): UserAddress!
+  createUserAddress(
+    createUserAddressInput: CreateUserAddressInput!
+  ): UserAddress!
+
+  removeUserAddress(id: Int!): UserAddress
+}

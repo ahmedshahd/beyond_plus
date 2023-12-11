@@ -1,0 +1,39 @@
+scalar DateTime
+
+type Tpa {
+  id: Int!
+  name: String!
+  insuranceCompanies: [InsuranceCompany]
+  language: LanguageEnum!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type TpaByPagination {
+  tpa: [Tpa]!
+  pagination: Pagination
+}
+
+input CreateTpaInput {
+  name: String!
+}
+
+input UpdateTpaInput {
+  id: Int!
+  name: String!
+}
+type Query {
+  listAllTpas(
+    language: LanguageEnum!
+    search: String
+    page: Int
+    limit: Int
+  ): TpaByPagination!
+  getTpa(id: Int!): Tpa!
+}
+
+type Mutation {
+  createTpa(createTpaInput: CreateTpaInput!, language: LanguageEnum!): Tpa!
+  updateTpa(updateTpaInput: UpdateTpaInput!): Tpa!
+  removeTpa(id: Int!): Tpa
+}

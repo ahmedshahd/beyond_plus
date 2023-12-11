@@ -1,0 +1,416 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native", "linux-musl"]
+  previewFeatures = ["interactiveTransactions", "fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum LanguageEnum {
+  ARABIC
+  ENGLISH
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+model ContactUs {
+  id              Int       @id @default(autoincrement())
+  phoneNumber     String
+  email           String    @unique
+  websiteUrl      String
+  telegramChannel String
+  whatsappNumber  String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime? @updatedAt
+}
+
+model LearnIcon {
+  id        Int          @id @default(autoincrement())
+  name      String
+  content   String
+  imageUrl  String?
+  language  LanguageEnum @default(ARABIC)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime?    @updatedAt
+}
+
+model PrivacyPolicy {
+  id        Int          @id @default(autoincrement())
+  text      String
+  language  LanguageEnum @default(ARABIC)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime?    @updatedAt
+}
+
+model FAQ {
+  id        Int          @id @default(autoincrement())
+  question  String
+  answers   String[]
+  language  LanguageEnum @default(ARABIC)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime?    @updatedAt
+}
+
+model Label {
+  id        Int          @id @default(autoincrement())
+  name      String
+  content   String
+  language  LanguageEnum @default(ARABIC)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime?    @updatedAt
+}
+
+model TermsAndConditions {
+  id        Int          @id @default(autoincrement())
+  text      String
+  language  LanguageEnum @default(ARABIC)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime?    @updatedAt
+}
+
+model WelcomeScreen {
+  id        Int          @id @default(autoincrement())
+  title     String
+  text      String?
+  imageUrls String[]
+  language  LanguageEnum @default(ARABIC)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime?    @updatedAt
+}
+
+model tutorialVideos {
+  id          Int          @id @default(autoincrement())
+  title       String
+  videoUrl    String
+  description String?
+  language    LanguageEnum @default(ARABIC)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime?    @updatedAt
+}
+
+model lineOfBusiness {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String?
+  details     String?
+  imageUrl    String
+  language    LanguageEnum @default(ARABIC)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime?    @updatedAt
+}
+
+model ClientCity {
+  id          Int           @id @default(autoincrement())
+  name        String
+  clientArea  ClientArea[]
+  language    LanguageEnum  @default(ARABIC)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime?     @updatedAt
+  UserAddress UserAddress[]
+
+  @@unique([name, language], name: "ClientCity_name_language_unique_constraint")
+}
+
+model ClientArea {
+  id           Int           @id @default(autoincrement())
+  name         String
+  clientCityId Int
+  ClientCity   ClientCity    @relation(fields: [clientCityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  language     LanguageEnum  @default(ARABIC)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime?     @updatedAt
+  UserAddress  UserAddress[]
+
+  @@unique([name, language, clientCityId], name: "ClientArea_name_language_clientCityId_unique_constraint")
+}
+
+// model User {
+//   id                           Int            @id @default(autoincrement())
+//   companyWorkName              String?
+//   insuranceCompanyName         String?
+//   medicalInsuranceCardNumber   String?
+//   medicalInsuranceCardImageUrl String?
+//   createdAt                    DateTime       @default(now())
+//   updatedAt                    DateTime?      @updatedAt
+//   address                      Address[]
+//   notification                 Notification[]
+// }
+
+// model Address {
+//   id             Int       @id @default(autoincrement())
+//   userId         Int
+//   user           User      @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+//   longitude      Float
+//   latitude       Float
+//   streetName     String
+//   buildingNumber Int
+//   floorNumber    Int
+//   details        String
+//   region         String
+//   area           String
+//   createdAt      DateTime  @default(now())
+//   updatedAt      DateTime? @updatedAt
+// }
+
+// model Notification {
+//   id        Int       @id @default(autoincrement())
+//   title     String
+//   content   String
+//   imageUrl  String?
+//   createdAt DateTime  @default(now())
+//   updatedAt DateTime? @updatedAt
+//   user      User?     @relation(fields: [userId], references: [id])
+//   userId    Int?
+// }
+
+model UserProfile {
+  uuid              String             @unique
+  name              String?
+  email             String?
+  profileImgUrl     String?
+  phoneNumber       String
+  dateOfbirth       String?
+  gender            Gender?
+  userInsuranceInfo UserInsuranceInfo?
+  address           UserAddress[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime?          @updatedAt
+  registrationToken  String?
+  WellnessTips      WellnessTips[]
+  HealthCare        HealthCare[]
+}
+
+model UserInsuranceInfo {
+  id                 Int         @id @default(autoincrement())
+  cardNumber         String?
+  cardImgUrl         String?
+  companyAddress     String?
+  tpaId              Int?
+  insuranceCompanyId Int?
+  userProfile        UserProfile @relation(fields: [userProfileUuid], references: [uuid], onDelete: Cascade, onUpdate: Cascade)
+  userProfileUuid    String      @unique
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime?   @updatedAt
+}
+
+model UserAddress {
+  id              Int         @id @default(autoincrement())
+  name            String      @default("")
+  longitude       Float?
+  latitude        Float?
+  clientCityId    Int
+  clientCity      ClientCity  @relation(fields: [clientCityId], references: [id])
+  clientAreaId    Int
+  clientArea      ClientArea  @relation(fields: [clientAreaId], references: [id])
+  buildingNumber  String
+  floorNumber     String
+  streetName      String
+  description     String?
+  userProfile     UserProfile @relation(fields: [userProfileUuid], references: [uuid], onDelete: Cascade, onUpdate: Cascade)
+  userProfileUuid String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime?   @updatedAt
+
+  @@unique([clientCityId, clientAreaId, name, userProfileUuid], name: "City_Area_StreetName_Constraint")
+}
+
+model WellnessTips {
+  id              Int         @id @default(autoincrement())
+  name            String
+  description     String?
+  details         String?
+  images          String[]    @default([""])
+  pdfs            String[]    @default([""])
+  thumbnails      String[]    @default([""])
+  userProfile     UserProfile @relation(fields: [userProfileUuid], references: [uuid], onDelete: Cascade, onUpdate: Cascade)
+  userProfileUuid String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime?   @updatedAt
+}
+
+model HealthCare {
+  id              Int         @id @default(autoincrement())
+  name            String
+  description     String?
+  details         String?
+  images          String[]    @default([""])
+  pdfs            String[]    @default([""])
+  thumbnails      String[]    @default([""])
+  userProfile     UserProfile @relation(fields: [userProfileUuid], references: [uuid], onDelete: Cascade, onUpdate: Cascade)
+  userProfileUuid String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime?   @updatedAt
+}
+
+//********* Medical Network **********//
+
+model Tpa {
+  id                 Int                @id @default(autoincrement())
+  name               String
+  category           Category[]
+  city               City[]
+  providerType       ProviderType[]
+  language           LanguageEnum       @default(ARABIC)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime?          @updatedAt
+  insuranceCompanies InsuranceCompany[]
+
+  @@unique([name, language], name: "Tpa_name_language_unique_constraint")
+}
+
+model InsuranceCompany {
+  id           Int            @id @default(autoincrement())
+  name         String
+  category     Category[]
+  city         City[]
+  providerType ProviderType[]
+  tpaId        Int?
+  Tpa          Tpa?           @relation(fields: [tpaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  language     LanguageEnum   @default(ARABIC)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime?      @updatedAt
+  Provider     Provider[]
+
+  @@unique([name, language, tpaId], name: "InsuranceCompany_name_language_tpaId_unique_constraint")
+}
+
+model Category {
+  id                 Int              @id @default(autoincrement())
+  tier               String
+  tierRank           Int
+  language           LanguageEnum     @default(ARABIC)
+  insuranceCompanyId Int
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime?        @updatedAt
+  insuranceCompany   InsuranceCompany @relation(fields: [insuranceCompanyId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  provider           Provider[]
+  Tpa                Tpa?             @relation(fields: [tpaId], references: [id])
+  tpaId              Int?
+
+  @@unique([tierRank, language, insuranceCompanyId], name: "Category_tierRank_language_insuranceCompanyId_unique_constraint")
+}
+
+model ProviderType {
+  id                 Int              @id @default(autoincrement())
+  name               String
+  insuranceCompanyId Int
+  insuranceCompany   InsuranceCompany @relation(fields: [insuranceCompanyId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  speciality         Speciality[]
+  provider           Provider[]
+  Tpa                Tpa?             @relation(fields: [tpaId], references: [id])
+  tpaId              Int?
+  language           LanguageEnum     @default(ARABIC)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime?        @updatedAt
+
+  @@unique([name, language, insuranceCompanyId], name: "ProviderType_name_language_insuranceCompanyId_unique_constraint")
+}
+
+model Provider {
+  id                   Int              @id @default(autoincrement())
+  name                 String
+  address              String
+  longitude            Float?
+  latitude             Float?
+  phoneNumber          String[]
+  email                String?
+  fax                  String?          @default("")
+  isOnline             Boolean?
+  hasChronicMedication Boolean?
+  websiteUrl           String?
+  areaId               Int
+  tierRank             Int
+  area                 Area             @relation(fields: [areaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  insuranceCompanyId   Int
+  insuranceCompany     InsuranceCompany @relation(fields: [insuranceCompanyId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  ProviderType         ProviderType     @relation(fields: [providerTypeId], references: [id])
+  providerTypeId       Int
+  specialityId         Int
+  speciality           Speciality       @relation(fields: [specialityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  subSpecialityId      Int?
+  subSpeciality        SubSpeciality?   @relation(fields: [subSpecialityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  language             LanguageEnum     @default(ARABIC)
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime?        @updatedAt
+  Category             Category?        @relation(fields: [categoryId], references: [id])
+  categoryId           Int?
+
+  @@unique([name, language, areaId, specialityId, insuranceCompanyId, tierRank, address, phoneNumber], name: "Provider_name_language_speciality_areaId_categoryId_address_phoneNumber_unique_constraint")
+}
+
+model Speciality {
+  id             Int             @id @default(autoincrement())
+  name           String
+  language       LanguageEnum    @default(ARABIC)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime?       @updatedAt
+  providerTypeId Int
+  providerType   ProviderType    @relation(fields: [providerTypeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  subSpeciality  SubSpeciality[]
+  provider       Provider[]
+
+  @@unique([name, language, providerTypeId], name: "Speciality_name_language_providerTypeId_unique_constraint")
+}
+
+model SubSpeciality {
+  id           Int          @id @default(autoincrement())
+  name         String
+  language     LanguageEnum @default(ARABIC)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime?    @updatedAt
+  specialityId Int
+  speciality   Speciality   @relation(fields: [specialityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  provider     Provider[]
+
+  @@unique([name, language, specialityId], name: "SubSpeciality_name_language_specialityId_unique_constraint")
+}
+
+model Country {
+  id        Int          @id @default(autoincrement())
+  name      String
+  language  LanguageEnum @default(ARABIC)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime?    @updatedAt
+  city      City[]
+
+  @@unique([name, language], name: "Country_name_language_unique_constraint")
+}
+
+model City {
+  id                 Int              @id @default(autoincrement())
+  name               String
+  countryId          Int
+  insuranceCompanyId Int
+  country            Country          @relation(fields: [countryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  insuranceCompany   InsuranceCompany @relation(fields: [insuranceCompanyId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  area               Area[]
+  Tpa                Tpa?             @relation(fields: [tpaId], references: [id])
+  tpaId              Int?
+  language           LanguageEnum     @default(ARABIC)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime?        @updatedAt
+
+  @@unique([name, language, countryId, insuranceCompanyId], name: "City_name_language_countryId_insuranceCompanyId_unique_constraint")
+}
+
+model Area {
+  id        Int          @id @default(autoincrement())
+  name      String
+  language  LanguageEnum @default(ARABIC)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime?    @updatedAt
+  cityId    Int
+  city      City         @relation(fields: [cityId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  provider  Provider[]
+
+  @@unique([name, language, cityId], name: "Area_name_language_cityId_unique_constraint")
+}

@@ -1,0 +1,38 @@
+type TutorialVideo {
+  id: Int!
+  title: String!
+  videoUrl: String!
+  description: String
+  language: LanguageEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+input CreateTutorialVideoInput {
+  title: String!
+  description: String
+}
+
+input UpdateTutorialVideoInput {
+  id: Int!
+  description: String
+  title: String
+}
+
+type Query {
+  tutorialVideo(language: LanguageEnum!, search: String): [TutorialVideo]
+}
+
+type Mutation {
+  createTutorialVideo(
+    createTutorialVideoInput: CreateTutorialVideoInput!
+    video: Upload!
+    language: LanguageEnum!
+  ): TutorialVideo!
+  updateTutorialVideo(
+    updateTutorialVideoInput: UpdateTutorialVideoInput!
+    vedio: Upload
+    language: LanguageEnum
+  ): TutorialVideo!
+  removeTutorialVideo(id: Int!): TutorialVideo
+}

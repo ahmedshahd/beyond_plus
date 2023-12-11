@@ -1,0 +1,37 @@
+type WelcomeScreen {
+  id: Int!
+  title: String!
+  text: String
+  imageUrls: [String!]!
+  language: LanguageEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+input CreateWelcomeScreenInput {
+  title: String
+  text: String!
+}
+
+input UpdateWelcomeScreenInput {
+  id: Int!
+  text: String
+  title: String
+}
+
+type Query {
+  welcomeScreen(language: LanguageEnum!, search: String): [WelcomeScreen]!
+}
+
+type Mutation {
+  createWelcomeScreen(
+    createWelcomeScreenInput: CreateWelcomeScreenInput!
+    language: LanguageEnum!
+    images: [Upload!]!
+  ): WelcomeScreen!
+  updateWelcomeScreen(
+    updateWelcomeScreenInput: UpdateWelcomeScreenInput!
+    images: [Upload]
+  ): WelcomeScreen!
+  removeWelcomeScreen(id: Int!): WelcomeScreen
+}

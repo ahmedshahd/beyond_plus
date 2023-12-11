@@ -1,0 +1,32 @@
+type PrivacyPolicy {
+  id: Int!
+  text: String!
+  language: LanguageEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+input CreatePrivacyPolicyInput {
+  text: String!
+}
+
+input UpdatePrivacyPolicyInput {
+  id: Int!
+  text: String
+}
+
+type Query {
+  privacyPolicy(language: LanguageEnum!): [PrivacyPolicy]!
+}
+
+type Mutation {
+  createPrivacyPolicy(
+    createPrivacyPolicyInput: CreatePrivacyPolicyInput!
+    language: LanguageEnum!
+  ): PrivacyPolicy!
+  updatePrivacyPolicy(
+    updatePrivacyPolicyInput: UpdatePrivacyPolicyInput!
+    language: LanguageEnum!
+  ): PrivacyPolicy!
+  removePrivacyPolicy(id: Int!): PrivacyPolicy
+}
